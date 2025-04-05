@@ -1,0 +1,15 @@
+/home/juanca/Documentos/Pixeleando_con_Wally/bin/Debug/net8.0/Pixeleando_con_Wally
+/home/juanca/Documentos/Pixeleando_con_Wally/bin/Debug/net8.0/Pixeleando_con_Wally.deps.json
+/home/juanca/Documentos/Pixeleando_con_Wally/bin/Debug/net8.0/Pixeleando_con_Wally.runtimeconfig.json
+/home/juanca/Documentos/Pixeleando_con_Wally/bin/Debug/net8.0/Pixeleando_con_Wally.dll
+/home/juanca/Documentos/Pixeleando_con_Wally/bin/Debug/net8.0/Pixeleando_con_Wally.pdb
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/Pixeleando_con_Wally.GeneratedMSBuildEditorConfig.editorconfig
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/Pixeleando_con_Wally.AssemblyInfoInputs.cache
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/Pixeleando_con_Wally.AssemblyInfo.cs
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/Pixeleando_con_Wally.csproj.CoreCompileInputs.cache
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/Pixeleando_con_Wally.sourcelink.json
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/Pixeleando_con_Wally.dll
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/refint/Pixeleando_con_Wally.dll
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/Pixeleando_con_Wally.pdb
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/Pixeleando_con_Wally.genruntimeconfig.cache
+/home/juanca/Documentos/Pixeleando_con_Wally/obj/Debug/net8.0/ref/Pixeleando_con_Wally.dll
