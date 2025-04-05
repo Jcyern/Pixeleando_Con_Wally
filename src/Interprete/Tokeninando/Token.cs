@@ -17,9 +17,9 @@ public enum TypeToken
     //Simbolos
     Coma,   // ,
     
-    Punto,  // .
+    Punto, // .
 
-    Cadena,   // "
+    String,   // "
 
 
     //Instrucciones

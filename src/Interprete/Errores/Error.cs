@@ -39,5 +39,21 @@ namespace Errores
         }
     }
 
+    public class DontCloseStringError : Error
+    {
+        public DontCloseStringError(Token  token ) : base(token.fila, token.columna)
+        {
+            message += $"DontCloseStringError  -you open a string but you never close it-";
+        }
+    }
+
+    public class ParentesisError : Error
+    {
+        public ParentesisError(int fila) : base(fila, 0)
+        {
+            message = $"Fila:{fila} ParentesisError -you open a parant and dont close it- or -you close a parant but you never open it";
+        }
+    }
+
 
 }
