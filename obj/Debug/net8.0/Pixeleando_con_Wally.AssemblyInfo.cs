@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Pixeleando_con_Wally")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+989dbb44f0815129bf6189fef8f19b22e97c07d8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fe3cb4567d9ad6267b255abcf1483c3c9682003")]
 [assembly: System.Reflection.AssemblyProductAttribute("Pixeleando_con_Wally")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Pixeleando_con_Wally")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
