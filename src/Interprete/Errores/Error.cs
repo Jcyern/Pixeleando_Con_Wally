@@ -29,6 +29,12 @@ namespace Errores
             //no es un numero entero , 
             this.message +=$"InvalidNumberError , the expresion {token.value} is not a whole number";
         }
+
+        public InvalidNumberError (string value, (int fila , int columna )pos ) : base(pos.fila,pos.columna)
+        {
+            //no es un numero entero , 
+            this.message +=$"InvalidNumberError , the expresion {value} is not a whole number";
+        }
     }
 
     public class InvalidWordError : Error
@@ -55,5 +61,16 @@ namespace Errores
         }
     }
 
+
+
+
+    //Errores de Sintaxis 
+    public class ExpectedAritmeticExpressionError : Error
+    {
+        public ExpectedAritmeticExpressionError(int fila, int columna) : base(fila, columna)
+        {
+            message += "Expected a AritmeticExpression ";
+        }
+    }
 
 }

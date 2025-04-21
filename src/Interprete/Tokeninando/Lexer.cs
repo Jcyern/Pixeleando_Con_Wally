@@ -11,6 +11,7 @@ namespace lexer
         public List<Token> tokens ;
 
 
+
         Dictionary<string , TypeToken> keywords = new Dictionary<string, TypeToken>
         {
             ["Spawn"]= TypeToken.Spawn,
@@ -42,7 +43,7 @@ namespace lexer
             if(IsNext() == true )
             {
                 pos+= 1; 
-                current= lineas [line][pos];
+                current= lineas [line-1][pos];
             }
             else
             {
@@ -58,13 +59,13 @@ namespace lexer
             {
                 if(IsNext())
                 {
-                    return lineas[line][pos+1];
+                    return lineas[line-1][pos+1];
 
                 }
             }
             else if (IsNext(position))
             {
-                return lineas[line][position+1];
+                return lineas[line-1][position+1];
             }
 
             return '?';
@@ -74,10 +75,10 @@ namespace lexer
         { 
             if(position == -1)
             {    
-                if(pos+1 < lineas[line].Length)
+                if(pos+1 < lineas[line-1].Length)
                 return true ;
             }
-            else if(position+1 <lineas[line].Length)
+            else if(position+1 <lineas[line-1].Length)
             {
                 return true ;
             }
@@ -114,9 +115,10 @@ namespace lexer
 
         public void Tokenizar ()
         {
+            Debug.Print($"Lineas {lineas.Length}");
             for(int i =0 ; i<lineas.Length ; i ++)
             {
-                line =i;
+                line =i+1;
                 pos =0;
                 int leftParant = 0;
                 int rightParant = 0;
@@ -186,11 +188,25 @@ namespace lexer
                     }
         #endregion
 
-
         #region Oper Aritmeticos
+        //potencia o multiplicacion 
+                    else if(current == '*')
+                    {
+                        NextChar();
+
+                        if(current== '*' &&   (char.IsWhiteSpace(GetNext() )|| GetNext()=='?' || char.IsDigit(GetNext()))  ) //es potencia 
+                        {
+                            tokens.Add( new Token (TypeToken.Operador ,"**" , line , CalcularColumna(line)));
+                            NextChar();
+                        }
+                        else if(char.IsWhiteSpace(current)  || char.IsDigit(current) )
+                        {
+                            tokens.Add(new Token(TypeToken.Operador , "*" , line, CalcularColumna(line)));
+                        }
+                    }
 
                     //Operadores Aritmeticos
-                    else if((current == '+' || current == '-' || current == '/' || current == '%' || current == '*') && (char.IsWhiteSpace(GetNext() )|| GetNext()=='?') )
+                    else if((current == '+' || current == '-' || current == '/' || current == '%' ) && (char.IsWhiteSpace(GetNext() )|| GetNext()=='?' || char.IsDigit(GetNext())) )
                     {
                         tokens.Add( new Token(TypeToken.Operador, current.ToString(), line, CalcularColumna(line)));
                         NextChar();
@@ -228,7 +244,7 @@ namespace lexer
                         NextChar();
                         
                         //mientras halla siguiente elemento  y  el sig no sea espacio en blanco 
-                        while (  current != '?'  &&  !char.IsWhiteSpace(current) )
+                        while (  current != '?'  &&  !char.IsWhiteSpace(current)  &&  char.IsDigit(current) )
                         {
                             value+= current;
                             NextChar();
@@ -324,6 +340,7 @@ namespace lexer
                     {
                         Debug.Print("else");
                         //cualquier otro carater agregarlo como invalido
+
                         var value = "";
 
                         while(current!= '?' && !char.IsWhiteSpace(current))

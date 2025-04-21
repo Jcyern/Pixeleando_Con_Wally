@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Lector;
 using lexer;
+using ArbolSintaxisAbstracta;
 
 public class Program 
 {
@@ -25,13 +26,38 @@ public class Program
                 System.Console.WriteLine($"F:{token.fila} C:{token.columna} type:{token.type} value {token.value}");
             }
             if(errores.Count>0)
-            System.Console.WriteLine("Errores");
-            foreach( var error in errores )
             {
-                error.ShowError();
+                System.Console.WriteLine("Errores");
+                foreach( var error in errores )
+                {
+                    error.ShowError();
+                }
             }
+            else
+            {
+                // prueba de parsep de expresion aritmetica
+
+            var list =Converter.PostfixExpression(tokens);
+
+            var expresion = Converter.AritmeticExpression(list);
+            System.Console.WriteLine("obtuvimos una expresion");
+
+            if(expresion is BinaryExpression)
+            {
+                Debug.Print("es esxpresion binaria");
+                var be = (BinaryExpression)expresion;
+
+                be.GetTipo();
+                {
+
+                System.Console.WriteLine(" Su valor es ");
+                System.Console.WriteLine(be.Evaluate());
+                }
+            }
+
         }
 
 
+    }
     }
 }

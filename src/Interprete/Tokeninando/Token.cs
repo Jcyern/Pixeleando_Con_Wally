@@ -4,7 +4,7 @@ public enum TypeToken
     //Aritmetico
     Numero,          // 1 ,2 ,3 ,4 ,5 ,6 ,7 ,8 ,9 ,0
 
-    Operador,        // + , - , *, %
+    Operador,        // + , - , *, % , ** 
 
     OpenParenthesis, // (
 
@@ -103,6 +103,8 @@ public class Token
 
 
     public TypeToken type ;
+
+    public (int,int) Pos =>(fila,columna);
 
     public string value ;  
 

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "g2P5QMqgFol6w4ZDU68MPryR4B2XOaJI1b/b0OD/HnRpo6mAz0l7EcF7UpQcBtqlMdo5pbZC3gVn7+KxvCV2DQ==",
+  "dgSpecHash": "z+4RrfpLMf8=",
   "success": true,
   "projectFilePath": "/home/juanca/Documentos/Pixeleando_con_Wally/Pixeleando_con_Wally.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/juanca/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.15/microsoft.netcore.app.host.linux-x64.8.0.15.nupkg.sha512"
+  ],
   "logs": []
 }
