@@ -42,18 +42,17 @@ public class Program
             var expresion = Converter.AritmeticExpression(list);
             System.Console.WriteLine("obtuvimos una expresion");
 
-            if(expresion is BinaryExpression)
+            if(expresion is BinaryExpression expression)
             {
                 Debug.Print("es esxpresion binaria");
-                var be = (BinaryExpression)expresion;
+                var be = expression;
 
                 be.GetTipo();
-                {
 
-                System.Console.WriteLine(" Su valor es ");
+                System.Console.WriteLine(" Su valor es  ");
                 System.Console.WriteLine(be.Evaluate());
-                }
             }
+
 
         }
 
