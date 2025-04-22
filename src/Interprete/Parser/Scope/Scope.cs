@@ -29,8 +29,12 @@ namespace Alcance
                 return true;
             }
 
-            else 
-            return false ;
+            else
+            {   
+                System.Console.WriteLine("La variable ya existe en el alcance");
+                System.Console.WriteLine("No pueden haber dos variables con iguales nombres");
+                return false ;
+            }
         }
     }
 }

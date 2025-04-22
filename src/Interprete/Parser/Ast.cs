@@ -3,6 +3,7 @@ using Errores;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
 using ExpressionesTipos;
+using Alcance;
 
 namespace ArbolSintaxisAbstracta
 {
@@ -10,6 +11,7 @@ namespace ArbolSintaxisAbstracta
 
 public abstract class AstNode : IParse
 {
+    public Scope scope = new ();
     public (int fila ,int columna ) Location ;
     public static List<Error> compilingError = new List<Error>();
     public void Parse()
@@ -310,7 +312,40 @@ public class AsignationNode : AstNode
         this.Expression = expression;
     }
 
-    //Hay que Hacer algo para guardar la variable  en un diccionario 
+        //Hay que Hacer algo para guardar la variable  en un diccionario 
+
+        public override bool CheckSemantic()
+        {
+            //si no es null y es correcta semanticamente 
+            if(Expression != null && Expression.CheckSemantic())
+            {
+                if(Identificador== null )
+                {
+                    //soltar error 
+                    System.Console.WriteLine("Identificador null ");
+                    return false ;
+                }
+                //intentar asignar
+                else
+                {
+                    var asignado = scope.Asignar(Identificador.value,Expression);
+
+                    if(!asignado)
+                    {
+                        return false ;
+                    }
+
+                    else 
+                    return false;
+
+                }
+
+            }
+
+            System.Console.WriteLine("La expression pasada es null");
+            return false ;
+        }
+
 
 }
 
