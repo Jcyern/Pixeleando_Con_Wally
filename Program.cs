@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
+﻿
 using Lector;
 using lexer;
 using ArbolSintaxisAbstracta;
+using System.Diagnostics;
 
 public class Program 
 {

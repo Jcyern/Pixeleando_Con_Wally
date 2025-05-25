@@ -1,5 +1,6 @@
 using ExpressionesBinarias;
 using Expresion;
+using ExpressionesTipos;
 
 
 
@@ -9,6 +10,12 @@ namespace MultiplicacionNode
     {
         public MultiplicationParse(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
+        }
+
+        public override bool CheckSemantic(ExpressionTypes tipo  )
+        {
+            //son expresiones numericas 
+            return base.CheckSemantic(ExpressionTypes.Number);
         }
 
         public override object Evaluate()

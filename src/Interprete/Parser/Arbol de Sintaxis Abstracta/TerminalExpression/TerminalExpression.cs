@@ -1,15 +1,19 @@
+using Boolean;
 using Expresion;
 using ExpressionesTipos;
 using Numero;
 using Cadenas;
-using Boolean;
 
-namespace ExpressionesUnarias
+
+namespace TerminalesNode
 {
-    #region UnaryExpression
-
-    public abstract class UnaryExpression : Expression
+    public abstract class TerminalExpression : Expression
     {
+        public TerminalExpression(object value, (int, int) Location)
+        {
+            this.value = value;
+            this.Location = Location;
+        }
 
         public override ExpressionTypes GetTipo()
         {
@@ -34,15 +38,5 @@ namespace ExpressionesUnarias
                 return ExpressionTypes.Invalid;
             }
         }
-
-
-        
     }
-
-    #endregion
-
-
-
-
-
 }

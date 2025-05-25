@@ -1,5 +1,6 @@
 using ExpressionesBinarias;
 using Expresion;
+using ExpressionesTipos;
 
 
 namespace RestaNode
@@ -10,6 +11,11 @@ namespace RestaNode
         {
         }
 
+
+        public override bool CheckSemantic(ExpressionTypes tipo )
+        {
+            return base.CheckSemantic(ExpressionTypes.Number);
+        }
 
         public override object Evaluate()
         {

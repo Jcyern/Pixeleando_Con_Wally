@@ -41,6 +41,10 @@ public enum TypeToken
 
 
     //Expresiones Booleanas
+
+    True ,
+
+    False ,
     And,    //&&
 
     Or,     // ||

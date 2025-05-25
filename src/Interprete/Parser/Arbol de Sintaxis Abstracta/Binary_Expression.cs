@@ -9,6 +9,7 @@ using MultiplicacionNode;
 using PowNode;
 using DivisionNode;
 using RestoNode;
+using TerminalesNode;
 
 namespace ExpressionesBinarias
 {
@@ -39,15 +40,20 @@ namespace ExpressionesBinarias
 
                 //Dar el tipo de la izquierda
 
-                if (LeftExpression is UnaryExpression @unary)
+                if (LeftExpression is TerminalExpression te )
                 {
-                    System.Console.WriteLine("Left es UnaryExpression");
-                    LeftExpression.type = @unary.GetTipo();
+                    System.Console.WriteLine("Left es Terminal");
+                    LeftExpression.type = te.GetTipo();
                 }
-                if (LeftExpression is BinaryExpression binaryexpression)
+                if(LeftExpression is BinaryExpression binaryexpression)
                 {
                     System.Console.WriteLine(" Left es Binary Expression");
                     LeftExpression.type = binaryexpression.GetTipo();
+                }
+                if (LeftExpression is UnaryExpression unary)
+                {
+                    System.Console.WriteLine("Left es UnaryExpression");
+                    LeftExpression.type = unary.GetTipo();
                 }
 
                 System.Console.WriteLine($"Es una operacion {Operator.value}");
@@ -61,10 +67,16 @@ namespace ExpressionesBinarias
                     RightExpression.type = binaryExpression.GetTipo();
                 }
 
-                if (RightExpression is UnaryExpression unaryExpression)
+                if (RightExpression is TerminalExpression terminal)
                 {
                     System.Console.WriteLine("Right es una Expression");
-                    RightExpression.type = unaryExpression.GetTipo();
+                    RightExpression.type = terminal.GetTipo();
+                }
+
+                if (RightExpression is UnaryExpression ue)
+                {
+                    System.Console.WriteLine("Right es unary");
+                    RightExpression.type = ue.GetTipo();
                 }
 
 
@@ -72,6 +84,8 @@ namespace ExpressionesBinarias
                 System.Console.WriteLine($"Tipo Left {LeftExpression.type}     Tipo RIght {RightExpression.type}");
                 if (LeftExpression.type == RightExpression.type)
                 {
+
+                    //en el caso de ser iguales da el valor 
                     return LeftExpression.type;
                 }
 
@@ -83,21 +97,12 @@ namespace ExpressionesBinarias
 
 
             }
-            return ExpressionTypes.Null;
+            return ExpressionTypes.Invalid;
         }
 
-        public override bool CheckSemantic()
+        public override bool CheckSemantic(ExpressionTypes tipo)
         {
-            var type = this.GetTipo();
-
-            if (type == ExpressionTypes.Invalid)
-            {
-                //entocnes no es una expresion  valida , 
-                return false;
-            }
-
-            else
-                return true;
+            return base.CheckSemantic(tipo);
         }
         public override object Evaluate()
         {

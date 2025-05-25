@@ -14,13 +14,13 @@ namespace lexer
 
         Dictionary<string , TypeToken> keywords = new Dictionary<string, TypeToken>
         {
-            ["Spawn"]= TypeToken.Spawn,
-            ["Color"]= TypeToken.Color,
+            ["Spawn"] = TypeToken.Spawn,
+            ["Color"] = TypeToken.Color,
             ["Size"] = TypeToken.Size,
-            ["DrawLine"]= TypeToken.DrawLine,
-            ["DrawCircle"]= TypeToken.DrawCircle,
+            ["DrawLine"] = TypeToken.DrawLine,
+            ["DrawCircle"] = TypeToken.DrawCircle,
             ["DrawRectangle"] = TypeToken.DrawRectangle,
-            ["Fill"]= TypeToken.Fill,
+            ["Fill"] = TypeToken.Fill,
             ["GetActualX"] = TypeToken.GetActualX,
             ["GetActualY"] = TypeToken.GetActualY,
             ["GetCanvasSize"] = TypeToken.GetCanvasSize,
@@ -28,7 +28,9 @@ namespace lexer
             ["IsBrushColor"] = TypeToken.IsBrushColor,
             ["IsBrushSize"] = TypeToken.IsBrushSize,
             ["IsCanvasColor"] = TypeToken.IsCanvasColor,
-            ["GoTo"] = TypeToken.GoTo
+            ["GoTo"] = TypeToken.GoTo,
+            ["true"] = TypeToken.True,
+            ["false"] = TypeToken.False
         };
 
         int pos;

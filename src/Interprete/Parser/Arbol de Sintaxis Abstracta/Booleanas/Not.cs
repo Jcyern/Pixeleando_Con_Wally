@@ -1,0 +1,47 @@
+
+using Expresion;
+using ExpressionesBinarias;
+using ExpressionesTipos;
+using ExpressionesUnarias;
+using TerminalesNode;
+
+namespace NotNode
+{
+    public class Not : UnaryExpression
+    {
+        public Not(Expression expresion, Token Operator, (int, int) Location) : base(expresion, Operator, Location)
+        {
+
+        }
+
+        public override ExpressionTypes GetTipo()
+        {
+            if (expresion != null)
+            {
+                if (expresion is BinaryExpression be)
+                    return be.GetTipo();
+
+                if (expresion is TerminalExpression te)
+                    return te.GetTipo();
+            }
+
+            return ExpressionTypes.Invalid;
+        }
+
+
+        public override bool CheckSemantic(ExpressionTypes tipo )
+        {
+
+            //tiene q ser un booleano 
+            return base.CheckSemantic(ExpressionTypes.Bool);
+        }
+
+
+
+        public override object? Evaluate()
+        {
+            return   !Convert.ToBoolean(expresion.Evaluate());
+        }
+    }
+
+}

@@ -1,21 +1,18 @@
 using ExpressionesUnarias;
 using ExpressionesTipos;
+using TerminalesNode;
 
 namespace Boolean
 {
 
     #region Bool
 
-    public class Bool : UnaryExpression
+    public class Bool : TerminalExpression
     {
-
-        public Bool(object value, (int, int) Location)
+        public Bool(object value, (int, int) Location) : base(value, Location)
         {
-            this.value = value;
-            this.Location = Location;
         }
-
-
+    
         public override ExpressionTypes GetTipo()
         {
             if (value == null)
@@ -29,9 +26,6 @@ namespace Boolean
                 return ExpressionTypes.Bool;
             }
         }
-
-
-
 
         public override object Evaluate()
         {

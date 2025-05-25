@@ -2,6 +2,7 @@ using ExpressionesBinarias;
 using ArbolSintaxisAbstracta;
 using ExpressionesTipos;
 using ExpressionesUnarias;
+using TerminalesNode;
 
 namespace Expresion
 {
@@ -20,9 +21,10 @@ namespace Expresion
 
         public virtual ExpressionTypes GetTipo()
         {
-            if (this is UnaryExpression @unary)
+            if (this is TerminalExpression te)
             {
-                return @unary.GetTipo();
+                System.Console.WriteLine("Es terminal expression");
+                return te.GetTipo();
             }
 
 
@@ -33,6 +35,11 @@ namespace Expresion
                 return expression.GetTipo();
             }
 
+            else if (this is UnaryExpression unary)
+            {
+                return unary.GetTipo();
+            }
+
             else
             {
                 return ExpressionTypes.Invalid;
@@ -40,18 +47,18 @@ namespace Expresion
         }
 
 
-        public override bool CheckSemantic()
+        public override bool CheckSemantic(ExpressionTypes tipo )
         {
             // semanticas de las expresiones Generales 
 
             var type = this.GetTipo();
 
-            if (type == ExpressionTypes.Invalid || type == ExpressionTypes.Null)
+            if (type == tipo)
             {
-                return false;
+                return true;
             }
             else
-                return true;
+                return false;
         }
     }
 

@@ -1,5 +1,6 @@
 using ExpressionesBinarias;
 using Expresion;
+using ExpressionesTipos;
 
 
 namespace SumaNode
@@ -8,6 +9,12 @@ namespace SumaNode
     {
         public SumaParse(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
+        }
+
+        public override bool CheckSemantic(ExpressionTypes tipo )
+        {
+            // la suma de dos numeros 
+            return base.CheckSemantic(ExpressionTypes.Number);
         }
 
 

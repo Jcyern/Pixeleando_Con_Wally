@@ -1,20 +1,20 @@
 
 using ExpressionesUnarias;
 using ExpressionesTipos;
+using TerminalesNode;
 
 namespace Cadenas
 {
-    
-    #region String 
-    
-    public class String :UnaryExpression
-    {
 
-        public String(object value, (int, int) Location)
+    #region String 
+
+    public class String : TerminalExpression
+    {
+        public String(object value, (int, int) Location) : base(value, Location)
         {
-            this.value = value;
-            this.Location = Location;
         }
+    
+
 
         public override ExpressionTypes GetTipo()
         {
