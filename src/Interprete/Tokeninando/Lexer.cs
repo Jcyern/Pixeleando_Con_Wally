@@ -289,7 +289,7 @@ namespace lexer
                         {
                             
                             //si no es ninguno de los indenticadores dados es un error 
-                            if(!invalidtoken && !char.IsLetter(current) && !char.IsDigit(current) && current != '-' ) 
+                            if(!invalidtoken && !char.IsLetter(current) && !char.IsDigit(current) && current != '_' ) 
                             {
                                 Debug.Print("invalido");
                                 invalidtoken = true ;
@@ -299,9 +299,10 @@ namespace lexer
                             NextChar();
                         }
 
-                        if(invalidtoken)
+                        
+                        if (invalidtoken)
                         {
-                            var token = new Token(TypeToken.InvalidToken,value,line,CalcularColumna(line));
+                            var token = new Token(TypeToken.InvalidToken, value, line, CalcularColumna(line));
 
                             tokens.Add(token);
 
@@ -310,15 +311,15 @@ namespace lexer
                         else
                         {
                             //si es valida la palabra verificar si es una palbra clave o sino se le tratara como etiqueta'
-                            if(keywords.ContainsKey(value))
+                            if (keywords.ContainsKey(value))
                             {
                                 //si  contiene el valor 
-                                tokens.Add(new Token (keywords[value],value,line,CalcularColumna(line)));
+                                tokens.Add(new Token(keywords[value], value, line, CalcularColumna(line)));
                             }
                             else
                             {
                                 //agregarlo como un identificador '
-                                tokens.Add(new Token(TypeToken.Identificador, value,line, CalcularColumna(line)));
+                                tokens.Add(new Token(TypeToken.Identificador, value, line, CalcularColumna(line)));
                             }
                             //quiero hacer una especie de advertencia en el caso de  q la palabra se asimile a las guardadass dentro de los keywords
                         }

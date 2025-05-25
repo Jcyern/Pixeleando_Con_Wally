@@ -1,13 +1,21 @@
 namespace ExpressionesTipos
 {
-public enum ExpressionTypes
-{
-    Number ,
-    String ,
-    Bool ,
-    Invalid ,
+    public enum ExpressionTypes
+    {
+        Number,
+        String,
+        Bool,
+        Invalid,
 
-    Null
+        Null,
+
+        //para no perder informacion del tipo en caso de que sea null
+
+        NullNumber,
+
+        NullString,
+
+        NullBool
 }
 
 

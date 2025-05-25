@@ -12,7 +12,7 @@ public class Program
     {
         LectorText lector = new LectorText();
 
-        if(lector.Lines!= null)
+        if (lector.Lines != null)
         {
             Lexer lexer = new Lexer(lector.Lines);
             lexer.Tokenizar();
@@ -21,42 +21,44 @@ public class Program
             var errores = lexer.errores;
 
             System.Console.WriteLine("Tokens");
-            foreach( var token in tokens)
+            foreach (var token in tokens)
             {
                 System.Console.WriteLine($"F:{token.fila} C:{token.columna} type:{token.type} value {token.value}");
             }
-            if(errores.Count>0)
+            if (errores.Count > 0)
             {
                 System.Console.WriteLine("Errores");
-                foreach( var error in errores )
+                foreach (var error in errores)
                 {
                     error.ShowError();
                 }
             }
-            else
-            {
-                // prueba de parsep de expresion aritmetica
+            
+            // else
+            // {
+            //     // prueba de parsep de expresion aritmetica
 
-            var list =Converter.PostfixExpression(tokens);
+            // var list =Converter.PostfixExpression(tokens);
 
-            var expresion = Converter.AritmeticExpression(list);
-            System.Console.WriteLine("obtuvimos una expresion");
+            // var expresion = Converter.AritmeticExpression(list);
+            // System.Console.WriteLine("obtuvimos una expresion");
 
-            if(expresion is BinaryExpression expression)
-            {
-                Debug.Print("es esxpresion binaria");
-                var be = expression;
+            // if(expresion is BinaryExpression expression)
+            // {
+            //     Debug.Print("es esxpresion binaria");
+            //     var be = expression;
 
-                be.GetTipo();
+            //     be.GetTipo();
 
-                System.Console.WriteLine(" Su valor es  ");
-                System.Console.WriteLine(be.Evaluate());
-            }
-
-
+            //     System.Console.WriteLine(" Su valor es  ");
+            //     System.Console.WriteLine(be.Evaluate());
+            //  }
+            //}
         }
-
+    
 
     }
-    }
+
+
 }
+    
