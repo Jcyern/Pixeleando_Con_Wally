@@ -2,6 +2,7 @@
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
+using INodeCreador;
 
 namespace Iguales
 {
@@ -33,4 +34,16 @@ namespace Iguales
     }
 
     #endregion
+
+
+    public class EqualNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new EqualNode(Left, Operator, Right);
+
+            return null;
+        }
+    }
 }

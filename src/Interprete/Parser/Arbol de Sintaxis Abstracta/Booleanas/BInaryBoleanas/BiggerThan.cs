@@ -2,6 +2,7 @@
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
+using INodeCreador;
 
 namespace MayorQue
 {
@@ -25,6 +26,17 @@ namespace MayorQue
         public override object Evaluate()
         {
             return Convert.ToInt32(LeftExpression!.Evaluate()) > Convert.ToInt32(RightExpression!.Evaluate());
+        }
+    }
+
+    public class BiggerThanNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new  BiggerThanNode(Left, Operator, Right);
+
+            return null;
         }
     }
 }

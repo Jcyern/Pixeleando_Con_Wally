@@ -3,6 +3,7 @@ using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
 using ExpressionesUnarias;
+using INodeCreador;
 using TerminalesNode;
 
 namespace NotNode
@@ -29,7 +30,7 @@ namespace NotNode
         }
 
 
-        public override bool CheckSemantic(ExpressionTypes tipo )
+        public override bool CheckSemantic(ExpressionTypes tipo)
         {
 
             //tiene q ser un booleano 
@@ -40,7 +41,18 @@ namespace NotNode
 
         public override object? Evaluate()
         {
-            return   !Convert.ToBoolean(expresion.Evaluate());
+            return !Convert.ToBoolean(expresion.Evaluate());
+        }
+    }
+
+
+    public class NotNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left , Token Operator, Expression? Right)
+        {
+            if (Right != null)
+                return new NotNode(Right, Operator , Operator.Pos);
+            return null;
         }
     }
 

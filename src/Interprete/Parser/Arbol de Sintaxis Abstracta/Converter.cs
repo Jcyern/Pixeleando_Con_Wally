@@ -1,9 +1,11 @@
 using System.Diagnostics;
+using AndNode;
 using Boolean;
 using Division;
 using Expresion;
 using ExpressionesBinarias;
 using Iguales;
+using INodeCreador;
 using MayorIgualQue;
 using MayorQue;
 using MenorIgualque;
@@ -11,6 +13,7 @@ using Menorque;
 using Multiplicacion;
 using NoIguales;
 using Numero;
+using OrNode;
 using Pow;
 using Resta;
 using Resto;
@@ -23,7 +26,7 @@ namespace Convertidor_Pos_Inf
 public class Converter 
 {
     #region  Dic Precedencia
-    private static Dictionary<string, int> precedence = new()
+    public  static Dictionary<string, int> precedence = new()
         {
             ["("] = -1,//en este caso la menor precedencia para q a la hora de q venga cualquier operador pueda entrar a la pila  y siga el trancurso de la con version sin  afectar el orden de las demas precedencias , ejemplo q tenga (5+4)   y a la hora de comparar + con (  no salga el (  y entre el mas a la pila ----- ya q en el lenguaje postfix no afecta el parentesis 
             ["||"] = 0, //booleanos
@@ -45,8 +48,31 @@ public class Converter
 
         #endregion
 
-    #region To --- Postfix 
-        public static List<Token> PostfixExpression(List<Token> infix)
+
+        #region Dic Nodos 
+
+        public static Dictionary<string, INodeCreator> nodos = new()
+        {
+            ["||"] = new OrNodeCreator(),
+            ["&&"] = new AndNodeCreator(),
+            ["=="] = new EqualNodeCreator(),
+            ["!="] = new NotEqualsNodeCreator(),
+            [">"]  = new BiggerThanNodeCreator(),
+            ["<"]  = new LessThanNodeCreator(),
+            [">="] = new BiggerEqualThanNodeCreator(),
+            ["<="] = new LessEqualThanNodeCreator(),
+            ["+"]  = new SumaNodeCreator(),
+            ["-"]  = new RestaNodeCreator(),
+            ["*"]  = new MultiplicacionNodeCreator(),
+            ["/"]  = new DivisionNodeCreator(),
+            ["%"]  = new RestoNodeCreator(),
+            ["**"] = new PowNodeCreator(),
+        };
+
+        #endregion
+
+        #region To --- Postfix 
+        public static List<Token> PostfixExpression(List<Token> infix, Dictionary<string, int> precedencia)
         {
             List<Token> postfix = new();
             //crear un pila donde guardaremos los operadores por orden de precedencia  
@@ -105,18 +131,18 @@ public class Converter
                     }
                     //ver si tiene mayor precedencia 
 
-                    else if (precedence[infix[i].value] >= precedence[operadores.Peek().value])
+                    else if (precedencia[infix[i].value] >= precedencia[operadores.Peek().value])
                     {
                         //si es mayor su precedenci metelo 
                         System.Console.WriteLine("Meter ");
-                        System.Console.WriteLine($" {infix[i].value} > precedence {operadores.Peek()}");
+                        System.Console.WriteLine($" {infix[i].value} > precedencia {operadores.Peek()}");
                         operadores.Push(infix[i]);
                     }
                     //si tiene menor precedencia saca las cosas hasta q el quede de mayor precednecia 
-                    else if (precedence[infix[i].value] < precedence[operadores.Peek().value])
+                    else if (precedencia[infix[i].value] < precedencia[operadores.Peek().value])
                     {
                         //mientras q tenga menor precedencia , saca los operadoresy agregalos a la infix list
-                        while (operadores.Count > 0 && precedence[infix[i].value] < precedence[operadores.Peek().value])
+                        while (operadores.Count > 0 && precedencia[infix[i].value] < precedencia[operadores.Peek().value])
                         {
                             System.Console.WriteLine($"agregar a postfix {operadores.Peek()}");
                             postfix.Add(operadores.Pop());
@@ -144,7 +170,7 @@ public class Converter
     #endregion
 
         //verifica el postfix
-    public static Expression? AritmeticExpression(List<Token> postfix)
+    public static Expression? AritmeticExpression(List<Token> postfix, Dictionary<string, INodeCreator> operadores)
         {
             Stack<Expression> pila = new();
             System.Console.WriteLine("postfix");
@@ -167,58 +193,18 @@ public class Converter
                     var Right = pila.Pop();
                     var Left = pila.Pop();
 
-                    // realizar la operacion correspondiente
-                    switch (postfix[i].value)
+                    if (operadores.ContainsKey(postfix[i].value))
                     {
-                        case "+":
-                            pila.Push(new SumaNode(Left, postfix[i], Right));
-                            break;
-
-                        case "-":
-                            pila.Push(new RestaNode(Left, postfix[i], Right));
-                            break;
-
-                        case "*":
-                            pila.Push(new MultiplicationNode(Left, postfix[i], Right));
-                            break;
-
-                        case "**":
-                            pila.Push(new PowNode(Left, postfix[i], Right));
-                            break;
-
-                        case "/":
-                            pila.Push(new DivisionNode(Left, postfix[i], Right));
-                            break;
-                        case "%":
-                            pila.Push(new RestoNode(Left, postfix[i], Right));
-                            break;
-
-
-                        //hacer los booleanos
-                        case "==":
-                            pila.Push(new EqualNode(Left, postfix[i], Right));
-                            break;
-
-                        case "!=":
-                            pila.Push(new NotEqualsNode(Left, postfix[i], Right));
-                            break;
-
-                        case ">":
-                            pila.Push(new BiggerThanNode(Left, postfix[i], Right));
-                            break;
-
-                        case ">=":
-                            pila.Push(new BiggerEqualThanNode(Left, postfix[i], Right));
-                            break;
-
-                        case "<":
-                            pila.Push(new LessThanNode(Left, postfix[i], Right));
-                            break;
-
-                        case "<=":
-                            pila.Push(new LessEqualThanNode(Left, postfix[i], Right));
-                            break;
+                        pila.Push(
+                            operadores[postfix[i].value].CreateNode(Left, postfix[i], Right)
+                            !);
                     }
+                    else
+                    {
+                        throw new Exception($"La operacion {postfix[i].value}no esta definida");
+                    }
+
+                
                 }
             }
 

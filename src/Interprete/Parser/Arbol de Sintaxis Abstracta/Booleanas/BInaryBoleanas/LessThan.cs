@@ -3,6 +3,7 @@
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
+using INodeCreador;
 
 namespace Menorque
 {
@@ -23,6 +24,18 @@ namespace Menorque
         public override object Evaluate()
         {
             return Convert.ToInt32(LeftExpression!.Evaluate()) < Convert.ToInt32(RightExpression!.Evaluate());
+        }
+    }
+
+
+    public class LessThanNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new LessThanNode(Left, Operator, Right);
+
+            return null;
         }
     }
 }

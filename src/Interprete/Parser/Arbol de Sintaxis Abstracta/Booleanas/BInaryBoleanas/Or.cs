@@ -1,6 +1,7 @@
 using ExpressionesTipos;
 using Expresion;
 using ExpressionesBinarias;
+using INodeCreador;
 
 
 
@@ -13,7 +14,7 @@ namespace OrNode
         }
 
 
-        public override bool CheckSemantic(ExpressionTypes tipo  )
+        public override bool CheckSemantic(ExpressionTypes tipo)
         {
             //verifica q sean de tipo bool 
             return base.CheckSemantic(ExpressionTypes.Bool);
@@ -23,6 +24,19 @@ namespace OrNode
         public override object Evaluate()
         {
             return Convert.ToBoolean(LeftExpression!.Evaluate()) || Convert.ToBoolean(RightExpression!.Evaluate());
+        }
+    }
+
+
+
+    public class OrNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new OrNode(Left, Operator, Right);
+
+            return null;
         }
     }
 }

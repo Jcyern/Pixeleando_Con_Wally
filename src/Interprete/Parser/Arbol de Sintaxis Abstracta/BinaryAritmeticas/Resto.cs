@@ -1,10 +1,11 @@
 using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
+using INodeCreador;
 
 namespace Resto
 {
-    
+
 
     public class RestoNode : BinaryExpression
     {
@@ -12,7 +13,7 @@ namespace Resto
         {
         }
 
-        public override bool CheckSemantic(ExpressionTypes tipo )
+        public override bool CheckSemantic(ExpressionTypes tipo)
         {
             return base.CheckSemantic(ExpressionTypes.Number);
         }
@@ -21,6 +22,18 @@ namespace Resto
             return Convert.ToInt32(LeftExpression!.value) % Convert.ToInt32(RightExpression!.value);
         }
 
+    }
+
+
+    public class RestoNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new RestoNode(Left, Operator, Right);
+
+            return null;
+        }
     }
 
 }

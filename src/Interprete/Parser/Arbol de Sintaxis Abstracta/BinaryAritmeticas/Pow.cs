@@ -1,6 +1,7 @@
 using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
+using INodeCreador;
 
 namespace Pow
 {
@@ -12,7 +13,7 @@ namespace Pow
 
         }
 
-        public override bool CheckSemantic(ExpressionTypes tipo )
+        public override bool CheckSemantic(ExpressionTypes tipo)
         {
             return base.CheckSemantic(ExpressionTypes.Number);
         }
@@ -24,5 +25,16 @@ namespace Pow
 
 
 
+    }
+
+    public class PowNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new PowNode(Left, Operator, Right);
+
+            return null;
+        }
     }
 }

@@ -1,6 +1,7 @@
 using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
+using INodeCreador;
 
 
 namespace Resta
@@ -12,7 +13,7 @@ namespace Resta
         }
 
 
-        public override bool CheckSemantic(ExpressionTypes tipo )
+        public override bool CheckSemantic(ExpressionTypes tipo)
         {
             return base.CheckSemantic(ExpressionTypes.Number);
         }
@@ -23,7 +24,16 @@ namespace Resta
 
         }
 
-
     }
 
+    public class RestaNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new RestaNode(Left, Operator, Right);
+
+            return null;
+        }
+    }
 }

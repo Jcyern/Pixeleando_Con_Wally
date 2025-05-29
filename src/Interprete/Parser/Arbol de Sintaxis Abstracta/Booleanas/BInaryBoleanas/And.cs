@@ -1,6 +1,7 @@
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
+using INodeCreador;
 
 namespace AndNode
 {
@@ -24,5 +25,16 @@ namespace AndNode
             return Convert.ToBoolean(LeftExpression!.Evaluate()) && Convert.ToBoolean(RightExpression!.Evaluate());
         }
 
+    }
+
+    public class AndNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new AndNode(Left, Operator, Right);
+
+            return null;
+        }
     }
 }

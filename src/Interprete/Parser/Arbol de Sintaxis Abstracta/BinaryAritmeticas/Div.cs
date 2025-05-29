@@ -1,6 +1,7 @@
 using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
+using INodeCreador;
 
 
 namespace Division
@@ -24,5 +25,16 @@ namespace Division
         }
 
 
+    }
+
+    public class DivisionNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new DivisionNode(Left, Operator, Right);
+
+            return null;
+        }
     }
 }

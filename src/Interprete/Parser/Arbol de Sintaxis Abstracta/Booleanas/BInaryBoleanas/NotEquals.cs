@@ -3,6 +3,7 @@
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
+using INodeCreador;
 
 namespace NoIguales
 {
@@ -20,7 +21,19 @@ namespace NoIguales
 
         public override object Evaluate()
         {
-            return  LeftExpression!.Evaluate() != RightExpression!.Evaluate();
+            return LeftExpression!.Evaluate() != RightExpression!.Evaluate();
+        }
+    }
+
+
+    public class NotEqualsNodeCreator : INodeCreator
+    {
+        public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right)
+        {
+            if (Left != null && Right != null)
+                return new NotEqualsNode(Left, Operator, Right);
+
+            return null;
         }
     }
 }
