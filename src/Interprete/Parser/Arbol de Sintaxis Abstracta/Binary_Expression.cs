@@ -3,12 +3,12 @@ using Expresion;
 using ArbolSintaxisAbstracta;
 using ExpressionesTipos;
 using ExpressionesUnarias;
-using SumaNode;
-using RestaNode;
-using MultiplicacionNode;
-using PowNode;
-using DivisionNode;
-using RestoNode;
+using Suma;
+using Resta;
+using Multiplicacion;
+using Pow;
+using Division;
+using Resto;
 using TerminalesNode;
 
 namespace ExpressionesBinarias
@@ -31,6 +31,7 @@ namespace ExpressionesBinarias
             this.RightExpression = RightExpression;
         }
 
+        #region  Get Tipo
 
         //find type
         public override ExpressionTypes GetTipo()
@@ -40,21 +41,26 @@ namespace ExpressionesBinarias
 
                 //Dar el tipo de la izquierda
 
-                if (LeftExpression is TerminalExpression te )
+                if (LeftExpression is TerminalExpression te)
                 {
                     System.Console.WriteLine("Left es Terminal");
                     LeftExpression.type = te.GetTipo();
+
+                    System.Console.WriteLine($"Left Expression {LeftExpression.type}");
                 }
-                if(LeftExpression is BinaryExpression binaryexpression)
+                if (LeftExpression is BinaryExpression binaryexpression)
                 {
                     System.Console.WriteLine(" Left es Binary Expression");
                     LeftExpression.type = binaryexpression.GetTipo();
+                    System.Console.WriteLine($"Left Expression {LeftExpression.type}");
                 }
                 if (LeftExpression is UnaryExpression unary)
                 {
                     System.Console.WriteLine("Left es UnaryExpression");
                     LeftExpression.type = unary.GetTipo();
+                    System.Console.WriteLine($"Left Expression {LeftExpression.type}");
                 }
+                
 
                 System.Console.WriteLine($"Es una operacion {Operator.value}");
 
@@ -65,18 +71,21 @@ namespace ExpressionesBinarias
                 {
                     System.Console.WriteLine("Right es binary Expression");
                     RightExpression.type = binaryExpression.GetTipo();
+                    System.Console.WriteLine($"RightExpression { RightExpression.type}");
                 }
 
                 if (RightExpression is TerminalExpression terminal)
                 {
-                    System.Console.WriteLine("Right es una Expression");
+                    System.Console.WriteLine("Right es una  Terminal Expression");
                     RightExpression.type = terminal.GetTipo();
+                    System.Console.WriteLine($"RightExpression { RightExpression.type}");
                 }
 
                 if (RightExpression is UnaryExpression ue)
                 {
                     System.Console.WriteLine("Right es unary");
                     RightExpression.type = ue.GetTipo();
+                    System.Console.WriteLine($"RightExpression { RightExpression.type}");
                 }
 
 
@@ -84,7 +93,7 @@ namespace ExpressionesBinarias
                 System.Console.WriteLine($"Tipo Left {LeftExpression.type}     Tipo RIght {RightExpression.type}");
                 if (LeftExpression.type == RightExpression.type)
                 {
-
+                    System.Console.WriteLine("Iguales");
                     //en el caso de ser iguales da el valor 
                     return LeftExpression.type;
                 }
@@ -100,36 +109,86 @@ namespace ExpressionesBinarias
             return ExpressionTypes.Invalid;
         }
 
-        public override bool CheckSemantic(ExpressionTypes tipo)
+        #endregion
+
+        #region  Semantica
+
+        public override bool CheckSemantic(ExpressionTypes tipo= ExpressionTypes.nothing)
         {
-            return base.CheckSemantic(tipo);
+            
+            //verifica q ambas expresiones son del mismo tipo y en casos especificos si coincide con el tipo pasado 
+
+            //una expresiones binarias en genral casi siempre se puede proceder si son del mismo tipo que cada quien implemente sus casos particulares
+
+            if (LeftExpression != null && RightExpression != null)
+            {
+                var r = RightExpression.GetTipo();
+                var l = LeftExpression.GetTipo();
+
+                //son iguale y ninguna invalida 
+                if (r == l && l != ExpressionTypes.Invalid)
+                {
+                    //en el caso de q pasen tipo verificar si es el pedido 
+                    if (tipo == ExpressionTypes.nothing)
+                    {
+                        return true;
+                    }
+                    //sino es nothing el tipo verifica q sea el tipo pedido 
+
+                    else if (r == tipo)
+                    {
+                        return true;
+                    }
+
+                    //en este caso no seria el tipo demandado 
+                    return false;
+                }
+                //caso de q no sean iguales o invalidas
+                //agregar errores 
+
+                return false;
+
+            }
+            return false;
         }
+
+
+        #endregion
+
+
+
+
+        #region  Evaluate 
         public override object Evaluate()
         {
             switch (Operator.value)
             {
                 case "+":
-                    return (SumaParse)this.Evaluate();
+                    return (SumaNode)this.Evaluate();
 
                 case "-":
-                    return (RestaParse)this.Evaluate();
+                    return (RestaNode)this.Evaluate();
 
                 case "*":
-                    return (MultiplicationParse)this.Evaluate();
+                    return (MultiplicationNode)this.Evaluate();
                 case "**":
-                    return (PowParse)this.Evaluate();
+                    return (PowNode)this.Evaluate();
 
                 case "/":
-                    return (DivisionParse)this.Evaluate();
+                    return (DivisionNode)this.Evaluate();
 
                 case "%":
-                    return (RestoParse)this.Evaluate();
+                    return (RestoNode)this.Evaluate();
 
 
             }
 
             return "null";
         }
+
+        
+
+        #endregion
     }
 
 

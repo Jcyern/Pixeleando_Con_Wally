@@ -47,7 +47,7 @@ namespace Expresion
         }
 
 
-        public override bool CheckSemantic(ExpressionTypes tipo )
+        public override bool CheckSemantic(ExpressionTypes tipo= ExpressionTypes.nothing )
         {
             // semanticas de las expresiones Generales 
 

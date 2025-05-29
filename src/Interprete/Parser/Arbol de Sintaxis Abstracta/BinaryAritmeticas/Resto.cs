@@ -2,13 +2,13 @@ using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
 
-namespace RestoNode
+namespace Resto
 {
     
 
-    public class RestoParse : BinaryExpression
+    public class RestoNode : BinaryExpression
     {
-        public RestoParse(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
+        public RestoNode(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
         }
 

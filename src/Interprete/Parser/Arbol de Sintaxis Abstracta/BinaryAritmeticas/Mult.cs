@@ -4,11 +4,11 @@ using ExpressionesTipos;
 
 
 
-namespace MultiplicacionNode
+namespace Multiplicacion
 {
-        public class MultiplicationParse : BinaryExpression
+        public class MultiplicationNode : BinaryExpression
     {
-        public MultiplicationParse(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
+        public MultiplicationNode(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
         }
 

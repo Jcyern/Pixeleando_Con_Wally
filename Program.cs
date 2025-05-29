@@ -3,13 +3,46 @@ using Lector;
 using lexer;
 using ArbolSintaxisAbstracta;
 using System.Diagnostics;
+using Numero;
+using Suma;
+using MayorQue;
 
-public class Program 
+
+public class Program
 {
     //Ruta del  editor de texto ,q sera la entrada de texto
-   //static string ruta = "/home/juanca/Documentos/Pixeleando_con_Wally/Logic/Lector_de_Texto/Editor.txt";
-    
+    //static string ruta = "/home/juanca/Documentos/Pixeleando_con_Wally/Logic/Lector_de_Texto/Editor.txt";
+
     static void Main(string[] args)
+    {
+
+
+
+        PruebaBigger();
+    }
+
+
+
+
+
+    public static void PruebaBigger()
+    {
+        //verificar el cheque semantico  del bigger 
+
+        var l = new Cadenas.String("2", (0, 0));
+        var r = new SumaNode(new Number(2, (0, 0)), new Token(TypeToken.Operador, "+", 0, 0), new Number(2, (0, 0)));
+        var bigger = new BiggerThan(l, new Token(TypeToken.Operador, ">", 0, 0), r);
+
+        var semantic = bigger.CheckSemantic();
+        System.Console.WriteLine(semantic);
+
+
+
+
+    }
+
+
+    public static Lexer Tokenizar()
     {
         LectorText lector = new LectorText();
 
@@ -17,6 +50,7 @@ public class Program
         {
             Lexer lexer = new Lexer(lector.Lines);
             lexer.Tokenizar();
+
             Debug.Print("Tokenizo");
             var tokens = lexer.tokens;
             var errores = lexer.errores;
@@ -34,32 +68,18 @@ public class Program
                     error.ShowError();
                 }
             }
-            
-            // else
-            // {
-            //     // prueba de parsep de expresion aritmetica
 
-            // var list =Converter.PostfixExpression(tokens);
+            return lexer;
 
-            // var expresion = Converter.AritmeticExpression(list);
-            // System.Console.WriteLine("obtuvimos una expresion");
 
-            // if(expresion is BinaryExpression expression)
-            // {
-            //     Debug.Print("es esxpresion binaria");
-            //     var be = expression;
-
-            //     be.GetTipo();
-
-            //     System.Console.WriteLine(" Su valor es  ");
-            //     System.Console.WriteLine(be.Evaluate());
-            //  }
-            //}
         }
-    
+
+        throw new Exception("No hay  lineas escritas en el lector de texto ");
+
 
     }
 
-
 }
+
+
     

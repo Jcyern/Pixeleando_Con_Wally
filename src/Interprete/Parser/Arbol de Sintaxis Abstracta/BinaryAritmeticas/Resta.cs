@@ -3,11 +3,11 @@ using Expresion;
 using ExpressionesTipos;
 
 
-namespace RestaNode
+namespace Resta
 {
-    public class RestaParse : BinaryExpression
+    public class RestaNode : BinaryExpression
     {
-        public RestaParse(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
+        public RestaNode(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
         }
 

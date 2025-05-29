@@ -3,11 +3,11 @@ using Expresion;
 using ExpressionesTipos;
 
 
-namespace SumaNode
+namespace Suma
 {
-    public class SumaParse : BinaryExpression
+    public class SumaNode : BinaryExpression
     {
-        public SumaParse(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
+        public SumaNode(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
         }
 

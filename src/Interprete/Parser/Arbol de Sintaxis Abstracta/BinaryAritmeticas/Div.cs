@@ -3,12 +3,12 @@ using Expresion;
 using ExpressionesTipos;
 
 
-namespace DivisionNode
+namespace Division
 {
 
-    public class DivisionParse : BinaryExpression
+    public class DivisionNode : BinaryExpression
     {
-        public DivisionParse(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
+        public DivisionNode(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
         }
 

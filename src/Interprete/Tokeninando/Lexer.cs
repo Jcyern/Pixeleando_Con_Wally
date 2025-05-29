@@ -29,8 +29,8 @@ namespace lexer
             ["IsBrushSize"] = TypeToken.IsBrushSize,
             ["IsCanvasColor"] = TypeToken.IsCanvasColor,
             ["GoTo"] = TypeToken.GoTo,
-            ["true"] = TypeToken.True,
-            ["false"] = TypeToken.False
+            ["true"] = TypeToken.Boolean,
+            ["false"] = TypeToken.Boolean
         };
 
         int pos;

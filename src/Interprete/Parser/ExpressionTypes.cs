@@ -15,7 +15,10 @@ namespace ExpressionesTipos
 
         NullString,
 
-        NullBool
+        NullBool,
+
+
+        nothing
 }
 
 

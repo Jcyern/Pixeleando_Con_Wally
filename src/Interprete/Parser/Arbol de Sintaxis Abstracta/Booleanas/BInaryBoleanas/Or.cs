@@ -6,15 +6,16 @@ using ExpressionesBinarias;
 
 namespace OrNode
 {
-    public class Or : BinaryExpression
+    public class OrNode : BinaryExpression
     {
-        public Or(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
+        public OrNode(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
         }
 
 
         public override bool CheckSemantic(ExpressionTypes tipo  )
         {
+            //verifica q sean de tipo bool 
             return base.CheckSemantic(ExpressionTypes.Bool);
         }
 

@@ -1,21 +1,36 @@
 
-
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
 
 namespace Iguales
 {
-    public class Equal : BinaryExpression
+    public class EqualNode : BinaryExpression
     {
-        public Equal(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
+        //builder
+        public EqualNode(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
         }
 
-
-        public override bool CheckSemantic(ExpressionTypes tipo )
+        #region  Semantica
+        public override bool CheckSemantic(ExpressionTypes tipo)
         {
-            return base.CheckSemantic(ExpressionTypes.Bool);
+            //solo verifica q sean del mismo tipo
+            //y q no sean ambos  invalid 
+            return base.CheckSemantic();
+        }
+
+
+        #endregion
+
+
+
+        #region Evaluate
+        public override object Evaluate()
+        {
+            return LeftExpression!.Evaluate() == RightExpression!.Evaluate();
         }
     }
+
+    #endregion
 }

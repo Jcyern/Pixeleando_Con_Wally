@@ -4,15 +4,17 @@ using ExpressionesTipos;
 
 namespace AndNode
 {
-    public class And : BinaryExpression
+    public class AndNode : BinaryExpression
     {
-        public And(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
+        public AndNode(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
 
         }
 
-        public override bool CheckSemantic(ExpressionTypes tipo )
+        public override bool CheckSemantic(ExpressionTypes tipo)
         {
+            //verifica si son de tipo bool 
+
             return base.CheckSemantic(ExpressionTypes.Bool);
         }
 

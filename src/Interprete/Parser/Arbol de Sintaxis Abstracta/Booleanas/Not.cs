@@ -7,9 +7,9 @@ using TerminalesNode;
 
 namespace NotNode
 {
-    public class Not : UnaryExpression
+    public class NotNode : UnaryExpression
     {
-        public Not(Expression expresion, Token Operator, (int, int) Location) : base(expresion, Operator, Location)
+        public NotNode(Expression expresion, Token Operator, (int, int) Location) : base(expresion, Operator, Location)
         {
 
         }

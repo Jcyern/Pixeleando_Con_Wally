@@ -19,7 +19,7 @@ namespace ArbolSintaxisAbstracta
         }
 
         //tiene que saberse chequearse semanticamnente 
-        public virtual bool CheckSemantic(ExpressionTypes tipo )
+        public virtual bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing )
         {
             //logica para ver los parametros de mi metodo 
             return false;

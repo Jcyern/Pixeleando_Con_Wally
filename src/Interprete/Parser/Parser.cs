@@ -3,110 +3,115 @@ using Expresion;
 
 public class Parse
 {
+
+
+
     public List<Token> tokens;
 
-    public int line ;
+    public int line;
 
-    public int current =0 ;
+    public int current = 0;
 
     //da el siguiente y se mueve 
     public Token NextToken()
     {
-        if(IsNext())
+        if (IsNext())
         {
-            current+=1;
+            current += 1;
             return tokens[current];
         }
 
-        return new Token(TypeToken.InvalidToken, "null",tokens[current].fila, tokens[current].columna);
+        return new Token(TypeToken.InvalidToken, "null", tokens[current].fila, tokens[current].columna);
 
     }
     //te da el siguiente sin cambiar el current  
-    public Token  GetNextToken()
+    public Token GetNextToken()
     {
-        if(IsNext())
+        if (IsNext())
         {
-            return tokens[current+1];
+            return tokens[current + 1];
         }
 
-        return new Token(TypeToken.InvalidToken, "null",tokens[current].fila, tokens[current].columna);
+        return new Token(TypeToken.InvalidToken, "null", tokens[current].fila, tokens[current].columna);
 
     }
-    public Token GetNextToken(int pos )
+    public Token GetNextToken(int pos)
     {
-        if(IsNext(pos))
-        return tokens[pos+1];
+        if (IsNext(pos))
+            return tokens[pos + 1];
 
-        return new Token(TypeToken.InvalidToken, "null",tokens[pos].fila, tokens[pos].columna);
+        return new Token(TypeToken.InvalidToken, "null", tokens[pos].fila, tokens[pos].columna);
     }
 
     //verifica si al siguientes elementos
     public bool IsNext()
     {
-        if(current+1 < tokens.Count)
+        if (current + 1 < tokens.Count)
         {
-            return true ;
+            return true;
         }
-        return false ;
+        return false;
     }
 
-    public bool IsNext  (int actualpos  )
+    public bool IsNext(int actualpos)
     {
-        if(actualpos +1<tokens.Count )
-        return true ;
+        if (actualpos + 1 < tokens.Count)
+            return true;
 
-        return false ;
+        return false;
 
     }
 
-    public Parse(List<Token> tokens )
+    public Parse(List<Token> tokens)
     {
         this.tokens = tokens;
     }
 
 
+    //dicionario de expresiones boolenas 
+
+
+
+
+
+
     //Parsear que se le pasan los tokens los parsea y devuelve nodos del arbol de sintaxis abstracta 
 
-    public List<AstNode>? Parseo ()
+    public List<AstNode>? Parseo()
     {
         List<AstNode> nodos = new();
 
-        while ( current < tokens.Count )
+
+        //recorriendon la lista de tokens ya creada 
+        while (current < tokens.Count)
         {
-            if(tokens[current].type == TypeToken.Identificador && GetNextToken().type == TypeToken.Asignacion)
+            //asignacion
+            if (tokens[current].type == TypeToken.Identificador && GetNextToken().type == TypeToken.Asignacion)
             {
-                var name = tokens[current];
-                var identificador = NextToken();
+                //crear logica 
+            }
 
-               // Expression? expression ;
+            //viendo expresines numericas || booleanas  en casos como 
+            //q empiece por un numero
+            // q empiece por un ( y luego le tiene q seguir un numero 
 
-                //hay q buscar la expression q se da
+            //se supone q cuando asignemos un numero luego detras de el no venga mas nada 
+            ///por ende la logica es ir poniendo numeros , parentesis , operadores , hasta que halla un cambio de linea ( que es cuando se termina la expresion)
+            if (tokens[current].type == TypeToken.Numero || tokens[current].type == TypeToken.OpenParenthesis && GetNextToken().type == TypeToken.Numero)
+            {
+                //vamos a pensar q solo hay numeros , en el caso de que haya operadores booleanos y la convertiremos en booleana 
 
+                var exp = new List<Token>() { tokens[current] };
 
-
-                //si es string 
-
-
-
-
-                //si es un bool 
-
-
-                //si es una expresion numerica
-                if(GetNextToken().type == TypeToken.Numero)
+                //verifca si hay sig y forma parte de la instruccion 
+                while (IsNext() && GetNextToken().fila == exp[^1].fila)
                 {
-                    //puede coger tokens hasta q el siguiente q venga sea el salto de linea 
-                    
-                    //agregar al numero actual
-                    List<Token> toks =  [NextToken()];
-                    while (GetNextToken().type!= TypeToken.InvalidToken && GetNextToken().fila == tokens[current].fila)
-                    {
-                        toks.Add(NextToken());
-                    }
-
-                    //pasarle lso tokens para ver si los puedes covertir en una expresion aritmetica 
+                    exp.Add(NextToken());
                 }
                 
+                //luego de eso crear la expresion Aritmetica - Booleana 
+
+
             }
         }
 
@@ -114,6 +119,14 @@ public class Parse
 
 
 
-        return null ;
+        return null;
+    }
+
+
+
+    public AstNode Arit_Bool_Parse(List<Token> tokens)
+    {
+        //logica para devolver xpresionn aritemtic 
+        return null;
     }
 }

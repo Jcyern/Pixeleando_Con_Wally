@@ -1,13 +1,20 @@
 using System.Diagnostics;
-using DivisionNode;
+using Boolean;
+using Division;
 using Expresion;
 using ExpressionesBinarias;
-using MultiplicacionNode;
+using Iguales;
+using MayorIgualQue;
+using MayorQue;
+using MenorIgualque;
+using Menorque;
+using Multiplicacion;
+using NoIguales;
 using Numero;
-using PowNode;
-using RestaNode;
-using RestoNode;
-using SumaNode;
+using Pow;
+using Resta;
+using Resto;
+using Suma;
 
 
 namespace Convertidor_Pos_Inf
@@ -15,160 +22,215 @@ namespace Convertidor_Pos_Inf
       //Converter de infix to posfix
 public class Converter 
 {
-    private  static Dictionary<string , int> precedence = new()
-    {
-        ["+"]=1,
-        ["-"]=1,
-        ["*"]=2,
-        ["/"]=2,
-        ["%"]=2,
-        ["**"]=3,
-        ["("]=0  //en este caso la menor precedencia para q a la hora de q venga cualquier operador pueda entrar a la pila  y siga el trancurso de la con version sin  afectar el orden de las demas precedencias , ejemplo q tenga (5+4)   y a la hora de comparar + con (  no salga el (  y entre el mas a la pila ----- ya q en el lenguaje postfix no afecta el parentesis 
-    };
-
-    public static List<Token> PostfixExpression(  List<Token> infix)
-    {
-        List<Token> postfix = new ();
-        //crear un pila donde guardaremos los operadores por orden de precedencia  
-        Stack<Token> operadores = new Stack<Token>();
-
-        for(int i =0 ; i<infix.Count; i ++)
+    #region  Dic Precedencia
+    private static Dictionary<string, int> precedence = new()
         {
+            ["("] = -1,//en este caso la menor precedencia para q a la hora de q venga cualquier operador pueda entrar a la pila  y siga el trancurso de la con version sin  afectar el orden de las demas precedencias , ejemplo q tenga (5+4)   y a la hora de comparar + con (  no salga el (  y entre el mas a la pila ----- ya q en el lenguaje postfix no afecta el parentesis 
+            ["||"] = 0, //booleanos
+            ["&&"] = 1, //booleanos
+            ["=="] = 2,
+            ["!="] = 2,
+            [">"] = 3,
+            ["<"] = 3,
+            [">="] = 3,
+            ["<="] = 3,  //comparaciones 
+            ["+"] = 4,
+            ["-"] = 4,
+            ["*"] = 5,
+            ["/"] = 5,
+            ["%"] = 5,
+            ["**"] = 6,
 
-            //si es un numero agregarlo directamente a la salida 
-            if(infix[i].type == TypeToken.Numero)
-            {System.Console.WriteLine($"Numero add {infix[i].value}");
-                postfix.Add(infix[i]);
-            }
-            //si es ( // meterlo en la pila
-            else if (infix[i].type == TypeToken.OpenParenthesis)
-            {
-                System.Console.WriteLine("Open ( meterlo");
-                operadores.Push(infix[i]);
-            }
-            else if ( infix[i].type == TypeToken.CloseParenthesis)
+        };
+
+        #endregion
+
+    #region To --- Postfix 
+        public static List<Token> PostfixExpression(List<Token> infix)
+        {
+            List<Token> postfix = new();
+            //crear un pila donde guardaremos los operadores por orden de precedencia  
+            Stack<Token> operadores = new Stack<Token>();
+
+            for (int i = 0; i < infix.Count; i++)
             {
 
-                //mientras que el ultimo no sea ( en la pila de operadores
-                while(operadores.Peek().type != TypeToken.OpenParenthesis)
+                //cuando es un identificador ..verificar q esa variable existe y es un numero 
+                //ojo
+                //si es un numero agregarlo directamente a la salida 
+                if (infix[i].type == TypeToken.Numero)
                 {
-                    //agrega el operador a la pila
-                    System.Console.WriteLine($"Add {operadores.Peek().value}");
-                    postfix.Add(operadores.Pop());
-                
+                    System.Console.WriteLine($"Numero add {infix[i].value}");
+                    postfix.Add(infix[i]);
                 }
-                Debug.Print("Se encontro el open ");
-                var result = operadores.Pop();
-                Debug.Print(result.value);
-                
-
-            }
-            else if( infix[i].type == TypeToken.Operador )
-            {
-
-
-                if(operadores.Count==0)
+                //si es un bool meterlo en la pila 
+                else if (infix[i].type == TypeToken.Boolean)
                 {
-                    System.Console.WriteLine($"OPeradores vacio meter {infix[i].value}");
-                    //si no hay operadores metelo 
+                    System.Console.WriteLine($"Bool add {infix[i].value}");
+                    postfix.Add(infix[i]);
+                }
+                //si es ( // meterlo en la pila
+                else if (infix[i].type == TypeToken.OpenParenthesis)
+                {
+                    System.Console.WriteLine("Open ( meterlo");
                     operadores.Push(infix[i]);
                 }
-                //ver si tiene mayor precedencia 
-                
-                else if(precedence[infix[i].value]>= precedence[operadores.Peek().value])
+                //si es ) sacar todo lo de la pila hasta llegarg al open (
+                else if (infix[i].type == TypeToken.CloseParenthesis)
                 {
-                    //si es mayor su precedenci metelo 
-                    System.Console.WriteLine("Meter ");
-                    System.Console.WriteLine($" {infix[i].value} > precedence {operadores.Peek()}");
-                    operadores.Push(infix[i]);
-                }
-                //si tiene menor precedencia saca las cosas hasta q el quede de mayor precednecia 
-                else if(precedence[infix[i].value] <precedence[operadores.Peek().value])
-                {
-                    //mientras q tenga menor precedencia , saca los operadoresy agregalos a la infix list
-                    while (operadores.Count> 0 &&precedence[infix[i].value]<precedence[operadores.Peek().value])
+
+                    //mientras que el ultimo no sea ( en la pila de operadores
+                    while (operadores.Peek().type != TypeToken.OpenParenthesis)
                     {
-                        System.Console.WriteLine($"agregar a postfix {operadores.Peek()}");
+                        //agrega el operador a la pila
+                        System.Console.WriteLine($"Add {operadores.Peek().value}");
                         postfix.Add(operadores.Pop());
+
                     }
+                    Debug.Print("Se encontro el open ");
+                    var result = operadores.Pop();
+                    Debug.Print(result.value);
 
-                    //cuando ya tenga mayor o iugal predencia o operadores se quede vacio , agregala
-                    operadores.Push(infix[i]);
+
                 }
-            }
-        }
-
-        //cuando llegue al final , si quedan operdores en la pila , agregalos a la salida
-
-        while(operadores.Count >0)
-        {
-            postfix.Add(operadores.Pop());
-        }
-        System.Console.WriteLine("Dentro ");
-        foreach(var item in postfix)
-        System.Console.WriteLine(item.value);
-
-        return postfix;
-    }
-
-
-    public static Expression? AritmeticExpression (List<Token> postfix)
-    {
-        Stack<Expression> pila = new ();
-        System.Console.WriteLine("postfix");
-        foreach( var item in postfix)
-        System.Console.WriteLine(item.value);
-
-
-        for(int i = 0 ; i<postfix.Count ; i ++)
-        {
-            if(postfix[i].type== TypeToken.Numero)
-            {
-                pila.Push(new Number(postfix[i].value, postfix[i].Pos));
-            }
-            else if( postfix[i].type == TypeToken.Operador) //es un operador
-            {
-                var Right = pila.Pop();
-                var Left = pila.Pop();
-
-                // realizar la operacion correspondiente
-                switch(postfix[i].value)
+                //ir metiendo y sacando en la pila por precedencia , la pila siempre queda organizada como que elm ult elemento es el de mayor precedencia
+                else if (infix[i].type == TypeToken.Operador)
                 {
-                    case "+":
-                    pila.Push(new SumaParse(Left,postfix[i] ,Right));
-                    break;
 
-                    case "-":
-                    pila.Push(new  RestaParse(Left, postfix[i], Right));
-                    break;
+                    if (operadores.Count == 0)
+                    {
+                        System.Console.WriteLine($"Operadores vacio meter {infix[i].value}");
+                        //si no hay operadores metelo 
+                        operadores.Push(infix[i]);
+                    }
+                    //ver si tiene mayor precedencia 
 
-                    case "*":
-                    pila.Push(new MultiplicationParse(Left, postfix[i], Right));
-                    break;
+                    else if (precedence[infix[i].value] >= precedence[operadores.Peek().value])
+                    {
+                        //si es mayor su precedenci metelo 
+                        System.Console.WriteLine("Meter ");
+                        System.Console.WriteLine($" {infix[i].value} > precedence {operadores.Peek()}");
+                        operadores.Push(infix[i]);
+                    }
+                    //si tiene menor precedencia saca las cosas hasta q el quede de mayor precednecia 
+                    else if (precedence[infix[i].value] < precedence[operadores.Peek().value])
+                    {
+                        //mientras q tenga menor precedencia , saca los operadoresy agregalos a la infix list
+                        while (operadores.Count > 0 && precedence[infix[i].value] < precedence[operadores.Peek().value])
+                        {
+                            System.Console.WriteLine($"agregar a postfix {operadores.Peek()}");
+                            postfix.Add(operadores.Pop());
+                        }
 
-                    case "**":
-                    pila.Push(new PowParse(Left,postfix[i], Right));
-                    break;
-
-                    case "/":
-                    pila.Push(new DivisionParse(Left, postfix[i], Right));
-                    break;
-                    case "%":
-                    pila.Push(new RestoParse(Left,postfix[i],Right));
-                    break;
+                        //cuando ya tenga mayor o iugal predencia o operadores se quede vacio , agregala
+                        operadores.Push(infix[i]);
+                    }
                 }
             }
+
+            //cuando llegue al final , si quedan operdores en la pila , agregalos a la salida
+
+            while (operadores.Count > 0)
+            {
+                postfix.Add(operadores.Pop());
+            }
+            System.Console.WriteLine("Dentro ");
+            foreach (var item in postfix)
+                System.Console.WriteLine(item.value);
+
+            return postfix;
         }
+        
+    #endregion
+
+        //verifica el postfix
+    public static Expression? AritmeticExpression(List<Token> postfix)
+        {
+            Stack<Expression> pila = new();
+            System.Console.WriteLine("postfix");
+            foreach (var item in postfix)
+                System.Console.WriteLine(item.value);
 
 
-        //cuando se termine todo tiene q quedar una expresion  o no 
-        if(pila.Count>0)
-        return pila.Pop();
+            for (int i = 0; i < postfix.Count; i++)
+            {
+                if (postfix[i].type == TypeToken.Numero)
+                {
+                    pila.Push(new Number(postfix[i].value, postfix[i].Pos));
+                }
+                else if (postfix[i].type == TypeToken.Boolean)
+                {
+                    pila.Push(new Bool(postfix[i].value, postfix[i].Pos));
+                }
+                else if (postfix[i].type == TypeToken.Operador) //es un operador
+                {
+                    var Right = pila.Pop();
+                    var Left = pila.Pop();
+
+                    // realizar la operacion correspondiente
+                    switch (postfix[i].value)
+                    {
+                        case "+":
+                            pila.Push(new SumaNode(Left, postfix[i], Right));
+                            break;
+
+                        case "-":
+                            pila.Push(new RestaNode(Left, postfix[i], Right));
+                            break;
+
+                        case "*":
+                            pila.Push(new MultiplicationNode(Left, postfix[i], Right));
+                            break;
+
+                        case "**":
+                            pila.Push(new PowNode(Left, postfix[i], Right));
+                            break;
+
+                        case "/":
+                            pila.Push(new DivisionNode(Left, postfix[i], Right));
+                            break;
+                        case "%":
+                            pila.Push(new RestoNode(Left, postfix[i], Right));
+                            break;
 
 
-        //si no hay nada retona null expression 
-        return null;
-    }
+                        //hacer los booleanos
+                        case "==":
+                            pila.Push(new EqualNode(Left, postfix[i], Right));
+                            break;
+
+                        case "!=":
+                            pila.Push(new NotEqualsNode(Left, postfix[i], Right));
+                            break;
+
+                        case ">":
+                            pila.Push(new BiggerThanNode(Left, postfix[i], Right));
+                            break;
+
+                        case ">=":
+                            pila.Push(new BiggerEqualThanNode(Left, postfix[i], Right));
+                            break;
+
+                        case "<":
+                            pila.Push(new LessThanNode(Left, postfix[i], Right));
+                            break;
+
+                        case "<=":
+                            pila.Push(new LessEqualThanNode(Left, postfix[i], Right));
+                            break;
+                    }
+                }
+            }
+
+
+            //cuando se termine todo tiene q quedar una expresion  o no 
+            if (pila.Count > 0)
+                return pila.Pop();
+
+
+            //si no hay nada retona null expression 
+            return null;
+        }
 }
 
 

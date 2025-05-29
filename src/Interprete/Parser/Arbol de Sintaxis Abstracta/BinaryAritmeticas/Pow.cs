@@ -2,12 +2,12 @@ using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
 
-namespace PowNode
+namespace Pow
 {
 
-    public class PowParse : BinaryExpression
+    public class PowNode : BinaryExpression
     {
-        public PowParse(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
+        public PowNode(Expression LeftExpression, Token Operator, Expression RightExpression) : base(LeftExpression, Operator, RightExpression)
         {
 
         }
