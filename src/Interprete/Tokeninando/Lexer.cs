@@ -131,138 +131,187 @@ namespace lexer
                     current= lineas[i][pos];
 
 
-                    if(char.IsWhiteSpace(current))  //ignora si es una pos en blanco 
+                    if (char.IsWhiteSpace(current))  //ignora si es una pos en blanco 
                     {
-                        pos+=1;
+                        pos += 1;
                     }
 
 
-        #region PARENTESIS
+                    #region PARENTESIS
                     //Parentesis 
                     else if (current == '(')
                     {
-                        leftParant+=1;
-                        tokens.Add(new Token(TypeToken.OpenParenthesis,current.ToString() , line , CalcularColumna(line)));
+                        leftParant += 1;
+                        tokens.Add(new Token(TypeToken.OpenParenthesis, current.ToString(), line, CalcularColumna(line)));
                         NextChar();
                     }
-                    else if(current == ')')
+                    else if (current == ')')
                     {
-                        rightParant+=1;
-                        tokens.Add(new Token(TypeToken.CloseParenthesis,current.ToString() , line , CalcularColumna(line)));
+                        rightParant += 1;
+                        tokens.Add(new Token(TypeToken.CloseParenthesis, current.ToString(), line, CalcularColumna(line)));
                         NextChar();
                     }
 
-        #endregion
+                    #endregion
 
 
 
 
 
-        #region S T R I N G
+                    #region S T R I N G
                     //Cadena de Texto
-                    else if( current == '"')
+                    else if (current == '"')
                     {
                         //si es una cadena recorrela hasta q encuentr el final , o sino esta cerrada , hasta q se acaben los caracteres
                         var value = "";
                         NextChar(); // para no anadir a ' " '
-                        while ( current!= '?'  && GetNext()!= '"' )
+                        while (current != '?' && GetNext() != '"')
                         {
                             value += current;
                             NextChar();
                         }
                         NextChar(); //pos si llego al final del "
 
-                        if(current == '"')
+                        if (current == '"')
                         {
-                            tokens.Add(new Token (TypeToken.String, value , line , CalcularColumna(line)));
+                            tokens.Add(new Token(TypeToken.String, value, line, CalcularColumna(line)));
                             NextChar();
                         }
                         else
                         {
                             //significa q no se cerro la cadena 
-                            var token = new Token(TypeToken.InvalidToken , value, line, CalcularColumna(line));
+                            var token = new Token(TypeToken.InvalidToken, value, line, CalcularColumna(line));
 
                             tokens.Add(token);
 
                             errores.Add(new DontCloseStringError(token));
                         }
-                        
-                    }
-        #endregion
 
-        #region Oper Aritmeticos
-        //potencia o multiplicacion 
-                    else if(current == '*')
+                    }
+                    #endregion
+
+                    #region Oper Aritmeticos
+                    //potencia o multiplicacion 
+                    else if (current == '*')
                     {
                         NextChar();
 
-                        if(current== '*' &&   (char.IsWhiteSpace(GetNext() )|| GetNext()=='?' || char.IsDigit(GetNext()))  ) //es potencia 
+                        if (current == '*' && (char.IsWhiteSpace(GetNext()) || GetNext() == '?' || char.IsDigit(GetNext()))) //es potencia 
                         {
-                            tokens.Add( new Token (TypeToken.Operador ,"**" , line , CalcularColumna(line)));
+                            tokens.Add(new Token(TypeToken.Operador, "**", line, CalcularColumna(line)));
                             NextChar();
                         }
-                        else if(char.IsWhiteSpace(current)  || char.IsDigit(current) )
+                        else if (char.IsWhiteSpace(current) || char.IsDigit(current))
                         {
-                            tokens.Add(new Token(TypeToken.Operador , "*" , line, CalcularColumna(line)));
+                            tokens.Add(new Token(TypeToken.Operador, "*", line, CalcularColumna(line)));
                         }
                     }
 
                     //Operadores Aritmeticos
-                    else if((current == '+' || current == '-' || current == '/' || current == '%' ) && (char.IsWhiteSpace(GetNext() )|| GetNext()=='?' || char.IsDigit(GetNext())) )
+                    else if ((current == '+' || current == '-' || current == '/' || current == '%') && (char.IsWhiteSpace(GetNext()) || GetNext() == '?' || char.IsDigit(GetNext())))
                     {
-                        tokens.Add( new Token(TypeToken.Operador, current.ToString(), line, CalcularColumna(line)));
+                        tokens.Add(new Token(TypeToken.Operador, current.ToString(), line, CalcularColumna(line)));
                         NextChar();
                     }
 
                     //Operadores Booleanos
-                    else if (  ( (current == '|' && GetNext()== '|')  || (current == '&' && GetNext()== '&' ) ) && (char.IsWhiteSpace(GetNext(pos+1)) || GetNext(pos+1)== '?') ) 
+                    else if (((current == '|' && GetNext() == '|') || (current == '&' && GetNext() == '&')) && (char.IsWhiteSpace(GetNext(pos + 1)) || GetNext(pos + 1) == '?'))
                     {
-                        string  value = "";
-                        while(!char.IsWhiteSpace(current)  && current != '?')
+                        string value = "";
+                        while (!char.IsWhiteSpace(current) && current != '?')
                         {
-                            value += current ;
+                            value += current;
                             NextChar();
                         }
-                        if(value == "||")
-                        tokens.Add(new Token(TypeToken.Or , value , line, CalcularColumna(line)));
+                        if (value == "||")
+                            tokens.Add(new Token(TypeToken.Operador, value, line, CalcularColumna(line)));
                         else
-                        tokens.Add(new Token(TypeToken.And,value,line,CalcularColumna(line)));
+                            tokens.Add(new Token(TypeToken.Operador, value, line, CalcularColumna(line)));
 
                     }
+                    //equals 
+                    else if (current == '=' && GetNext() == '=')
+                    {
+                        string value = "==";
+                        NextChar();
+                        NextChar();
+
+                        tokens.Add(new Token(TypeToken.Operador, value, line, CalcularColumna(line)));
+                    }
+
+                    //not equals 
+                    else if (current == '!' && GetNext() == '=')
+                    {
+                        string value = "!=";
+                        NextChar();
+                        NextChar();
+
+                        tokens.Add(new Token(TypeToken.Operador, value, line, CalcularColumna(line)));
+                    }
+                    //Bigger Equals
+                    else if (current == '>' && GetNext() == '=')
+                    {
+                        string value = ">=";
+                        NextChar();
+                        NextChar();
+
+                        tokens.Add(new Token(TypeToken.Operador, value, line, CalcularColumna(line)));
+                    }
+
+                    //Less Equals
+                    else if (current == '<' && GetNext() == '=')
+                    {
+                        string value = "<=";
+                        NextChar();
+                        NextChar();
+
+                        tokens.Add(new Token(TypeToken.Operador, value, line, CalcularColumna(line)));
+                    }
+
+                    else if (current == '>')
+                    {
+                        tokens.Add(new Token(TypeToken.Operador, ">", line, CalcularColumna(line)));
+                        NextChar();
+                    }
+
+                    else if (current == '<')
+                    {
+                        tokens.Add(new Token(TypeToken.Operador, "<", line, CalcularColumna(line)));
+                        NextChar();
+                    }
+
+                    #endregion
 
 
-        #endregion
 
 
-
-
-        #region  N U M E R O S
+                    #region  N U M E R O S
                     //Numbers
-                    else if(char.IsDigit(current))
-                    {   
+                    else if (char.IsDigit(current))
+                    {
                         Debug.Print("Numero");
                         string value = "";
                         value += current;
                         NextChar();
-                        
+
                         //mientras halla siguiente elemento  y  el sig no sea espacio en blanco 
-                        while (  current != '?'  &&  !char.IsWhiteSpace(current)  &&  char.IsDigit(current) )
+                        while (current != '?' && !char.IsWhiteSpace(current) && char.IsDigit(current))
                         {
-                            value+= current;
+                            value += current;
                             NextChar();
                         }
 
                         //cuando termine ,verificar si se puede convertir a un numero entero 
-                        if(int.TryParse(value ,out int result))
-                        { 
+                        if (int.TryParse(value, out int result))
+                        {
                             Debug.Print("es numero");
                             //si es un numero crea un nuevo token 
-                            tokens.Add( new Token(TypeToken.Numero,value,line,CalcularColumna(line)));
+                            tokens.Add(new Token(TypeToken.Numero, value, line, CalcularColumna(line)));
                         }
                         else
                         {
                             Debug.Print("No es numero");
-                            var token = new Token( TypeToken.InvalidToken,value ,line, CalcularColumna(line));
+                            var token = new Token(TypeToken.InvalidToken, value, line, CalcularColumna(line));
                             tokens.Add(token);
                             //Agregar error 
                             errores.Add(new InvalidNumberError(token));
@@ -270,38 +319,38 @@ namespace lexer
 
                     }
 
-        #endregion
+                    #endregion
 
 
 
 
-        #region  IDENTIFICADOR
+                    #region  IDENTIFICADOR
 
 
                     //Identificadores 
-                    else if(char.IsLetter(current))
+                    else if (char.IsLetter(current))
                     {
-                        string value ="";
+                        string value = "";
                         value += current;
-                        bool invalidtoken = false ;
+                        bool invalidtoken = false;
                         NextChar();
 
                         //todo identificador es valido si NO comienza por numero ni  - , y la union de letras , numeros y - es valido
-                        while (current!= '?' &&  !char.IsWhiteSpace(current) && current!= '(' && current!= ')' )
+                        while (current != '?' && !char.IsWhiteSpace(current) && current != '(' && current != ')')
                         {
-                            
+
                             //si no es ninguno de los indenticadores dados es un error 
-                            if(!invalidtoken && !char.IsLetter(current) && !char.IsDigit(current) && current != '_' ) 
+                            if (!invalidtoken && !char.IsLetter(current) && !char.IsDigit(current) && current != '_')
                             {
                                 Debug.Print("invalido");
-                                invalidtoken = true ;
+                                invalidtoken = true;
                             }
 
-                            value+= current;
+                            value += current;
                             NextChar();
                         }
 
-                        
+
                         if (invalidtoken)
                         {
                             var token = new Token(TypeToken.InvalidToken, value, line, CalcularColumna(line));
@@ -325,34 +374,34 @@ namespace lexer
                             }
                             //quiero hacer una especie de advertencia en el caso de  q la palabra se asimile a las guardadass dentro de los keywords
                         }
-                        
+
                     }
-    
-
-
-        #endregion 
 
 
 
+                    #endregion
 
 
 
-        #region OTHERS INVALID
 
-                    else 
+
+
+                    #region OTHERS INVALID
+
+                    else
                     {
                         Debug.Print("else");
                         //cualquier otro carater agregarlo como invalido
 
                         var value = "";
 
-                        while(current!= '?' && !char.IsWhiteSpace(current))
+                        while (current != '?' && !char.IsWhiteSpace(current))
                         {
-                            value+= current;
+                            value += current;
                             NextChar();
                         }
 
-                        var token = new Token(TypeToken.InvalidToken, value, line , CalcularColumna(line));
+                        var token = new Token(TypeToken.InvalidToken, value, line, CalcularColumna(line));
 
                         tokens.Add(token);
 

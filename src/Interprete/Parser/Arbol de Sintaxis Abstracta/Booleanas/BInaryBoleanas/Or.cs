@@ -5,7 +5,7 @@ using INodeCreador;
 
 
 
-namespace OrNode
+namespace OrNodo
 {
     public class OrNode : BinaryExpression
     {

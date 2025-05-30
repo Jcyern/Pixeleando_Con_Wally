@@ -1,4 +1,5 @@
 using ArbolSintaxisAbstracta;
+using Convertidor_Pos_Inf;
 using Expresion;
 
 public class Parse
@@ -99,6 +100,7 @@ public class Parse
             ///por ende la logica es ir poniendo numeros , parentesis , operadores , hasta que halla un cambio de linea ( que es cuando se termina la expresion)
             if (tokens[current].type == TypeToken.Numero || tokens[current].type == TypeToken.OpenParenthesis && GetNextToken().type == TypeToken.Numero)
             {
+                System.Console.WriteLine("expresion numerica bool");
                 //vamos a pensar q solo hay numeros , en el caso de que haya operadores booleanos y la convertiremos en booleana 
 
                 var exp = new List<Token>() { tokens[current] };
@@ -108,18 +110,21 @@ public class Parse
                 {
                     exp.Add(NextToken());
                 }
-                
+
                 //luego de eso crear la expresion Aritmetica - Booleana 
 
 
+
+
+
+                //mi idea es definir asignacion , luego de asignnacionhasta q se acabe la lineas 
             }
         }
 
 
+        return nodos;
 
 
-
-        return null;
     }
 
 
@@ -127,6 +132,12 @@ public class Parse
     public AstNode Arit_Bool_Parse(List<Token> tokens)
     {
         //logica para devolver xpresionn aritemtic 
-        return null;
+        var post = Converter.PostfixExpression(tokens, Converter.precedence);
+
+        System.Console.WriteLine(string.Join(",", post));
+
+        var node = Converter.Aritmetic_Bool_Expression(post, Converter.nodos);
+
+        return node;
     }
 }

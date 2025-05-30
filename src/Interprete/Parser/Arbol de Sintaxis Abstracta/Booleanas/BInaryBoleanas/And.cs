@@ -3,7 +3,7 @@ using ExpressionesBinarias;
 using ExpressionesTipos;
 using INodeCreador;
 
-namespace AndNode
+namespace AndNodo
 {
     public class AndNode : BinaryExpression
     {

@@ -3,18 +3,17 @@ using ArbolSintaxisAbstracta;
 using ExpressionesTipos;
 using ExpressionesUnarias;
 using TerminalesNode;
-
 namespace Expresion
 {
 
 
-    public abstract class Expression : AstNode
+    public abstract class Expression : AstNode 
     {
         public object? value;
 
 
         public ExpressionTypes type;
-        public virtual object? Evaluate()
+        public virtual   object? Evaluate()
         {
             return null;
         }

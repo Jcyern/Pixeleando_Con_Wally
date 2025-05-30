@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using AndNode;
+using AndNodo;
 using Boolean;
 using Division;
 using Expresion;
@@ -13,7 +13,7 @@ using Menorque;
 using Multiplicacion;
 using NoIguales;
 using Numero;
-using OrNode;
+using OrNodo;
 using Pow;
 using Resta;
 using Resto;
@@ -135,7 +135,7 @@ public class Converter
                     {
                         //si es mayor su precedenci metelo 
                         System.Console.WriteLine("Meter ");
-                        System.Console.WriteLine($" {infix[i].value} > precedencia {operadores.Peek()}");
+                        System.Console.WriteLine($" {infix[i].value} > precedencia {operadores.Peek().value}");
                         operadores.Push(infix[i]);
                     }
                     //si tiene menor precedencia saca las cosas hasta q el quede de mayor precednecia 
@@ -170,7 +170,7 @@ public class Converter
     #endregion
 
         //verifica el postfix
-    public static Expression? AritmeticExpression(List<Token> postfix, Dictionary<string, INodeCreator> operadores)
+    public static Expression? Aritmetic_Bool_Expression(List<Token> postfix, Dictionary<string, INodeCreator> operadores)
         {
             Stack<Expression> pila = new();
             System.Console.WriteLine("postfix");

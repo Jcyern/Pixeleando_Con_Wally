@@ -10,6 +10,8 @@ using Pow;
 using Division;
 using Resto;
 using TerminalesNode;
+using Errores;
+using Operaciones;
 
 namespace ExpressionesBinarias
 {
@@ -60,7 +62,7 @@ namespace ExpressionesBinarias
                     LeftExpression.type = unary.GetTipo();
                     System.Console.WriteLine($"Left Expression {LeftExpression.type}");
                 }
-                
+
 
                 System.Console.WriteLine($"Es una operacion {Operator.value}");
 
@@ -71,21 +73,21 @@ namespace ExpressionesBinarias
                 {
                     System.Console.WriteLine("Right es binary Expression");
                     RightExpression.type = binaryExpression.GetTipo();
-                    System.Console.WriteLine($"RightExpression { RightExpression.type}");
+                    System.Console.WriteLine($"RightExpression {RightExpression.type}");
                 }
 
                 if (RightExpression is TerminalExpression terminal)
                 {
                     System.Console.WriteLine("Right es una  Terminal Expression");
                     RightExpression.type = terminal.GetTipo();
-                    System.Console.WriteLine($"RightExpression { RightExpression.type}");
+                    System.Console.WriteLine($"RightExpression {RightExpression.type}");
                 }
 
                 if (RightExpression is UnaryExpression ue)
                 {
                     System.Console.WriteLine("Right es unary");
                     RightExpression.type = ue.GetTipo();
-                    System.Console.WriteLine($"RightExpression { RightExpression.type}");
+                    System.Console.WriteLine($"RightExpression {RightExpression.type}");
                 }
 
 
@@ -137,17 +139,42 @@ namespace ExpressionesBinarias
 
                     else if (r == tipo)
                     {
+                        
                         return true;
                     }
 
+
                     //en este caso no seria el tipo demandado 
+                    compilingError.Add(new ExpectedType(RightExpression.Location, tipo.ToString(), r.ToString()));
                     return false;
+
                 }
-                //caso de q no sean iguales o invalidas
+
+                if (r == ExpressionTypes.Invalid)
+                {
+                    compilingError.Add(new InvalidType(RightExpression.Location));
+                }
+                if (l == ExpressionTypes.Invalid)
+                {
+                    compilingError.Add(new InvalidType(LeftExpression.Location));
+                }
+                if (r != ExpressionTypes.Invalid && l != ExpressionTypes.Invalid)
+                {
+                    compilingError.Add(new DifferentTypesError(Operator.Pos, l.ToString(), r.ToString()));
+                }
+                
                 //agregar errores 
 
                 return false;
 
+            }
+            if (LeftExpression == null)
+            {
+                compilingError.Add(new NullExpressionError(Operator.Pos, "Left"));
+            }
+            if (RightExpression == null)
+            {
+                compilingError.Add(new NullExpressionError(Operator.Pos, "Right"));
             }
             return false;
         }
@@ -161,29 +188,9 @@ namespace ExpressionesBinarias
         #region  Evaluate 
         public override object Evaluate()
         {
-            switch (Operator.value)
-            {
-                case "+":
-                    return (SumaNode)this.Evaluate();
+            var func = Operations.operaciones[Operator.value];
+            return func(this);
 
-                case "-":
-                    return (RestaNode)this.Evaluate();
-
-                case "*":
-                    return (MultiplicationNode)this.Evaluate();
-                case "**":
-                    return (PowNode)this.Evaluate();
-
-                case "/":
-                    return (DivisionNode)this.Evaluate();
-
-                case "%":
-                    return (RestoNode)this.Evaluate();
-
-
-            }
-
-            return "null";
         }
 
         

@@ -47,7 +47,16 @@ public enum TypeToken
 
     Or,     // ||
 
-    Comparacion,  // == , <= , >=  , < , >
+    Equals,  // == , <= , >=  , < , >
+    NotEquals,
+
+    Less,
+
+    Bigger,
+
+    LessEqual,
+
+    BiggerEqual,
 
 
 

@@ -6,6 +6,9 @@ using System.Diagnostics;
 using Numero;
 using Suma;
 using MayorQue;
+using System.Dynamic;
+using Expresion;
+using Convertidor_Pos_Inf;
 
 
 public class Program
@@ -15,10 +18,15 @@ public class Program
 
     static void Main(string[] args)
     {
+        var lexer = Tokenizar();
+        
+        var result = Converter.PostfixExpression(lexer.tokens, Converter.precedence);
 
-
-
-        PruebaBigger();
+        System.Console.WriteLine("resultado");
+        foreach (var item in result)
+        {
+            System.Console.WriteLine(item.value);
+        }
     }
 
 
@@ -28,17 +36,13 @@ public class Program
     public static void PruebaBigger()
     {
         //verificar el cheque semantico  del bigger 
-
-        var l = new Cadenas.String("2", (0, 0));
-        var r = new SumaNode(new Number(2, (0, 0)), new Token(TypeToken.Operador, "+", 0, 0), new Number(2, (0, 0)));
-        var bigger = new BiggerThan(l, new Token(TypeToken.Operador, ">", 0, 0), r);
-
-        var semantic = bigger.CheckSemantic();
-        System.Console.WriteLine(semantic);
+        
+        Expression r = new SumaNode(new Number(2, (0, 0)), new Token(TypeToken.Operador, "+", 0, 0), new Number(5, (0, 0)));
 
 
-
-
+        var result = r.Evaluate();
+        
+        System.Console.WriteLine(result);
     }
 
 
