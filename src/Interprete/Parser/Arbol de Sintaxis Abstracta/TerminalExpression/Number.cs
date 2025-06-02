@@ -10,8 +10,9 @@ namespace Numero
     #region  Number
     public class Number : TerminalExpression
     {
-        public Number(object value , (int, int) Location) : base(value , Location)
+        public Number(object value, (int, int) Location) : base(value, Location)
         {
+            this.value = value;
         }
 
         public override ExpressionTypes GetTipo()

@@ -21,7 +21,14 @@ namespace NoIguales
 
         public override object Evaluate()
         {
-            return LeftExpression!.Evaluate() != RightExpression!.Evaluate();
+            var left = LeftExpression!.Evaluate();
+            System.Console.WriteLine($"NotEquals Left {left}");
+            var right = RightExpression!.Evaluate();
+            System.Console.WriteLine($"NotEquals Right {right} ");
+
+            System.Console.WriteLine($"resultado Not equals {left != right}");
+
+            return left!.ToString() != right!.ToString();
         }
     }
 

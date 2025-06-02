@@ -10,13 +10,13 @@ public enum TypeToken
 
     CloseParenthesis, // )
 
-    Identificador,   
+    Identificador,
 
     Asignacion,     //  <-
 
     //Simbolos
     Coma,   // ,
-    
+
     Punto, // .
 
     String,   // "
@@ -97,7 +97,11 @@ public enum TypeToken
     Color_Purple,
     Color_Black,
     Color_White,
-    Color_Transparent
+    Color_Transparent,
+
+    
+
+    Fin
 
 
 

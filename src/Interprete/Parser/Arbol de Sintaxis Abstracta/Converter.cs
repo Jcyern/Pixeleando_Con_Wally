@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using Alcance;
 using AndNodo;
+using ArbolSintaxisAbstracta;
 using Boolean;
 using Division;
 using Expresion;
@@ -18,15 +20,17 @@ using Pow;
 using Resta;
 using Resto;
 using Suma;
+using TerminalesNode;
+using vars;
 
 
 namespace Convertidor_Pos_Inf
 {
-      //Converter de infix to posfix
-public class Converter 
-{
-    #region  Dic Precedencia
-    public  static Dictionary<string, int> precedence = new()
+    //Converter de infix to posfix
+    public class Converter
+    {
+        #region  Dic Precedencia
+        public static Dictionary<string, int> precedence = new()
         {
             ["("] = -1,//en este caso la menor precedencia para q a la hora de q venga cualquier operador pueda entrar a la pila  y siga el trancurso de la con version sin  afectar el orden de las demas precedencias , ejemplo q tenga (5+4)   y a la hora de comparar + con (  no salga el (  y entre el mas a la pila ----- ya q en el lenguaje postfix no afecta el parentesis 
             ["||"] = 0, //booleanos
@@ -51,23 +55,25 @@ public class Converter
 
         #region Dic Nodos 
 
-        public static Dictionary<string, INodeCreator> nodos = new()
+        public static Dictionary<string, INodeCreator> op_definidas = new()
         {
             ["||"] = new OrNodeCreator(),
             ["&&"] = new AndNodeCreator(),
             ["=="] = new EqualNodeCreator(),
             ["!="] = new NotEqualsNodeCreator(),
-            [">"]  = new BiggerThanNodeCreator(),
-            ["<"]  = new LessThanNodeCreator(),
+            [">"] = new BiggerThanNodeCreator(),
+            ["<"] = new LessThanNodeCreator(),
             [">="] = new BiggerEqualThanNodeCreator(),
             ["<="] = new LessEqualThanNodeCreator(),
-            ["+"]  = new SumaNodeCreator(),
-            ["-"]  = new RestaNodeCreator(),
-            ["*"]  = new MultiplicacionNodeCreator(),
-            ["/"]  = new DivisionNodeCreator(),
-            ["%"]  = new RestoNodeCreator(),
+            ["+"] = new SumaNodeCreator(),
+            ["-"] = new RestaNodeCreator(),
+            ["*"] = new MultiplicacionNodeCreator(),
+            ["/"] = new DivisionNodeCreator(),
+            ["%"] = new RestoNodeCreator(),
             ["**"] = new PowNodeCreator(),
         };
+
+        
 
         #endregion
 
@@ -93,6 +99,16 @@ public class Converter
                 else if (infix[i].type == TypeToken.Boolean)
                 {
                     System.Console.WriteLine($"Bool add {infix[i].value}");
+                    postfix.Add(infix[i]);
+                }
+                else if (infix[i].type == TypeToken.String)
+                {
+                    System.Console.WriteLine($"String add {infix[i].value}");
+                    postfix.Add(infix[i]);
+                }
+                else if (infix[i].type == TypeToken.Identificador)
+                {
+                    System.Console.WriteLine($"Identificador add {infix[i].value}");
                     postfix.Add(infix[i]);
                 }
                 //si es ( // meterlo en la pila
@@ -166,11 +182,16 @@ public class Converter
 
             return postfix;
         }
-        
-    #endregion
+
+        #endregion
 
         //verifica el postfix
-    public static Expression? Aritmetic_Bool_Expression(List<Token> postfix, Dictionary<string, INodeCreator> operadores)
+
+
+        //para hacerlo mas extensibles , es necesario definir las expresiones bases a las cuales ir creando algo asi como las terminales 
+
+        #region  Creando Expression
+        public static Expression? Aritmetic_Bool_Expression(List<Token> postfix, Dictionary<string, INodeCreator> operadores)
         {
             Stack<Expression> pila = new();
             System.Console.WriteLine("postfix");
@@ -180,14 +201,29 @@ public class Converter
 
             for (int i = 0; i < postfix.Count; i++)
             {
+                //numero 
                 if (postfix[i].type == TypeToken.Numero)
                 {
                     pila.Push(new Number(postfix[i].value, postfix[i].Pos));
                 }
+                //booleano 
                 else if (postfix[i].type == TypeToken.Boolean)
                 {
                     pila.Push(new Bool(postfix[i].value, postfix[i].Pos));
                 }
+                //string
+                else if (postfix[i].type == TypeToken.String)
+                {
+                    pila.Push(new Cadenas.String(postfix[i].value, postfix[i].Pos));
+                }
+                //variable
+                else if (postfix[i].type == TypeToken.Identificador)
+                {
+                    System.Console.WriteLine($"Identificador add {postfix[i].value}");
+                    pila.Push(new VariableNode(postfix[i]));
+                }
+                
+                //operadores 
                 else if (postfix[i].type == TypeToken.Operador) //es un operador
                 {
                     var Right = pila.Pop();
@@ -204,7 +240,7 @@ public class Converter
                         throw new Exception($"La operacion {postfix[i].value}no esta definida");
                     }
 
-                
+
                 }
             }
 
@@ -216,6 +252,22 @@ public class Converter
 
             //si no hay nada retona null expression 
             return null;
+        }
+        
+
+
+        #endregion
+
+
+        public static Expression? GetExpression(List<Token> tokens, Dictionary<string, int>? predencia = null, Dictionary<string, INodeCreator>? operadores = null)
+        {
+            var op = operadores == null ? op_definidas : operadores;
+            var p = predencia == null ? precedence : predencia;
+
+
+            var post = PostfixExpression(tokens, p);
+
+            return Aritmetic_Bool_Expression(post, op);
         }
 }
 

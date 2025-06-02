@@ -22,8 +22,16 @@ namespace AndNodo
 
         public override object Evaluate()
         {
-            return Convert.ToBoolean(LeftExpression!.Evaluate()) && Convert.ToBoolean(RightExpression!.Evaluate());
+            //Evaluando and 
+            var left = Convert.ToBoolean(LeftExpression!.Evaluate());
+            System.Console.WriteLine($"Left And {left}");
+            var right = Convert.ToBoolean(RightExpression!.Evaluate());
+            System.Console.WriteLine($"Right And {right}");
+
+
+            return left && right;
         }
+        
 
     }
 

@@ -12,13 +12,13 @@ namespace Expresion
         public object? value;
 
 
-        public ExpressionTypes type;
-        public virtual   object? Evaluate()
+        public ExpressionTypes type = ExpressionTypes.Null;
+        public override   object? Evaluate()
         {
             return null;
         }
 
-        public virtual ExpressionTypes GetTipo()
+        public override ExpressionTypes GetTipo()
         {
             if (this is TerminalExpression te)
             {
@@ -36,6 +36,7 @@ namespace Expresion
 
             else if (this is UnaryExpression unary)
             {
+                System.Console.WriteLine("Es Unary Expression");
                 return unary.GetTipo();
             }
 

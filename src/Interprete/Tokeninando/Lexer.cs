@@ -115,20 +115,20 @@ namespace lexer
 
 
 
-        public void Tokenizar ()
+        public void Tokenizar()
         {
             Debug.Print($"Lineas {lineas.Length}");
-            for(int i =0 ; i<lineas.Length ; i ++)
+            for (int i = 0; i < lineas.Length; i++)
             {
-                line =i+1;
-                pos =0;
+                line = i + 1;
+                pos = 0;
                 int leftParant = 0;
                 int rightParant = 0;
 
                 //iterar por todas las lineas
-                while ( pos<lineas[i].Length)
+                while (pos < lineas[i].Length)
                 {
-                    current= lineas[i][pos];
+                    current = lineas[i][pos];
 
 
                     if (char.IsWhiteSpace(current))  //ignora si es una pos en blanco 
@@ -165,13 +165,12 @@ namespace lexer
                         //si es una cadena recorrela hasta q encuentr el final , o sino esta cerrada , hasta q se acaben los caracteres
                         var value = "";
                         NextChar(); // para no anadir a ' " '
-                        while (current != '?' && GetNext() != '"')
+                        while (current != '?' && current != '"')
                         {
                             value += current;
                             NextChar();
                         }
-                        NextChar(); //pos si llego al final del "
-
+                        
                         if (current == '"')
                         {
                             tokens.Add(new Token(TypeToken.String, value, line, CalcularColumna(line)));
@@ -188,6 +187,20 @@ namespace lexer
                         }
 
                     }
+                    #endregion
+
+
+                    #region  Op Asignacion
+
+                    else if (current == '<' && GetNext() == '-')
+                    {
+                        var value = current.ToString();
+                        NextChar();
+                        value += current.ToString();
+                        NextChar();
+                        tokens.Add(new Token(TypeToken.Asignacion, value, line, CalcularColumna(line)));
+                    }
+
                     #endregion
 
                     #region Oper Aritmeticos
@@ -208,7 +221,7 @@ namespace lexer
                     }
 
                     //Operadores Aritmeticos
-                    else if ((current == '+' || current == '-' || current == '/' || current == '%') && (char.IsWhiteSpace(GetNext()) || GetNext() == '?' || char.IsDigit(GetNext())))
+                    else if (current == '+' || current == '-' || current == '/' || current == '%' )
                     {
                         tokens.Add(new Token(TypeToken.Operador, current.ToString(), line, CalcularColumna(line)));
                         NextChar();
@@ -332,49 +345,28 @@ namespace lexer
                     {
                         string value = "";
                         value += current;
-                        bool invalidtoken = false;
                         NextChar();
 
-                        //todo identificador es valido si NO comienza por numero ni  - , y la union de letras , numeros y - es valido
-                        while (current != '?' && !char.IsWhiteSpace(current) && current != '(' && current != ')')
+                        //todo identificador puede estar conformad por _ , o por letras o por numeros 
+                        while (char.IsNumber(current) ||current == '_' || char.IsLetter(current))
                         {
-
-                            //si no es ninguno de los indenticadores dados es un error 
-                            if (!invalidtoken && !char.IsLetter(current) && !char.IsDigit(current) && current != '_')
-                            {
-                                Debug.Print("invalido");
-                                invalidtoken = true;
-                            }
-
                             value += current;
                             NextChar();
                         }
-
-
-                        if (invalidtoken)
+                    
+                        
+                        //si es valida la palabra verificar si es una palbra clave o sino se le tratara como etiqueta'
+                        if (keywords.ContainsKey(value))
                         {
-                            var token = new Token(TypeToken.InvalidToken, value, line, CalcularColumna(line));
-
-                            tokens.Add(token);
-
-                            errores.Add(new InvalidWordError(token));
+                            //si  contiene el valor 
+                            tokens.Add(new Token(keywords[value], value, line, CalcularColumna(line)));
                         }
                         else
                         {
-                            //si es valida la palabra verificar si es una palbra clave o sino se le tratara como etiqueta'
-                            if (keywords.ContainsKey(value))
-                            {
-                                //si  contiene el valor 
-                                tokens.Add(new Token(keywords[value], value, line, CalcularColumna(line)));
-                            }
-                            else
-                            {
-                                //agregarlo como un identificador '
-                                tokens.Add(new Token(TypeToken.Identificador, value, line, CalcularColumna(line)));
-                            }
-                            //quiero hacer una especie de advertencia en el caso de  q la palabra se asimile a las guardadass dentro de los keywords
+                            //agregarlo como un identificador '
+                            tokens.Add(new Token(TypeToken.Identificador, value, line, CalcularColumna(line)));
                         }
-
+                            //quiero hacer una especie de advertencia en el caso de  q la palabra se asimile a las guardadass dentro de los keywords
                     }
 
 
@@ -409,14 +401,16 @@ namespace lexer
                     }
                 }
 
-                
+
                 //Si cuandon se termine la linea y la cant de parentesis izq y derechos no son iguales da error
 
-                if(leftParant != rightParant)
+                if (leftParant != rightParant)
                 {
                     errores.Add(new ParentesisError(line));
                 }
             }
+
+            tokens.Add(new Token(TypeToken.Fin, "fin", int.MaxValue, int.MaxValue));
         }
 
         #endregion

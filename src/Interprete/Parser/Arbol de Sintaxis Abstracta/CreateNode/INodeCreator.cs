@@ -4,6 +4,8 @@ namespace INodeCreador
     public interface INodeCreator
     {
         public Expression? CreateNode(Expression? Left, Token Operator, Expression? Right);
+
+    
     }
     
 

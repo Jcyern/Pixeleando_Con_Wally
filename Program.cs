@@ -9,6 +9,8 @@ using MayorQue;
 using System.Dynamic;
 using Expresion;
 using Convertidor_Pos_Inf;
+using System.Runtime.ConstrainedExecution;
+using Parseando;
 
 
 public class Program
@@ -19,33 +21,51 @@ public class Program
     static void Main(string[] args)
     {
         var lexer = Tokenizar();
-        
-        var result = Converter.PostfixExpression(lexer.tokens, Converter.precedence);
 
-        System.Console.WriteLine("resultado");
-        foreach (var item in result)
+        if (lexer.errores.Count > 0)
         {
-            System.Console.WriteLine(item.value);
+            foreach (var error in lexer.errores)
+            {
+                error.ShowError();
+            }
+
         }
+        else
+        {
+            //si no hay errores parsear 
+
+            var nodos = Parseo(lexer.tokens);
+
+
+            //si no hay nodos es q hay errores
+            if (nodos == null)
+                return;
+
+            var result = CheckSemantic(nodos);
+            System.Console.WriteLine("///////////////////////");
+            System.Console.WriteLine($"Result Chequeo {result}");
+            System.Console.WriteLine("////////////////////////");
+
+            if (!result)
+            {
+                System.Console.WriteLine("Parar Ejecucion por Errores Semanticos ");
+                return;
+            }
+
+
+            Evaluate(nodos);
+
+
+
+        }
+
+
+
+
+
     }
 
-
-
-
-
-    public static void PruebaBigger()
-    {
-        //verificar el cheque semantico  del bigger 
-        
-        Expression r = new SumaNode(new Number(2, (0, 0)), new Token(TypeToken.Operador, "+", 0, 0), new Number(5, (0, 0)));
-
-
-        var result = r.Evaluate();
-        
-        System.Console.WriteLine(result);
-    }
-
-
+    //Paso 1 Dividir en Tokens
     public static Lexer Tokenizar()
     {
         LectorText lector = new LectorText();
@@ -81,6 +101,76 @@ public class Program
         throw new Exception("No hay  lineas escritas en el lector de texto ");
 
 
+    }
+
+
+
+    //Crear estructuras sintaxticas
+    public static List<AstNode>? Parseo(List<Token> tokens)
+    {
+        System.Console.WriteLine("Parseando");
+
+        var parser = new Parser(tokens);
+        var nodos = parser.Parseo();
+
+
+        if (parser.errores_sintaxis.Count > 0)
+        {
+            System.Console.WriteLine("Hay errores sintacticos ");
+            foreach (var e in parser.errores_sintaxis)
+            {
+                e.ShowError();
+            }
+            return null;
+        }
+        else
+            return nodos;
+    }
+
+
+
+    //verificar la sintaxis de dichas estructuras 
+    public static bool CheckSemantic(List<AstNode> nodos)
+    {
+        System.Console.WriteLine("//////////////////////");
+        System.Console.WriteLine("//////////////////////");
+        System.Console.WriteLine("Chequear Semanticamente");
+        System.Console.WriteLine("//////////////////////");
+        System.Console.WriteLine("//////////////////////");
+
+        foreach (var node in nodos)
+        {
+            node.CheckSemantic();
+        }
+
+        if (AstNode.compilingError.Count > 0)
+        {
+            foreach (var item in AstNode.compilingError)
+            {
+                item.ShowError();
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+
+
+
+    //evaluar las estructuras creadas
+    public static void Evaluate(List<AstNode> nodos)
+    {
+        System.Console.WriteLine("///////////////////////////");
+        System.Console.WriteLine("///////////////////////////");
+        System.Console.WriteLine("////////Evaluando//////////");
+        System.Console.WriteLine("///////////////////////////");
+        System.Console.WriteLine("///////////////////////////");
+        foreach (var nodo in nodos)
+        {
+            System.Console.WriteLine("Evaluando Nodo");
+            nodo.Evaluate();
+        }
     }
 
 }

@@ -21,7 +21,12 @@ namespace Multiplicacion
 
         public override object Evaluate()
         {
-            return Convert.ToInt32(LeftExpression!.Evaluate()) * Convert.ToInt32(RightExpression!.Evaluate());
+            var left = Convert.ToInt32(LeftExpression!.Evaluate());
+            System.Console.WriteLine($"Mult Left {left}");
+            var right = Convert.ToInt32(RightExpression!.Evaluate());
+            System.Console.WriteLine($"Mult Right {right}");
+
+            return left * right;
 
         }
 

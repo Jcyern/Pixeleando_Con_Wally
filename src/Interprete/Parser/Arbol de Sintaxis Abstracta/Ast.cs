@@ -9,19 +9,32 @@ using Expresion;
 namespace ArbolSintaxisAbstracta
 {
 
-    public abstract class AstNode : IParse
+    public abstract class AstNode 
     {
-        public Scope scope = new();
         public (int fila, int columna) Location;
         public static List<Error> compilingError = new List<Error>();
-        public void Parse()
+
+        public virtual object? Evaluate()
         {
+            System.Console.WriteLine("Evaluate Ast");
+            return 0;
+        }
+        public virtual ExpressionTypes GetTipo()
+        {
+            System.Console.WriteLine("es el nodo ast ");
+            return ExpressionTypes.Null;
         }
 
+
         //tiene que saberse chequearse semanticamnente 
-        public virtual bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing )
+        public virtual bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
         {
-            //logica para ver los parametros de mi metodo 
+            if (this is Expression exp)
+            {
+                System.Console.WriteLine("es una expression chek semantic expression");
+                //return exp.CheckSemantic();
+            }
+
             return false;
         }
     }

@@ -1,3 +1,7 @@
+
+using System.Runtime.InteropServices;
+using ExpressionesTipos;
+
 namespace Errores
 {
     public abstract class Error
@@ -65,7 +69,7 @@ namespace Errores
 
     public class NullExpressionError : Error
     {
-        public NullExpressionError((int fila, int columna) pos, string exp ) : base(pos.fila, pos.columna)
+        public NullExpressionError((int fila, int columna) pos, string exp) : base(pos.fila, pos.columna)
         {
             message += $"Es  nula la expression {exp}";
         }
@@ -81,7 +85,7 @@ namespace Errores
 
     public class InvalidType : Error
     {
-        public InvalidType((int fila, int columna)pos) : base(pos.fila, pos.columna)
+        public InvalidType((int fila, int columna) pos) : base(pos.fila, pos.columna)
         {
             message += "The Type is Invalid";
         }
@@ -103,5 +107,51 @@ namespace Errores
             message += $"Son de diferentes tipos Left: {t1} Right {t2}";
         }
     }
+
+
+    #region Errores de Asignacion
+
+    public class AsignationTypeError : Error
+    {
+        public AsignationTypeError((int fila, int columna) pos, string name, ExpressionTypes guardado, ExpressionTypes pasado) : base(pos.fila, pos.columna)
+        {
+            message += $"The variable: {name} is assigned with the type: {guardado}   and you pass a type {pasado}";
+        }
+    }
+
+    public class AsignationInavalidTypeError : Error
+    {
+        public AsignationInavalidTypeError((int fila, int columna) pos, string name) : base(pos.fila, pos.columna)
+        {
+            message += $"You cant create the variable {name} because  you assigned a InvalidExpression ";
+        }
+    }
+
+
+    public class NullAsignationError : Error
+    {
+        public NullAsignationError((int fila, int columna) pos, string name) : base(pos.fila, pos.columna)
+        {
+            message += $"We can't assigned a the variable {name} with a null value ";
+        }
+    }
+
+
+
+    #endregion
+
+
+    #region NotSintaxis
+
+    public class SintaxisError : Error
+    {
+        public SintaxisError((int fila, int columna) pos , string value ) : base(pos.fila, pos.columna)
+        {
+            message += $"This token {value}  not correspond a sintaxis structure";
+        }
+        
+    }
+
+    #endregion
 
 }

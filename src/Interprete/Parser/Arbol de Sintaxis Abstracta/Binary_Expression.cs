@@ -69,6 +69,13 @@ namespace ExpressionesBinarias
                 //Dar el tipo de la derecha
 
 
+                if (RightExpression is TerminalExpression terminal)
+                {
+                    System.Console.WriteLine("Right es una  Terminal Expression");
+                    RightExpression.type = terminal.GetTipo();
+                    System.Console.WriteLine($"RightExpression {RightExpression.type}");
+                }
+
                 if (RightExpression is BinaryExpression binaryExpression)
                 {
                     System.Console.WriteLine("Right es binary Expression");
@@ -76,12 +83,6 @@ namespace ExpressionesBinarias
                     System.Console.WriteLine($"RightExpression {RightExpression.type}");
                 }
 
-                if (RightExpression is TerminalExpression terminal)
-                {
-                    System.Console.WriteLine("Right es una  Terminal Expression");
-                    RightExpression.type = terminal.GetTipo();
-                    System.Console.WriteLine($"RightExpression {RightExpression.type}");
-                }
 
                 if (RightExpression is UnaryExpression ue)
                 {
