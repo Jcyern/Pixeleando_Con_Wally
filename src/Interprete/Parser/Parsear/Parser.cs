@@ -4,6 +4,7 @@ using ArbolSintaxisAbstracta;
 using Convertidor_Pos_Inf;
 using Errores;
 using Expresion;
+using ExpressionesTipos;
 using IParseo;
 using NodosParser;
 
@@ -80,6 +81,26 @@ namespace Parseando
             if (structure != null)
             {
                 this.structure = structure;
+            }
+        }
+
+        public bool ExpectedTokenType(TypeToken tipo)
+        {
+            //verifica si la sig pos tiene ese token o sino crea  un error
+            if (GetNextToken().type == tipo)
+            {
+                //si es asi
+                //pasar a sig token 
+                NextToken();
+                return true;
+            }
+            else
+            {
+                //avanazar y guardar error 
+                errores_sintaxis.Add(new ExpectedType(Current.Pos, tipo.ToString(), Current.type.ToString()));
+                //luego avanzar 
+                NextToken();
+                return false;
             }
         }
 

@@ -145,13 +145,17 @@ namespace Errores
 
     public class SintaxisError : Error
     {
-        public SintaxisError((int fila, int columna) pos , string value ) : base(pos.fila, pos.columna)
+        public SintaxisError((int fila, int columna) pos, string value) : base(pos.fila, pos.columna)
         {
             message += $"This token {value}  not correspond a sintaxis structure";
         }
-        
+
     }
 
     #endregion
+
+
+
+
 
 }

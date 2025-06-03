@@ -1,0 +1,139 @@
+
+using Aparecer;
+using ArbolSintaxisAbstracta;
+using Convertidor_Pos_Inf;
+using Errores;
+using Expresion;
+using ExpressionesTipos;
+using IParseo;
+using Parseando;
+
+namespace Aparecer
+{
+    public class SpawnNode : AstNode
+    {
+        //pos de aparicion del wally 
+        Expression? fila;
+        Expression? columna;
+
+        Token spawn;
+
+        public SpawnNode(Token spawn, Expression? fila, Expression? columna)
+        {
+            this.fila = fila;
+            this.columna = columna;
+            this.spawn = spawn;
+        }
+
+
+        public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
+        {
+            if (fila != null && columna != null)
+            {
+                var tipo_fila = fila.GetTipo();
+                var tipo_columna = columna.GetTipo();
+                System.Console.WriteLine("Chequeo de Spawn");
+                if (tipo_fila == tipo_columna && tipo_fila == ExpressionTypes.Number)
+                {
+                    System.Console.WriteLine("ambas expresiones son numericas");
+                    return true;
+                }
+                if (tipo_fila != ExpressionTypes.Number)
+                {
+                    System.Console.WriteLine("La expression fila no devuelve un numero ");
+                    //agregar a los errores
+                    compilingError.Add(new ExpectedType(fila.Location, ExpressionTypes.Number.ToString(), tipo_fila.ToString()));
+                }
+
+                if (tipo_columna != ExpressionTypes.Number)
+                {
+                    System.Console.WriteLine("La expression columna no devuelve un numero ");
+                    //agregar error 
+                    compilingError.Add(new ExpectedType(columna.Location, ExpressionTypes.Number.ToString(), tipo_columna.ToString()));
+                }
+                return false;
+            }
+
+            if (fila == null)
+            {
+                //agregar error de q Spawn el lado izq es null
+                compilingError.Add(new ExpectedType(spawn.Pos, ExpressionTypes.Number.ToString(), ExpressionTypes.Null.ToString()));
+            }
+            if (columna == null)
+            {
+                //dar error que el lado derecho de Spawn es null 
+                compilingError.Add(new ExpectedType(spawn.Pos, ExpressionTypes.Number.ToString(), ExpressionTypes.Null.ToString()));
+            }
+
+            return false;
+        }
+
+
+        public override object? Evaluate()
+        {
+            var f = fila!.Evaluate();
+            var c = columna!.Evaluate();
+            System.Console.WriteLine($"se coloco al wally en la pos fila: {f}  columna: {c}");
+            //metodo para pos al wally en la parte visual 
+
+            return 0;
+        }
+    }
+}
+
+
+
+//definienfo el Parser de Spawn
+
+public class SpawnParser : IParse
+{
+    public AstNode Parse(Parser parser)
+    {
+        //se supone q la palabra actual es Spawn es un Key Word
+        var spawn = parser.Current;
+        //esperar un parentesis 
+        parser.ExpectedTokenType(TypeToken.OpenParenthesis);
+        //recorrer hasta q encuentra un parentesis o una coma 
+        var fila_exp = new List<Token>();
+
+        Expression? exp_izq = null;
+        Expression? exp_der = null;
+
+        while (parser.GetNextToken().type != TypeToken.CloseParenthesis || parser.GetNextToken().type != TypeToken.Coma)
+        {
+            //ir metiendo los tokens 
+            fila_exp.Add(parser.Current);
+        }
+        exp_izq = Converter.GetExpression(fila_exp);
+
+        //luego de la expresion debe venir una coma 
+        if (parser.ExpectedTokenType(TypeToken.Coma))
+        {
+            var columna_exp = new List<Token>();
+            //construye la expresion derecha
+            //retornarmel nodo creado de spawn 
+            while (parser.GetNextToken().type != TypeToken.CloseParenthesis)
+            {
+                columna_exp.Add(parser.Current);
+                parser.NextToken();
+
+            }
+
+            exp_der = Converter.GetExpression(columna_exp);
+            parser.NextToken();  //seria el parentesis
+            parser.NextToken(); //para seguir evaluando lo demas tokens 
+            return new SpawnNode(spawn, exp_izq, exp_der);
+        }
+        else
+        {
+            //es un error ya q termino en parenteiss en teoria solo hayb una sola expresion
+            //agregar erorr de spwan 
+            //returnra null y las exp faltants las dara como error
+            parser.NextToken();
+            parser.NextToken(); //para seguir evaluando las expresiones 
+            return new SpawnNode(spawn, exp_izq, exp_der);
+        }
+
+        
+    }
+}
