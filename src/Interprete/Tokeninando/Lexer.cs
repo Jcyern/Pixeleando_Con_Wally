@@ -30,7 +30,21 @@ namespace lexer
             ["IsCanvasColor"] = TypeToken.IsCanvasColor,
             ["GoTo"] = TypeToken.GoTo,
             ["true"] = TypeToken.Boolean,
-            ["false"] = TypeToken.Boolean
+            ["false"] = TypeToken.Boolean,
+
+        
+        };
+        Dictionary<string, TypeToken> colores = new Dictionary<string, TypeToken>()
+        {
+            ["Red"] = TypeToken.color,
+            ["Blue"] = TypeToken.color,
+            ["Green"] = TypeToken.color,
+            ["Yellow"] = TypeToken.color,
+            ["Orange"] = TypeToken.color,
+            ["Purple"] = TypeToken.color,
+            ["Black"] = TypeToken.color,
+            ["White"] = TypeToken.color,
+            ["Transparent"] = TypeToken.color,
         };
 
         int pos;
@@ -173,8 +187,15 @@ namespace lexer
 
                         if (current == '"')
                         {
-                            tokens.Add(new Token(TypeToken.String, value, line, CalcularColumna(line)));
-                            NextChar();
+                            if (colores.ContainsKey(value))
+                            {
+                                tokens.Add(new Token(TypeToken.color, value, line, CalcularColumna(line)));
+                            }
+                            else
+                            {
+                                tokens.Add(new Token(TypeToken.String, value, line, CalcularColumna(line)));
+                            }
+                                NextChar();
                         }
                         else
                         {

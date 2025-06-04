@@ -3,6 +3,8 @@ using ExpressionesUnarias;
 using ExpressionesTipos;
 using TerminalesNode;
 
+using Paleta_Colores;
+
 namespace Cadenas
 {
 
@@ -22,7 +24,10 @@ namespace Cadenas
                 return ExpressionTypes.NullString;
 
             else
+            {
+
                 return ExpressionTypes.String;
+            }
 
         }
 

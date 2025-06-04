@@ -4,6 +4,7 @@ using ExpressionesTipos;
 using Numero;
 using Cadenas;
 using vars;
+using Paleta_Colores;
 
 
 namespace TerminalesNode
@@ -38,7 +39,13 @@ namespace TerminalesNode
 
             else if (this is VariableNode vars)
             {
+                System.Console.WriteLine("Type Variable");
                 return vars.GetTipo();
+            }
+            else if (this is Color color)
+            {
+                System.Console.WriteLine("Type Color");
+                return color.GetTipo();
             }
 
 

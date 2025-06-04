@@ -62,18 +62,26 @@ namespace Alcance
                 System.Console.WriteLine($"Try asociar tipo a la variable => {name}");
                 //agrega la variable 
                 //antes de agregarlo verifica si no es invalida la expresion
-                if (value.type != ExpressionTypes.Invalid)
+                if (value.type != ExpressionTypes.Invalid && value.type != ExpressionTypes.Null)
                 {
                     System.Console.WriteLine($"la variable {name} se asigno el tipo {value.type} ");
                     variable_tipo[name] = value.type;
                     return true;
                 }
-                else
+                else if (value.type == ExpressionTypes.Invalid)
                 {
                     System.Console.WriteLine("No se creo pq se le asigna invalid expression");
                     AstNode.compilingError.Add(new AsignationInavalidTypeError(value.Location, name));
                     return false;
                 }
+                else if (value.type == ExpressionTypes.Null)
+                {
+                    System.Console.WriteLine("No se creo pq se le asigna una null expression");
+                    AstNode.compilingError.Add(new NullAsignationError(value.Location, name));
+                    return false;
+                }
+
+                return false;
             }
         }
         

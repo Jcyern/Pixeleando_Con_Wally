@@ -1,6 +1,7 @@
 using System.Data.Common;
 using System.Runtime.CompilerServices;
 using ArbolSintaxisAbstracta;
+using ColorFunc;
 using Convertidor_Pos_Inf;
 using Errores;
 using Expresion;
@@ -117,6 +118,7 @@ namespace Parseando
             System.Console.WriteLine("Registrando parseos");
             structure[TypeToken.Identificador] = new List<IParse>() { new AsignacionParse() };
             structure[TypeToken.Spawn] = new List<IParse>() { new SpawnParser() };
+            structure[TypeToken.Color] = new List<IParse>() {new ColorParse() };
         }
 
 

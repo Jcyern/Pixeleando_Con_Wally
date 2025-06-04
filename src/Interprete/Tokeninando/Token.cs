@@ -87,19 +87,7 @@ public enum TypeToken
     //InvalidToken
     InvalidToken,
 
-
-    //Colores   //colores disponible para el metodo Color 
-    Color_Red,
-    Color_Blue,
-    Color_Green,
-    Color_Yellow,
-    Color_Orange,
-    Color_Purple,
-    Color_Black,
-    Color_White,
-    Color_Transparent,
-
-    
+    color,
 
     Fin
 
@@ -107,6 +95,7 @@ public enum TypeToken
 
 
 }
+
 
 
 

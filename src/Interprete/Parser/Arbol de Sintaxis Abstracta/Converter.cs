@@ -16,6 +16,7 @@ using Multiplicacion;
 using NoIguales;
 using Numero;
 using OrNodo;
+using Paleta_Colores;
 using Pow;
 using Resta;
 using Resto;
@@ -104,6 +105,12 @@ namespace Convertidor_Pos_Inf
                 else if (infix[i].type == TypeToken.String)
                 {
                     System.Console.WriteLine($"String add {infix[i].value}");
+                    postfix.Add(infix[i]);
+                }
+                //tipo color 
+                else if (infix[i].type == TypeToken.color)
+                {
+                    System.Console.WriteLine($"Color add {infix[i].value}");
                     postfix.Add(infix[i]);
                 }
                 else if (infix[i].type == TypeToken.Identificador)
@@ -216,18 +223,24 @@ namespace Convertidor_Pos_Inf
                 {
                     pila.Push(new Cadenas.String(postfix[i].value, postfix[i].Pos));
                 }
+                //color 
+                else if (postfix[i].type == TypeToken.color)
+                {
+                    System.Console.WriteLine("creando color ");
+                    pila.Push(new Color(postfix[i].value, postfix[i].Pos));
+                }
                 //variable
                 else if (postfix[i].type == TypeToken.Identificador)
                 {
                     System.Console.WriteLine($"Identificador add {postfix[i].value}");
                     pila.Push(new VariableNode(postfix[i]));
                 }
-                
+
                 //operadores 
                 else if (postfix[i].type == TypeToken.Operador) //es un operador
                 {
-                    var Right = pila.Count>0? pila.Pop():null;
-                    var Left = pila.Count>0 ?pila.Pop():null;
+                    var Right = pila.Count > 0 ? pila.Pop() : null;
+                    var Left = pila.Count > 0 ? pila.Pop() : null;
 
                     if (operadores.ContainsKey(postfix[i].value))
                     {
@@ -247,8 +260,9 @@ namespace Convertidor_Pos_Inf
 
             //cuando se termine todo tiene q quedar una expresion  o no 
             if (pila.Count > 0)
+            {System.Console.WriteLine("se retorno una exp");
                 return pila.Pop();
-
+            }
 
             //si no hay nada retona null expression 
             return null;

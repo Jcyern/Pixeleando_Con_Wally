@@ -1,1 +1,6 @@
-Spawn()
+identificador <- "Green"
+Color(identificador)
+color <- "Blue"
+Color ()
+Yellow <- "Yellow"
+var <- Yellow
