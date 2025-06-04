@@ -18,6 +18,11 @@ namespace Pincel_
         public static void ChangeSize(int size)
         {
             Size = size;
+            if (size % 2 == 0)
+            {
+                Size = size - 1;
+            }
+            System.Console.WriteLine($"Se cambio el tamano del pincel a {Size}");
         }
 
 

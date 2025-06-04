@@ -1,6 +1,5 @@
-identificador <- "Green"
-Color(identificador)
+Size()
 color <- "Blue"
-Color ()
+Color (color)
 Yellow <- "Yellow"
 var <- Yellow
