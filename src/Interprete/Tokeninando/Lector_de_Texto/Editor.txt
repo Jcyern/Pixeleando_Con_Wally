@@ -1,2 +1,1 @@
-contador <- 5
-acumulado<- contador * 2
+Spawn()

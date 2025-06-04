@@ -226,8 +226,8 @@ namespace Convertidor_Pos_Inf
                 //operadores 
                 else if (postfix[i].type == TypeToken.Operador) //es un operador
                 {
-                    var Right = pila.Pop();
-                    var Left = pila.Pop();
+                    var Right = pila.Count>0? pila.Pop():null;
+                    var Left = pila.Count>0 ?pila.Pop():null;
 
                     if (operadores.ContainsKey(postfix[i].value))
                     {

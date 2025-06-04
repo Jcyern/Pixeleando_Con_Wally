@@ -170,7 +170,7 @@ namespace lexer
                             value += current;
                             NextChar();
                         }
-                        
+
                         if (current == '"')
                         {
                             tokens.Add(new Token(TypeToken.String, value, line, CalcularColumna(line)));
@@ -189,6 +189,12 @@ namespace lexer
                     }
                     #endregion
 
+                    else if (current ==',')
+                    {
+                        //crear coma 
+                        tokens.Add(new Token(TypeToken.Coma, ",", line, CalcularColumna(line)));
+                        NextChar();
+                    }
 
                     #region  Op Asignacion
 
@@ -221,7 +227,7 @@ namespace lexer
                     }
 
                     //Operadores Aritmeticos
-                    else if (current == '+' || current == '-' || current == '/' || current == '%' )
+                    else if (current == '+' || current == '-' || current == '/' || current == '%')
                     {
                         tokens.Add(new Token(TypeToken.Operador, current.ToString(), line, CalcularColumna(line)));
                         NextChar();
@@ -348,13 +354,13 @@ namespace lexer
                         NextChar();
 
                         //todo identificador puede estar conformad por _ , o por letras o por numeros 
-                        while (char.IsNumber(current) ||current == '_' || char.IsLetter(current))
+                        while (char.IsNumber(current) || current == '_' || char.IsLetter(current))
                         {
                             value += current;
                             NextChar();
                         }
-                    
-                        
+
+
                         //si es valida la palabra verificar si es una palbra clave o sino se le tratara como etiqueta'
                         if (keywords.ContainsKey(value))
                         {
@@ -366,7 +372,7 @@ namespace lexer
                             //agregarlo como un identificador '
                             tokens.Add(new Token(TypeToken.Identificador, value, line, CalcularColumna(line)));
                         }
-                            //quiero hacer una especie de advertencia en el caso de  q la palabra se asimile a las guardadass dentro de los keywords
+                        //quiero hacer una especie de advertencia en el caso de  q la palabra se asimile a las guardadass dentro de los keywords
                     }
 
 

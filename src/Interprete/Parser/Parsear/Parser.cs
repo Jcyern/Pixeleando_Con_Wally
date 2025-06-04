@@ -115,7 +115,8 @@ namespace Parseando
         public void RegisterParser()
         {
             System.Console.WriteLine("Registrando parseos");
-            structure[TypeToken.Identificador]= new List<IParse>() {new  AsignacionParse()};
+            structure[TypeToken.Identificador] = new List<IParse>() { new AsignacionParse() };
+            structure[TypeToken.Spawn] = new List<IParse>() { new SpawnParser() };
         }
 
 

@@ -1,4 +1,5 @@
 
+using System.Diagnostics;
 using Aparecer;
 using ArbolSintaxisAbstracta;
 using Convertidor_Pos_Inf;
@@ -89,31 +90,37 @@ public class SpawnParser : IParse
 {
     public AstNode Parse(Parser parser)
     {
+        Debug.Print("Parseando Spawn");
         //se supone q la palabra actual es Spawn es un Key Word
         var spawn = parser.Current;
         //esperar un parentesis 
         parser.ExpectedTokenType(TypeToken.OpenParenthesis);
+        parser.NextToken();
         //recorrer hasta q encuentra un parentesis o una coma 
         var fila_exp = new List<Token>();
 
         Expression? exp_izq = null;
         Expression? exp_der = null;
 
-        while (parser.GetNextToken().type != TypeToken.CloseParenthesis || parser.GetNextToken().type != TypeToken.Coma)
+        while (parser.Current.type != TypeToken.CloseParenthesis && parser.Current.type != TypeToken.Coma)
         {
+            System.Console.WriteLine($"Agregando izq a {parser.Current.value}");
             //ir metiendo los tokens 
             fila_exp.Add(parser.Current);
+            parser.NextToken();
         }
         exp_izq = Converter.GetExpression(fila_exp);
 
         //luego de la expresion debe venir una coma 
-        if (parser.ExpectedTokenType(TypeToken.Coma))
+        if (parser.Current.type == TypeToken.Coma)
         {
             var columna_exp = new List<Token>();
+            parser.NextToken();
             //construye la expresion derecha
             //retornarmel nodo creado de spawn 
-            while (parser.GetNextToken().type != TypeToken.CloseParenthesis)
+            while (parser.Current.type != TypeToken.CloseParenthesis)
             {
+                System.Console.WriteLine($"Agregando a der a {parser.Current.value}");
                 columna_exp.Add(parser.Current);
                 parser.NextToken();
 
@@ -122,6 +129,7 @@ public class SpawnParser : IParse
             exp_der = Converter.GetExpression(columna_exp);
             parser.NextToken();  //seria el parentesis
             parser.NextToken(); //para seguir evaluando lo demas tokens 
+            System.Console.WriteLine("Retornar nodo de Spawn");
             return new SpawnNode(spawn, exp_izq, exp_der);
         }
         else
@@ -130,7 +138,8 @@ public class SpawnParser : IParse
             //agregar erorr de spwan 
             //returnra null y las exp faltants las dara como error
             parser.NextToken();
-            parser.NextToken(); //para seguir evaluando las expresiones 
+            parser.NextToken(); //para seguir evaluando las expresiones
+            System.Console.WriteLine("Retorna nodo de Spawn"); 
             return new SpawnNode(spawn, exp_izq, exp_der);
         }
 
