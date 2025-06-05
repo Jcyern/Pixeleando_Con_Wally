@@ -8,6 +8,7 @@ using Expresion;
 using ExpressionesTipos;
 using IParseo;
 using Parseando;
+using Utiles;
 
 namespace Aparecer
 {
@@ -72,8 +73,10 @@ namespace Aparecer
 
         public override object? Evaluate()
         {
-            var f = fila!.Evaluate();
-            var c = columna!.Evaluate();
+            var f = Convert.ToInt32(fila!.Evaluate());
+            var c = Convert.ToInt32(columna!.Evaluate());
+            Wally.Pos.Fila = f; Wally.Pos.Columna = c;
+            
             System.Console.WriteLine($"se coloco al wally en la pos fila: {f}  columna: {c}");
             //metodo para pos al wally en la parte visual 
 
@@ -127,7 +130,6 @@ public class SpawnParser : IParse
             }
 
             exp_der = Converter.GetExpression(columna_exp);
-            parser.NextToken();  //seria el parentesis
             parser.NextToken(); //para seguir evaluando lo demas tokens 
             System.Console.WriteLine("Retornar nodo de Spawn");
             return new SpawnNode(spawn, exp_izq, exp_der);
@@ -137,7 +139,6 @@ public class SpawnParser : IParse
             //es un error ya q termino en parenteiss en teoria solo hayb una sola expresion
             //agregar erorr de spwan 
             //returnra null y las exp faltants las dara como error
-            parser.NextToken();
             parser.NextToken(); //para seguir evaluando las expresiones
             System.Console.WriteLine("Retorna nodo de Spawn"); 
             return new SpawnNode(spawn, exp_izq, exp_der);

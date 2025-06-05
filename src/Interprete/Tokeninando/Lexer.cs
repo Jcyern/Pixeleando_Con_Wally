@@ -195,7 +195,7 @@ namespace lexer
                             {
                                 tokens.Add(new Token(TypeToken.String, value, line, CalcularColumna(line)));
                             }
-                                NextChar();
+                            NextChar();
                         }
                         else
                         {
@@ -210,7 +210,7 @@ namespace lexer
                     }
                     #endregion
 
-                    else if (current ==',')
+                    else if (current == ',')
                     {
                         //crear coma 
                         tokens.Add(new Token(TypeToken.Coma, ",", line, CalcularColumna(line)));

@@ -74,13 +74,31 @@ namespace Convertidor_Pos_Inf
             ["**"] = new PowNodeCreator(),
         };
 
-        
+
 
         #endregion
 
+        public static bool IsNegative(int pos, List<Token> tokens)
+        {
+            if (pos - 1 < 0)
+            {
+                //esta en la pos inicial es un negativo 
+                return true;
+            }
+            else
+            {
+                if (tokens[pos - 1].type == TypeToken.OpenParenthesis || tokens[pos - 1].type == TypeToken.Operador || tokens[pos-1].type == TypeToken.Asignacion)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         #region To --- Postfix 
         public static List<Token> PostfixExpression(List<Token> infix, Dictionary<string, int> precedencia)
         {
+            System.Console.WriteLine("converter to postfix ");
             List<Token> postfix = new();
             //crear un pila donde guardaremos los operadores por orden de precedencia  
             Stack<Token> operadores = new Stack<Token>();
@@ -90,12 +108,29 @@ namespace Convertidor_Pos_Inf
 
                 //cuando es un identificador ..verificar q esa variable existe y es un numero 
                 //ojo
-                //si es un numero agregarlo directamente a la salida 
+                
+
+                //si es un numero agregarlo directamente a la salida
                 if (infix[i].type == TypeToken.Numero)
                 {
                     System.Console.WriteLine($"Numero add {infix[i].value}");
                     postfix.Add(infix[i]);
                 }
+                //posible numero negativo 
+                else if (infix[i].value == "-" && IsNegative(i, infix))
+                {
+                    System.Console.WriteLine("Posible negativo ");
+                    //agregar un numero negativo 
+                    if (i + 1 < infix.Count && infix[i + 1].type == TypeToken.Numero)
+                    {
+                        //sumar la pos 
+                        i += 1;
+                        postfix.Add(new Token(TypeToken.Numero, "-" + infix[i].value, infix[i].fila, infix[i].columna));
+                        continue;
+                    }
+
+                }
+
                 //si es un bool meterlo en la pila 
                 else if (infix[i].type == TypeToken.Boolean)
                 {
@@ -145,7 +180,7 @@ namespace Convertidor_Pos_Inf
                 //ir metiendo y sacando en la pila por precedencia , la pila siempre queda organizada como que elm ult elemento es el de mayor precedencia
                 else if (infix[i].type == TypeToken.Operador)
                 {
-
+                    System.Console.WriteLine("Operador");
                     if (operadores.Count == 0)
                     {
                         System.Console.WriteLine($"Operadores vacio meter {infix[i].value}");

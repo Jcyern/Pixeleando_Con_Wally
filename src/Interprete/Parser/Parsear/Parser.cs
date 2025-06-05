@@ -120,6 +120,7 @@ namespace Parseando
             structure[TypeToken.Spawn] = new List<IParse>() { new SpawnParser() };
             structure[TypeToken.Color] = new List<IParse>() { new ColorParse() };
             structure[TypeToken.Size] = new List<IParse>() { new SizeParse() };
+            structure[TypeToken.DrawLine] = new List<IParse>() { new DrawLineParse() };
         }
 
 

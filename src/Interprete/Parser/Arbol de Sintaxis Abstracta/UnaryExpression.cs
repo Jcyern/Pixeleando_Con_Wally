@@ -15,8 +15,8 @@ namespace ExpressionesUnarias
     public abstract class UnaryExpression : Expression
     {
         public Token Operator;
-        public Expression expresion;
-        public UnaryExpression(Expression expresion, Token Operator, (int, int) Location)
+        public Expression? expresion;
+        public UnaryExpression(Expression? expresion, Token Operator, (int, int) Location)
         {
             this.expresion = expresion;
             this.Operator = Operator;
