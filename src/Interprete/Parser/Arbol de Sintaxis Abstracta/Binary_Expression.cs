@@ -12,6 +12,7 @@ using Resto;
 using TerminalesNode;
 using Errores;
 using Operaciones;
+using Evalua;
 
 namespace ExpressionesBinarias
 {
@@ -187,7 +188,7 @@ namespace ExpressionesBinarias
 
 
         #region  Evaluate 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             var func = Operations.operaciones[Operator.value];
             return func(this);

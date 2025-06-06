@@ -2,6 +2,7 @@
 using ArbolSintaxisAbstracta;
 using Convertidor_Pos_Inf;
 using Errores;
+using Evalua;
 using Expresion;
 using ExpressionesTipos;
 using IParseo;
@@ -41,7 +42,7 @@ namespace ColorFunc
         }
 
 
-        public override object? Evaluate()
+        public override object? Evaluate(Evaluator? evaluator = null)
         {
             System.Console.WriteLine("Evaluate Color ");
 

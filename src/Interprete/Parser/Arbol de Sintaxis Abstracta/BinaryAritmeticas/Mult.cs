@@ -2,6 +2,7 @@ using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
 using INodeCreador;
+using Evalua;
 
 
 
@@ -19,7 +20,7 @@ namespace Multiplicacion
             return base.CheckSemantic(ExpressionTypes.Number);
         }
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             var left = Convert.ToInt32(LeftExpression!.Evaluate());
             System.Console.WriteLine($"Mult Left {left}");

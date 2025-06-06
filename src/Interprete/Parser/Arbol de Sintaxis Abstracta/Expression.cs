@@ -3,6 +3,7 @@ using ArbolSintaxisAbstracta;
 using ExpressionesTipos;
 using ExpressionesUnarias;
 using TerminalesNode;
+using Evalua;
 namespace Expresion
 {
 
@@ -13,7 +14,7 @@ namespace Expresion
 
 
         public ExpressionTypes type = ExpressionTypes.Null;
-        public override   object? Evaluate()
+        public override   object? Evaluate(Evaluator? evaluator = null)
         {
             return null;
         }

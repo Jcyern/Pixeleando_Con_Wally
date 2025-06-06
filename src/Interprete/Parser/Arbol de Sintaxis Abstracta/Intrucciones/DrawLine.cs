@@ -1,9 +1,11 @@
 
 using Convertidor_Pos_Inf;
 using Errores;
+using Evalua;
 using Expresion;
 using ExpressionesTipos;
 using IParseo;
+using metodos;
 using Numero;
 using Parseando;
 using Utiles;
@@ -29,33 +31,51 @@ namespace ArbolSintaxisAbstracta
 
         public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
         {
-            if (dirX == null || dirY == null || distancia == null)
+            bool chek_x = true;
+            bool chek_y = true;
+            bool chek_d = true;
+            if (dirX == null)
             {
-                if (dirX == null)
-                {
-                    compilingError.Add(new ExpectedType(Draw.Pos, ExpressionTypes.Number.ToString(), ExpressionTypes.Null.ToString()));
-                }
-                if (dirY == null)
-                {
-                    compilingError.Add(new ExpectedType(Draw.Pos, ExpressionTypes.Number.ToString(), ExpressionTypes.Null.ToString()));
-                }
-                if (distancia == null)
-                {
-                    compilingError.Add(new ExpectedType(Draw.Pos, ExpressionTypes.Number.ToString(), ExpressionTypes.Null.ToString()));
-                }
-                return false;
+                //agregar error de compilacion 
+                compilingError.Add(new ExpectedType(Draw.Pos, ExpressionTypes.Number.ToString(), ExpressionTypes.Null.ToString()));
+                chek_x = false;
+            }
+            else
+            {
+                chek_x = dirX.CheckSemantic(ExpressionTypes.Number);
             }
 
-            if (dirX!.CheckSemantic(ExpressionTypes.Number) && dirY!.CheckSemantic(ExpressionTypes.Number) && distancia!.CheckSemantic(ExpressionTypes.Number))
-                {
-                    return true;
-                }
+            if (dirY == null)
+            {
+                compilingError.Add(new ExpectedType(Draw.Pos, ExpressionTypes.Number.ToString(), ExpressionTypes.Null.ToString()));
+                chek_y = false;
+            }
+            else
+            {
+                chek_y = dirY.CheckSemantic(ExpressionTypes.Number);
+            }
+
+            if (distancia == null)
+            {
+                compilingError.Add(new ExpectedType(Draw.Pos, ExpressionTypes.Number.ToString(), ExpressionTypes.Null.ToString()));
+                chek_d = false;
+            }
+            else
+            {
+                chek_d = distancia.CheckSemantic(ExpressionTypes.Number);
+            }
 
 
-            return false;
+            if (!chek_x || !chek_y || !chek_d)
+            {
+                return false;
+            }
+            else
+                return true;
+
 
         }
-        public override object? Evaluate()
+        public override object? Evaluate(Evaluator? evaluator = null)
         {
             System.Console.WriteLine("Verificar si es una Direccion Valida");
 
@@ -65,8 +85,8 @@ namespace ArbolSintaxisAbstracta
 
             if (Wally.Pos.Fila != int.MaxValue)
             {
-                var range_x = InRange(x, -1, 1);
-                var range_y = InRange(y, -1, 1);
+                var range_x =Methots.InRange(x, -1, 1);
+                var range_y = Methots.InRange(y, -1, 1);
 
                 if (range_x && range_y)
                 {
@@ -94,10 +114,7 @@ namespace ArbolSintaxisAbstracta
             
         }
 
-        public static bool InRange(int valor, int min, int max)
-        {
-            return valor >= min && valor <= max;
-        }
+
 
 
     }

@@ -1,4 +1,5 @@
 
+using Evalua;
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
@@ -18,7 +19,7 @@ namespace MayorIgualQue
             return base.CheckSemantic(ExpressionTypes.Number);
         }
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             return Convert.ToInt32(LeftExpression!.Evaluate()) >= Convert.ToInt32(RightExpression!.Evaluate());
         }

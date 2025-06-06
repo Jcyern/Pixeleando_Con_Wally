@@ -1,4 +1,5 @@
 
+using Evalua;
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
@@ -39,9 +40,9 @@ namespace NotNode
 
 
 
-        public override object? Evaluate()
+        public override object? Evaluate(Evaluator? evaluator =  null)
         {
-            return !Convert.ToBoolean(expresion.Evaluate());
+            return !Convert.ToBoolean(expresion!.Evaluate());
         }
     }
 

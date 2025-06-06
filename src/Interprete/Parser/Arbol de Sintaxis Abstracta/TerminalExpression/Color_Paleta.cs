@@ -1,5 +1,6 @@
 
 using Cadenas;
+using Evalua;
 using ExpressionesTipos;
 using TerminalesNode;
 
@@ -20,7 +21,7 @@ namespace Paleta_Colores
         }
 
 
-        public override object? Evaluate()
+        public override object? Evaluate(Evaluator? evaluator =  null)
         {
             System.Console.WriteLine($"Evaluate Color");
             return value;

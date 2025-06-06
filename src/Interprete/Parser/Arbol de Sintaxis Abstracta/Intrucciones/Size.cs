@@ -1,6 +1,7 @@
 
 using Convertidor_Pos_Inf;
 using Errores;
+using Evalua;
 using Expresion;
 using ExpressionesTipos;
 using IParseo;
@@ -34,7 +35,7 @@ namespace ArbolSintaxisAbstracta
             }
         }
 
-        public override object? Evaluate()
+        public override object? Evaluate(Evaluator? evaluator = null)
         {
             System.Console.WriteLine("Evaluando Size");
             Pincel.ChangeSize(Convert.ToInt32(exp!.Evaluate()));

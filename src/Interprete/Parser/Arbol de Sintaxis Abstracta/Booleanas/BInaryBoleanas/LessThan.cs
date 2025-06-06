@@ -1,5 +1,6 @@
 
 
+using Evalua;
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
@@ -21,7 +22,7 @@ namespace Menorque
         }
 
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator?  evaluator = null)
         {
             return Convert.ToInt32(LeftExpression!.Evaluate()) < Convert.ToInt32(RightExpression!.Evaluate());
         }

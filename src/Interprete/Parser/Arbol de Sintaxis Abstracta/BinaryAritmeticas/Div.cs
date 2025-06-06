@@ -2,6 +2,7 @@ using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
 using INodeCreador;
+using Evalua;
 
 
 namespace Division
@@ -18,7 +19,7 @@ namespace Division
             return base.CheckSemantic(ExpressionTypes.Number);
         }
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator= null)
         {
             return Convert.ToInt32(LeftExpression!.Evaluate()) / Convert.ToInt32(RightExpression!.Evaluate());
 

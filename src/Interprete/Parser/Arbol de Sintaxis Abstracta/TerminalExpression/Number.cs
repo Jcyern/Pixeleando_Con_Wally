@@ -2,6 +2,7 @@ using ExpressionesUnarias;
 using ExpressionesTipos;
 using Expresion;
 using TerminalesNode;
+using Evalua;
 
 
 namespace Numero
@@ -27,7 +28,7 @@ namespace Numero
 
 
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             if (value != null)
             {

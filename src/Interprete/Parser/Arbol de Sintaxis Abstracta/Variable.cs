@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Alcance;
 using ArbolSintaxisAbstracta;
+using Evalua;
 using Expresion;
 using ExpressionesTipos;
 using TerminalesNode;
@@ -23,7 +24,7 @@ namespace vars
             return Scope.ContainType(Identificador.value);
         }
 
-        public override object? Evaluate()
+        public override object? Evaluate(Evaluator? evaluator= null)
         {
             //dame el valor de la variable 
             var result =Scope.GetVariable(Identificador.value);

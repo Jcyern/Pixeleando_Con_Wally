@@ -2,6 +2,7 @@
 using Alcance;
 using ArbolSintaxisAbstracta;
 using Errores;
+using Evalua;
 using Expresion;
 using ExpressionesTipos;
 
@@ -38,7 +39,7 @@ namespace AsignacionNodo
         }
 
 
-        public override object? Evaluate()
+        public override object? Evaluate(Evaluator? evaluador = null)
         {
             //asignar el valor de la variable en el dicc de la expression
             //para q no se pueda seguir bien la ejecucion

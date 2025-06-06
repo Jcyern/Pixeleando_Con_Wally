@@ -1,5 +1,6 @@
 
 
+using Evalua;
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
@@ -19,7 +20,7 @@ namespace NoIguales
             return base.CheckSemantic(tipo);
         }
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null )
         {
             var left = LeftExpression!.Evaluate();
             System.Console.WriteLine($"NotEquals Left {left}");

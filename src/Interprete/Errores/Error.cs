@@ -157,5 +157,26 @@ namespace Errores
 
 
 
+    #region Errores Evaluate 
+
+
+    public class DirectOutOfRange : Error
+    {
+        public DirectOutOfRange((int fila, int columna) pos, (int min, int max) rango, int number) : base(pos.fila, pos.columna)
+        {
+            message += $"El numero {number} no esta acotado {rango.min} y {rango.max}";
+        }
+    }
+
+    public class IsntSpawn : Error
+    {
+        public IsntSpawn((int fila, int columna)pos) : base(pos.fila, pos.columna)
+        {
+            message += $"El Wally no se le ha hecho Spawn";
+        }
+    }
+
+    #endregion
+
 
 }

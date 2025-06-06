@@ -2,6 +2,7 @@ using ExpressionesTipos;
 using Expresion;
 using ExpressionesBinarias;
 using INodeCreador;
+using Evalua;
 
 
 
@@ -21,7 +22,7 @@ namespace OrNodo
         }
 
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             return Convert.ToBoolean(LeftExpression!.Evaluate()) || Convert.ToBoolean(RightExpression!.Evaluate());
         }

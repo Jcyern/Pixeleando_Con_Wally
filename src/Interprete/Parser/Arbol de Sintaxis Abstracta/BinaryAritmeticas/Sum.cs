@@ -2,6 +2,7 @@ using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
 using INodeCreador;
+using Evalua;
 
 
 namespace Suma
@@ -19,7 +20,7 @@ namespace Suma
         }
 
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator)
         {
 
             return Convert.ToInt32(LeftExpression!.Evaluate()) + Convert.ToInt32(RightExpression!.Evaluate());

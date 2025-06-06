@@ -4,6 +4,7 @@ using ExpressionesTipos;
 using TerminalesNode;
 
 using Paleta_Colores;
+using Evalua;
 
 namespace Cadenas
 {
@@ -31,7 +32,7 @@ namespace Cadenas
 
         }
 
-        public override object? Evaluate()
+        public override object? Evaluate(Evaluator? evaluator = null)
         {
             if (value != null)
                 return value;

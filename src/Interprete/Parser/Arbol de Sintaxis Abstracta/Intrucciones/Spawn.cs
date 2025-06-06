@@ -4,6 +4,7 @@ using Aparecer;
 using ArbolSintaxisAbstracta;
 using Convertidor_Pos_Inf;
 using Errores;
+using Evalua;
 using Expresion;
 using ExpressionesTipos;
 using IParseo;
@@ -71,7 +72,7 @@ namespace Aparecer
         }
 
 
-        public override object? Evaluate()
+        public override object? Evaluate(Evaluator evaluator)
         {
             var f = Convert.ToInt32(fila!.Evaluate());
             var c = Convert.ToInt32(columna!.Evaluate());

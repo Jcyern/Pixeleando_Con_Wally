@@ -2,6 +2,7 @@ using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
 using INodeCreador;
+using Evalua;
 
 namespace Pow
 {
@@ -18,7 +19,7 @@ namespace Pow
             return base.CheckSemantic(ExpressionTypes.Number);
         }
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             return Math.Pow(Convert.ToDouble(LeftExpression!.Evaluate()), Convert.ToDouble(RightExpression!.Evaluate()));
         }

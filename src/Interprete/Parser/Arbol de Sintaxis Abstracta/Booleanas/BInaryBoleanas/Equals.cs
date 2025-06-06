@@ -1,4 +1,5 @@
 
+using Evalua;
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
@@ -27,7 +28,7 @@ namespace Iguales
 
 
         #region Evaluate
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             var left = LeftExpression!.Evaluate();
             System.Console.WriteLine($"Equals Left {left}  type {left!.GetType()} ");

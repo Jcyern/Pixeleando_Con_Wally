@@ -5,16 +5,18 @@ using System.Net.NetworkInformation;
 using ExpressionesTipos;
 using Alcance;
 using Expresion;
+using Evalua;
+using Ievalua;
 
 namespace ArbolSintaxisAbstracta
 {
 
-    public abstract class AstNode 
+    public abstract class AstNode  : IEvaluate
     {
         public (int fila, int columna) Location;
         public static List<Error> compilingError = new List<Error>();
 
-        public virtual object? Evaluate()
+        public virtual object? Evaluate( Evaluator? evaluador = null )
         {
             System.Console.WriteLine("Evaluate Ast");
             return 0;

@@ -1,6 +1,7 @@
 using ExpressionesUnarias;
 using ExpressionesTipos;
 using TerminalesNode;
+using Evalua;
 
 namespace Boolean
 {
@@ -27,7 +28,7 @@ namespace Boolean
             }
         }
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             if (value != null)
                 return value;

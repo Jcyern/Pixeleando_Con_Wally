@@ -1,3 +1,4 @@
+using Evalua;
 using Expresion;
 using ExpressionesBinarias;
 using ExpressionesTipos;
@@ -20,7 +21,7 @@ namespace AndNodo
         }
 
 
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             //Evaluando and 
             var left = Convert.ToBoolean(LeftExpression!.Evaluate());

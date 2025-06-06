@@ -2,6 +2,7 @@ using ExpressionesBinarias;
 using Expresion;
 using ExpressionesTipos;
 using INodeCreador;
+using Evalua;
 
 namespace Resto
 {
@@ -17,7 +18,7 @@ namespace Resto
         {
             return base.CheckSemantic(ExpressionTypes.Number);
         }
-        public override object Evaluate()
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             return Convert.ToInt32(LeftExpression!.value) % Convert.ToInt32(RightExpression!.value);
         }
