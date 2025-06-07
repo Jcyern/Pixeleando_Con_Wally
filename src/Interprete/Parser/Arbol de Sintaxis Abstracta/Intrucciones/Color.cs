@@ -42,12 +42,17 @@ namespace ColorFunc
         }
 
 
-        public override object? Evaluate(Evaluator? evaluator = null)
+        public override object? Evaluate(Evaluator? evaluador = null)
         {
             System.Console.WriteLine("Evaluate Color ");
 
             //cambiar color del pincel 
             Pincel.ChangeColor(color!.Evaluate()!.ToString()!);
+
+                        //mover pos en el evaluador 
+            if (evaluador != null)
+                evaluador.Move();
+                
             return 0;
         }
 

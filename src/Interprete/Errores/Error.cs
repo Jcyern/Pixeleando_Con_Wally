@@ -64,6 +64,26 @@ namespace Errores
             message = $"Fila:{fila} ParentesisError -you open a parant and dont close it- or -you close a parant but you never open it";
         }
     }
+        public class BrazesError : Error
+    {
+        public BrazesError(int fila) : base(fila, 0)
+        {
+            message = $"Fila:{fila} Error -you open a braze and dont close it- or -you close a braze but you never open it";
+        }
+    }
+
+
+    #region NotLabel
+
+    public class LabelError : Error
+    {
+        public LabelError((int fila, int columna) pos, string label) : base(pos.fila, pos.columna)
+        {
+            message += $"The label {label} isnt define in your code ";
+        }
+        
+    }
+    #endregion
 
 
 
@@ -170,9 +190,18 @@ namespace Errores
 
     public class IsntSpawn : Error
     {
-        public IsntSpawn((int fila, int columna)pos) : base(pos.fila, pos.columna)
+        public IsntSpawn((int fila, int columna) pos) : base(pos.fila, pos.columna)
         {
             message += $"El Wally no se le ha hecho Spawn";
+        }
+    }
+
+
+    public class GoToOverFlow : Error
+    {
+        public GoToOverFlow((int fila, int columna)pos) : base(pos.fila, pos.columna)
+        {
+            message += "Stack Overflow";
         }
     }
 

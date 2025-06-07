@@ -11,6 +11,8 @@ using Expresion;
 using Convertidor_Pos_Inf;
 using System.Runtime.ConstrainedExecution;
 using Parseando;
+using Evalua;
+using Semantic;
 
 
 public class Program
@@ -53,17 +55,46 @@ public class Program
             }
 
 
-            Evaluate(nodos);
+            var evalute = Evaluate(nodos);
 
+            System.Console.WriteLine("/////////////////////////////////////");
+            System.Console.WriteLine("/////////////////////////////////////");
+            System.Console.WriteLine("/////////////////////////////////////");
+            System.Console.WriteLine("Su codigo es valido Felicitaciones");
 
 
         }
-
-
-
-
-
     }
+
+
+
+    //evaluar las estructuras creadas
+    public static bool Evaluate(List<AstNode> nodos)
+    {
+        System.Console.WriteLine("///////////////////////////");
+        System.Console.WriteLine("///////////////////////////");
+        System.Console.WriteLine("////////Evaluando//////////");
+        System.Console.WriteLine("///////////////////////////");
+        System.Console.WriteLine("///////////////////////////");
+
+
+        Evaluator evaluator = new Evaluator(nodos);
+        return evaluator.Evaluar();
+    }
+
+    public static bool CheckSemantic(List<AstNode> nodos)
+    {
+        System.Console.WriteLine("///////////////////////////");
+        System.Console.WriteLine("///////////////////////////");
+        System.Console.WriteLine("////////Chequeo Semantico //////////");
+
+        Semantico semantico = new(nodos);
+        return semantico.CheckSemantic();
+    }
+
+
+
+    
 
     //Paso 1 Dividir en Tokens
     public static Lexer Tokenizar()
@@ -127,53 +158,5 @@ public class Program
             return nodos;
     }
 
-
-
-    //verificar la sintaxis de dichas estructuras 
-    public static bool CheckSemantic(List<AstNode> nodos)
-    {
-        System.Console.WriteLine("//////////////////////");
-        System.Console.WriteLine("//////////////////////");
-        System.Console.WriteLine("Chequear Semanticamente");
-        System.Console.WriteLine("//////////////////////");
-        System.Console.WriteLine("//////////////////////");
-
-        foreach (var node in nodos)
-        {
-            node.CheckSemantic();
-        }
-
-        if (AstNode.compilingError.Count > 0)
-        {
-            foreach (var item in AstNode.compilingError)
-            {
-                item.ShowError();
-            }
-            return false;
-        }
-        return true;
-    }
-
-
-
-
-
-    //evaluar las estructuras creadas
-    public static void Evaluate(List<AstNode> nodos)
-    {
-        System.Console.WriteLine("///////////////////////////");
-        System.Console.WriteLine("///////////////////////////");
-        System.Console.WriteLine("////////Evaluando//////////");
-        System.Console.WriteLine("///////////////////////////");
-        System.Console.WriteLine("///////////////////////////");
-        foreach (var nodo in nodos)
-        {
-            System.Console.WriteLine("Evaluando Nodo");
-            nodo.Evaluate();
-        }
-    }
-
 }
 
-
-    

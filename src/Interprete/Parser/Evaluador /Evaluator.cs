@@ -6,12 +6,41 @@ namespace Evalua
 {
     public class Evaluator
     {
-        List<AstNode> nodos = new List<AstNode>();
-        List<Error> error_evaluate = new List<Error>();
+        List<AstNode> nodos;
+        List<Error> error_evaluate;
+        public int CurrentLinea= 0;
 
-        int CurrentLinea;
+        int CantCall = 0;
 
         const int Max_Call = 1000; //maximo de llamdas recursivas para q de el overflow
+
+        public void RestartCalls()
+        {
+            CantCall = 0;
+        }
+
+        public void End()
+        {
+            CurrentLinea = nodos.Count;
+        }
+        public bool Call()
+        {
+            if (CantCall < Max_Call)
+            {
+                CantCall += 1;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public Evaluator(List<AstNode> nodos)
+        {
+            this.nodos = nodos;
+            error_evaluate = new List<Error>();
+            this.CurrentLinea = 0;
+        }
 
         public void GetErrores()
         {
@@ -35,13 +64,35 @@ namespace Evalua
         }
 
 
-        public void Evaluar()
+
+        public void Move()
         {
-            for (int i = CurrentLinea; i < nodos.Count; i++)
+
+            CurrentLinea += 1;
+        }
+        public bool Evaluar()
+        {
+            //comenzar a evaluar todos los nodos 
+            System.Console.WriteLine("Evaluar todos los nodos");
+
+            while (CurrentLinea < nodos.Count)
             {
+
+                System.Console.WriteLine($"Evaluar nodo {CurrentLinea}");
                 //ir evaluando todos los nodos
-                nodos[i].Evaluate();
+                nodos[CurrentLinea].Evaluate(this);
             }
+
+            if (error_evaluate.Count > 0)
+            {//Erorres 
+                foreach (var e in error_evaluate)
+                {
+                    e.ShowError();
+                }
+                return false;
+            }
+            else
+                return true;
         }
     }
 }

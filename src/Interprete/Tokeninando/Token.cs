@@ -89,7 +89,11 @@ public enum TypeToken
 
     color,
 
-    Fin
+    Fin,
+
+    OpenBraze,
+
+    CloseBraze,
 
 
 

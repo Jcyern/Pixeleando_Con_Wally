@@ -72,16 +72,21 @@ namespace Aparecer
         }
 
 
-        public override object? Evaluate(Evaluator evaluator)
+        public override object? Evaluate(Evaluator? evaluador = null)
         {
             var f = Convert.ToInt32(fila!.Evaluate());
             var c = Convert.ToInt32(columna!.Evaluate());
             Wally.Pos.Fila = f; Wally.Pos.Columna = c;
-            
+
             System.Console.WriteLine($"se coloco al wally en la pos fila: {f}  columna: {c}");
             //metodo para pos al wally en la parte visual 
 
+            //mover pos en el evaluador 
+            if (evaluador != null)
+                evaluador.Move();
+
             return 0;
+            
         }
     }
 }

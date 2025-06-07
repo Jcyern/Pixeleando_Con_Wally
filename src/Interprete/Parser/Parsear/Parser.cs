@@ -6,6 +6,7 @@ using Convertidor_Pos_Inf;
 using Errores;
 using Expresion;
 using ExpressionesTipos;
+using Go;
 using IParseo;
 using NodosParser;
 
@@ -116,11 +117,13 @@ namespace Parseando
         public void RegisterParser()
         {
             System.Console.WriteLine("Registrando parseos");
-            structure[TypeToken.Identificador] = new List<IParse>() { new AsignacionParse() };
+            structure[TypeToken.Identificador] = new List<IParse>() { new LabelParse(), new AsignacionParse() };
             structure[TypeToken.Spawn] = new List<IParse>() { new SpawnParser() };
             structure[TypeToken.Color] = new List<IParse>() { new ColorParse() };
             structure[TypeToken.Size] = new List<IParse>() { new SizeParse() };
             structure[TypeToken.DrawLine] = new List<IParse>() { new DrawLineParse() };
+            structure[TypeToken.GoTo] = new List<IParse>() { new GoToParse() };
+            structure[TypeToken.DrawCircle] = new List<IParse>() { new DrawCircleParse() };
         }
 
 

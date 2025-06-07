@@ -75,7 +75,7 @@ namespace ArbolSintaxisAbstracta
 
 
         }
-        public override object? Evaluate(Evaluator? evaluator = null)
+        public override object? Evaluate(Evaluator? evaluador = null)
         {
             System.Console.WriteLine("Verificar si es una Direccion Valida");
 
@@ -91,6 +91,11 @@ namespace ArbolSintaxisAbstracta
                 if (range_x && range_y)
                 {
                     System.Console.WriteLine($"Mover una Linea en la dir {x},{y} desde {Wally.Pos.Fila}, {Wally.Pos.Columna}  distancia {d} ");
+                    
+                                //mover pos en el evaluador 
+                if (evaluador != null)
+                    evaluador.Move();
+
                     return 0;
                 }
                 if (!range_x)
@@ -103,12 +108,20 @@ namespace ArbolSintaxisAbstracta
                     System.Console.WriteLine("error de rango de y ");
                     //crear error de rango de y
                 }
+
+                            //mover pos en el evaluador 
+                if (evaluador != null)
+                evaluador.Move();
                 return 0;
             }
             else
             {
                 //dar error de q no hay spawn 
                 System.Console.WriteLine("El wally no tiene una pos");
+                            //mover pos en el evaluador 
+                if (evaluador != null)
+                evaluador.Move();
+                
             }
             return 0;
             

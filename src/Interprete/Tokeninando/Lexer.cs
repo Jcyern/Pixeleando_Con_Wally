@@ -138,8 +138,10 @@ namespace lexer
                 pos = 0;
                 int leftParant = 0;
                 int rightParant = 0;
+                int leftbraze = 0;
+                int rightbraze = 0;
 
-                //iterar por todas las lineas
+                //iterar por todos los char de la linea 
                 while (pos < lineas[i].Length)
                 {
                     current = lineas[i][pos];
@@ -166,7 +168,27 @@ namespace lexer
                         NextChar();
                     }
 
+
                     #endregion
+
+                    #region  Brazes
+
+                    else if (current == '[')
+                    {
+                        leftbraze += 1;
+                        tokens.Add(new Token(TypeToken.OpenBraze, current.ToString(), line, CalcularColumna(line)));
+                        NextChar();
+                    }
+                    else if (current == ']')
+                    {
+                        rightbraze += 1;
+                        tokens.Add(new Token(TypeToken.CloseBraze, current.ToString(), line, CalcularColumna(line)));
+                        NextChar();
+
+                    }
+
+                    #endregion
+
 
 
 
@@ -434,6 +456,10 @@ namespace lexer
                 if (leftParant != rightParant)
                 {
                     errores.Add(new ParentesisError(line));
+                }
+                if (leftbraze != rightbraze)
+                {
+                    errores.Add(new BrazesError(line));
                 }
             }
 

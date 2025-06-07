@@ -35,10 +35,14 @@ namespace ArbolSintaxisAbstracta
             }
         }
 
-        public override object? Evaluate(Evaluator? evaluator = null)
+        public override object? Evaluate(Evaluator? evaluador = null)
         {
             System.Console.WriteLine("Evaluando Size");
             Pincel.ChangeSize(Convert.ToInt32(exp!.Evaluate()));
+
+                        //mover pos en el evaluador 
+            if (evaluador != null)
+                evaluador.Move();
 
             return 0;
         }

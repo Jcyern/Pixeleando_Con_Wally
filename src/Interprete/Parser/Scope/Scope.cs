@@ -6,15 +6,18 @@ using Expresion;
 using Errores;
 namespace Alcance 
 {
-    public static  class Scope 
+    public static class Scope
     {
         //guarda la variable y su tipo 
-        public  static Dictionary<string , ExpressionTypes> variable_tipo = new ();
+        public static Dictionary<string, ExpressionTypes> variable_tipo = new();
 
         //guarda la variable y su valor 
         public static Dictionary<string, object> variable_expresion = new();
 
-        public  static object? GetVariable(string value)
+        //dado un label te da la linea 
+        public static Dictionary<string, int> Labels = new();
+
+        public static object? GetVariable(string value)
         {
             if (Contain(value))
             {
@@ -23,12 +26,13 @@ namespace Alcance
                 return variable_expresion[value];
             }
             else
-            {   System.Console.WriteLine($"No existe la vairable {value}");
+            {
+                System.Console.WriteLine($"No existe la vairable {value}");
                 return null;
             }
         }
 
-        public static bool ContainType(string name )
+        public static bool ContainType(string name)
         {
             return variable_tipo.ContainsKey(name);
         }
@@ -84,10 +88,10 @@ namespace Alcance
                 return false;
             }
         }
-        
+
         //Asignar para el Evaluate 
 
-        public static void  Asignar(string name, Expression value)
+        public static void Asignar(string name, Expression value)
         {
             //en este punto ya verificamos q son buenas las expresiones ya pasamos el Semantico 
             //verifica si la variable existe 
@@ -103,6 +107,35 @@ namespace Alcance
                 variable_expresion[name] = value.Evaluate()!;
             }
 
+        }
+
+        public static bool AsignarLabel(Token label, int pos)
+        {
+            if (Labels.ContainsKey(label.value))
+            {
+                System.Console.WriteLine("ese label ya existe no puede haber dos label con el mismo nombre ");
+                return false;
+            }
+
+            else
+            {
+                //asignarle la linea si no esta 
+                Labels[label.value] = pos;
+                return true;
+            }
+        }
+
+
+        public static int GetLabel(string value)
+        {
+            if (Labels.ContainsKey(value))
+            {
+                return Labels[value];
+            }
+            else
+            {
+                return int.MaxValue;
+            }
         }
     }
 }

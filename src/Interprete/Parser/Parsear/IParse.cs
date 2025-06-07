@@ -6,6 +6,6 @@ namespace IParseo
 {
     public interface IParse
     {
-        public AstNode Parse(Parser parser );
+        public AstNode? Parse(Parser parser );
     }
 }

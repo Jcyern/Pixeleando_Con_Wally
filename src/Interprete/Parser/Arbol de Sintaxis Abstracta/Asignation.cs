@@ -46,6 +46,9 @@ namespace AsignacionNodo
             Scope.Asignar(Identificador.value, Value!);
             var result = Scope.GetVariable(Identificador.value);
             System.Console.WriteLine($"Asignacion {Identificador.value} <- {result}");
+            //mover pos en el evaluador 
+            if(evaluador!= null)
+            evaluador.Move();
             return result;
         }
     }
