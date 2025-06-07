@@ -2,4 +2,5 @@ Spawn(0,0)
 Circulo
 DrawCircle(5,4,1)
 Fill()
+DrawRectangle
 i<-  2
