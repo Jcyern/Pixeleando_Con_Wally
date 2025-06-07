@@ -1,0 +1,57 @@
+
+using Evalua;
+using ExpressionesTipos;
+using IParseo;
+using Parseando;
+
+namespace ArbolSintaxisAbstracta
+{
+    public class FillNode : AstNode
+    {
+        Token fill;
+        public FillNode(Token fill)
+        {
+            this.fill = fill;
+        }
+
+
+        public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
+        {
+            System.Console.WriteLine("El Fill siempre se define bien ");
+            return true;
+
+        }
+
+        public override object? Evaluate(Evaluator? evaluador = null)
+        {
+            System.Console.WriteLine("Ejecutar Evaluate  Fill ");
+
+            if (evaluador != null)
+            {
+                evaluador.Move();
+            }
+
+            return 0;
+        }
+    }
+
+
+
+    public class FillParse : IParse
+    {
+        public AstNode? Parse(Parser parser)
+        {
+            var fill = parser.Current;
+
+            parser.ExpectedTokenType(TypeToken.OpenParenthesis);
+            parser.ExpectedTokenType(TypeToken.CloseParenthesis);
+            
+            //para seguir avanzando con la logica de los demas nodos 
+            parser.NextToken();
+        
+
+            return new FillNode(fill);
+        }
+    }
+
+}

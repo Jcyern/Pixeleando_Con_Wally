@@ -99,7 +99,7 @@ namespace Parseando
             else
             {
                 //avanazar y guardar error 
-                errores_sintaxis.Add(new ExpectedType(Current.Pos, tipo.ToString(), Current.type.ToString()));
+                errores_sintaxis.Add(new ExpectedType(Current.Pos, tipo.ToString(), GetNextToken().type.ToString()));
                 //luego avanzar 
                 NextToken();
                 return false;
@@ -124,6 +124,7 @@ namespace Parseando
             structure[TypeToken.DrawLine] = new List<IParse>() { new DrawLineParse() };
             structure[TypeToken.GoTo] = new List<IParse>() { new GoToParse() };
             structure[TypeToken.DrawCircle] = new List<IParse>() { new DrawCircleParse() };
+            structure[TypeToken.Fill] = new List<IParse>() { new FillParse() };
         }
 
 
