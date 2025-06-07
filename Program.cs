@@ -57,10 +57,18 @@ public class Program
 
             var evalute = Evaluate(nodos);
 
-            System.Console.WriteLine("/////////////////////////////////////");
-            System.Console.WriteLine("/////////////////////////////////////");
-            System.Console.WriteLine("/////////////////////////////////////");
-            System.Console.WriteLine("Su codigo es valido Felicitaciones");
+            if (evalute)
+            {
+                System.Console.WriteLine("/////////////////////////////////////");
+                System.Console.WriteLine("/////////////////////////////////////");
+                System.Console.WriteLine("/////////////////////////////////////");
+                System.Console.WriteLine("Su codigo es valido Felicitaciones");
+            }
+            else
+            {
+                System.Console.WriteLine("???????????????????????????????????/");
+                System.Console.WriteLine("Codigo Invalido Verifique los errores de la Evaluacion");
+            }
 
 
         }

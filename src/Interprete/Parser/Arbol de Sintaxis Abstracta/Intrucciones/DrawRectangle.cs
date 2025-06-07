@@ -117,7 +117,7 @@ namespace ArbolSintaxisAbstracta
 
                 if (range_x && range_y)
                 {
-                    System.Console.WriteLine($"Mover una Linea en la dir {x},{y} desde {Wally.Pos.Fila}, {Wally.Pos.Columna}  distancia {d}  crear rectangulo de altura {alt} ancho {anc}");
+                    System.Console.WriteLine($"Mover una Linea en la dir {x},{y} desde {Wally.Pos.Fila}, {Wally.Pos.Columna}  distancia {d}  crear rectangulo de ancho {anc} y altura {alt}");
 
                     //mover pos en el evaluador 
                     if (evaluador != null)
@@ -171,7 +171,7 @@ namespace ArbolSintaxisAbstracta
             var token_disx = new List<Token>();
             while (parser.Current.type != TypeToken.CloseParenthesis && parser.Current.type != TypeToken.Coma)
             {
-                System.Console.WriteLine($"Se agrega a DisX {parser.Current}" );
+                System.Console.WriteLine($"Se agrega a DisX {parser.Current}");
                 //ir agregando los tokens q seria las dist_X
                 token_disx.Add(parser.Current);
                 parser.NextToken();
@@ -179,6 +179,7 @@ namespace ArbolSintaxisAbstracta
             //exp de distancia X
             var distX = Converter.GetExpression(token_disx);
 
+            #region  Dir x
             //verificar si es el close parentesis seria un error 
             if (parser.Current.type == TypeToken.Coma)
             {
@@ -196,6 +197,8 @@ namespace ArbolSintaxisAbstracta
                     parser.NextToken();
                 }
 
+                #region  DirY
+
                 var distY = Converter.GetExpression(token_disy);
                 if (parser.Current.type == TypeToken.Coma)
                 {
@@ -204,15 +207,16 @@ namespace ArbolSintaxisAbstracta
                     var tokens_distancia = new List<Token>();
 
 
-                    while (parser.Current.type != TypeToken.CloseParenthesis && parser.Current.type != TypeToken.Coma) 
+                    while (parser.Current.type != TypeToken.CloseParenthesis && parser.Current.type != TypeToken.Coma)
                     {
                         System.Console.WriteLine($"Se agrego a Dist{parser.Current}");
                         tokens_distancia.Add(parser.Current);
                         parser.NextToken();
                     }
-                    parser.NextToken();
 
                     var dist = Converter.GetExpression(tokens_distancia);
+
+                    #region  Distancia
 
                     if (parser.Current.type == TypeToken.Coma)
                     {
@@ -229,6 +233,8 @@ namespace ArbolSintaxisAbstracta
                         }
                         var ancho = Converter.GetExpression(tokens_ancho);
 
+                        #region  Ancho
+
                         if (parser.Current.type == TypeToken.Coma)
                         {
                             parser.NextToken();
@@ -243,9 +249,16 @@ namespace ArbolSintaxisAbstracta
                                 tokens_altura.Add(parser.Current);
                                 parser.NextToken();
                             }
+                            //para seguir el analisis
+                            parser.NextToken();
+                            #region  Altura
                             var altura = Converter.GetExpression(tokens_altura);
 
+
                             return new DrawRectangleNode(draw, distX, distY, dist, ancho, altura);
+
+
+                            #endregion
                         }
                         else
                         {
@@ -254,6 +267,9 @@ namespace ArbolSintaxisAbstracta
                             return new DrawRectangleNode(draw, distX, distY, dist, ancho, null);
                         }
 
+
+                        #endregion
+
                     }
                     else
                     {
@@ -261,7 +277,10 @@ namespace ArbolSintaxisAbstracta
                         System.Console.WriteLine("es un error falta ancho ,altua   ");
                         return new DrawRectangleNode(draw, distX, distY, dist, null, null);
                     }
-                    
+
+
+                    #endregion
+
                 }
                 else
                 {
@@ -269,14 +288,20 @@ namespace ArbolSintaxisAbstracta
                     System.Console.WriteLine("es un error falta distancia, ancho , altura  ");
                     return new DrawRectangleNode(draw, distX, distY, null, null, null);
                 }
+
+
+                #endregion
             }
 
             else
             {
                 parser.NextToken();
                 System.Console.WriteLine("es un error falta diry ,  distancia , ancho , altura  ");
-                return new DrawRectangleNode(draw, distX, null, null,null,null);
+                return new DrawRectangleNode(draw, distX, null, null, null, null);
             }
+            
+
+            #endregion
         }
         }
 }

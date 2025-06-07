@@ -125,6 +125,11 @@ namespace Parseando
             structure[TypeToken.GoTo] = new List<IParse>() { new GoToParse() };
             structure[TypeToken.DrawCircle] = new List<IParse>() { new DrawCircleParse() };
             structure[TypeToken.Fill] = new List<IParse>() { new FillParse() };
+            structure[TypeToken.DrawRectangle] = new List<IParse>() { new DrawRectangleParse() };
+
+            //funciones
+            structure[TypeToken.GetActualX] = new List<IParse>() { new GetActualXParse() };
+            structure[TypeToken.GetActualY] = new List<IParse>() { new GetActualYParse() };
         }
 
 

@@ -2,5 +2,10 @@ Spawn(0,0)
 Circulo
 DrawCircle(5,4,1)
 Fill()
-DrawRectangle
+Rectangulo
+DrawRectangle(-1,1,2,3,4)
 i<-  2
+
+
+GetActualX()
+GetActualY()
