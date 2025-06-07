@@ -17,6 +17,11 @@ namespace ArbolSintaxisAbstracta
             this.get = get;
         }
 
+        public override ExpressionTypes GetTipo()
+        {
+            return ExpressionTypes.Number;
+        }
+
         public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
         {
             return true;

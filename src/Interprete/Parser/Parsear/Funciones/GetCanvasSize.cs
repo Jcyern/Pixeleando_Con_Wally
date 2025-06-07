@@ -34,6 +34,12 @@ namespace ArbolSintaxisAbstracta
             }
             return Wally.canvas;
         }
+
+
+        public override ExpressionTypes GetTipo()
+        {
+            return ExpressionTypes.TruplaNumber;
+        }
     }
 
 

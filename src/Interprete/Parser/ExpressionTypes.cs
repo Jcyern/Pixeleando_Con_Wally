@@ -19,6 +19,8 @@ namespace ExpressionesTipos
 
         Color,
 
+        TruplaNumber,
+
 
         nothing
 }
