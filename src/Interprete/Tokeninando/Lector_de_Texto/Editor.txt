@@ -8,4 +8,5 @@ i<-  2
 
 
 GetActualX()
+GetCanvasSize()
 GetActualY()

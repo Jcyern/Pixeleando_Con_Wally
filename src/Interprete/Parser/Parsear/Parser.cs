@@ -130,6 +130,7 @@ namespace Parseando
             //funciones
             structure[TypeToken.GetActualX] = new List<IParse>() { new GetActualXParse() };
             structure[TypeToken.GetActualY] = new List<IParse>() { new GetActualYParse() };
+            structure[TypeToken.GetCanvasSize] = new List<IParse>() { new GetCanvasSizeParse() };
         }
 
 

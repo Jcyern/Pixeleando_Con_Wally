@@ -30,6 +30,8 @@ namespace ArbolSintaxisAbstracta
             {
                 if (evaluador != null)
                     evaluador.Move();
+
+                System.Console.WriteLine($"Get X -- {Wally.Pos.Fila}");
                 return Wally.Pos.Fila;
             }
             else
