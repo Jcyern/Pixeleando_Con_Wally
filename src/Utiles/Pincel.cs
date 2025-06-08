@@ -8,7 +8,7 @@ namespace Pincel_
     {
         public static int Size = 0;
 
-        public static string Color = "";
+        public static string Color = "Transparent";
 
         public static void ChangeColor(string color)
         {

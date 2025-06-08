@@ -79,7 +79,9 @@ namespace AsignacionNodo
                 var lista = new List<Token>();
                 while (parser.Current.type != TypeToken.Fin && parser.GetNextToken().fila == operador.fila)
                 {
+
                     lista.Add(parser.NextToken());
+                    System.Console.WriteLine($"Lista add {parser.Current.value}");
                 }
                 //y avanzamos en el parser para q no se quede con esa ultima pos q pertenece a la asignacion y no de error sintaxtico 
                 parser.NextToken();

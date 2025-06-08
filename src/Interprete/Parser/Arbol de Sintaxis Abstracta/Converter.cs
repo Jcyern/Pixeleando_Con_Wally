@@ -99,7 +99,8 @@ namespace Convertidor_Pos_Inf
             [TypeToken.OpenParenthesis] = new List<IParse>() { new ParentesisParse() },
             [TypeToken.CloseParenthesis] = new List<IParse>() { new ParentesisParse() },
             [TypeToken.Identificador] = new List<IParse>() { new VariableParse() },
-            [TypeToken.IsBrushSize] = new List<IParse>() { new IsBrushSizeParse()},
+            [TypeToken.IsBrushSize] = new List<IParse>() { new IsBrushSizeParse() },
+            [TypeToken.IsBrushColor] = new List<IParse>() { new IsBrushColorParse()},
         };
 
 
@@ -194,14 +195,14 @@ namespace Convertidor_Pos_Inf
                     }
                     Debug.Print("Se encontro el open ");
                     var result = operadores.Pop();
-                    Debug.Print(result.Evaluate()!.ToString());
+                   // Debug.Print(result.Evaluate()!.ToString());
 
 
                 }
                 else
                 {
                     //es cualquier cosa de las terminal expression meterlo a la pila 
-                    System.Console.WriteLine($"exp add {infix[i].Evaluate()}");
+                    //System.Console.WriteLine($"exp add {infix[i].Evaluate()}");
                     postfix.Add((Expression)infix[i]);
                 }
             }
@@ -226,10 +227,10 @@ namespace Convertidor_Pos_Inf
         #region  Creando Expression
         private  static Expression? Aritmetic_Bool_Expression(List<Expression> postfix, Dictionary<string, INodeCreator> operadores)
         {
+            System.Console.WriteLine("creando del postfix a una expressio");
             Stack<Expression> pila = new();
-            System.Console.WriteLine("postfix");
-            foreach (var item in postfix)
-            System.Console.WriteLine(item.Evaluate());
+            
+            
 
 
             for (int i = 0; i < postfix.Count; i++)

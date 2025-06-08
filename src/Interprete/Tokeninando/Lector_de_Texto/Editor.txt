@@ -7,3 +7,6 @@ i <- 5*(2+ GetActualX() + GetActualY()) + m
 
 
 brush <- false == IsBrushSize(-1) 
+color <- "Transparent"
+iscolor <- IsBrushColor("Blue")
+iscolor <- IsBrushColor(color)

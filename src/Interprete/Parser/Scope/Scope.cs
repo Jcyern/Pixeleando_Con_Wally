@@ -63,7 +63,7 @@ namespace Alcance
             }
             else
             {
-                System.Console.WriteLine($"Try asociar tipo a la variable => {name}");
+                System.Console.WriteLine($"Try asociar tipo a la variable => {name.value}");
                 //agrega la variable 
                 //antes de agregarlo verifica si no es invalida la expresion
                 if (value.type != ExpressionTypes.Invalid && value.type != ExpressionTypes.Null)

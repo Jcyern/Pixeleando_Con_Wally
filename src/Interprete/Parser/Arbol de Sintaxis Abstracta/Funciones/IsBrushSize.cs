@@ -1,3 +1,4 @@
+
 using Convertidor_Pos_Inf;
 using Errores;
 using Evalua;
@@ -10,22 +11,24 @@ using TerminalesNode;
 
 namespace ArbolSintaxisAbstracta
 {
-    public class IsBrushColorNode : TerminalExpression
+    public class IsBrushSizeNode : TerminalExpression
     {
         Token brush;
-        Expression? color;
-        public IsBrushColorNode(Token brush, Expression? color) : base(brush.value, brush.Pos)
+
+        Expression? Size;
+
+        public IsBrushSizeNode(Token brush, Expression? Size) : base(brush.value, brush.Pos)
         {
-            this.color = color;
             this.brush = brush;
+            this.Size = Size;
         }
 
 
         public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
         {
-            if (color != null)
+            if (Size != null)
             {
-                return color.CheckSemantic(ExpressionTypes.Color);
+                return Size.CheckSemantic(ExpressionTypes.Number);
             }
             else
             {
@@ -34,23 +37,23 @@ namespace ArbolSintaxisAbstracta
             }
         }
 
-        public override object? Evaluate(Evaluator? evaluator = null)
-        {
-            return Pincel.Color == color!.Evaluate()!.ToString()!;
-        }
-
         public override ExpressionTypes GetTipo()
         {
             return ExpressionTypes.Bool;
         }
+
+        public override object? Evaluate(Evaluator? evaluador = null)
+        {
+            var size = Convert.ToInt32(Size!.Evaluate());
+
+            return Pincel.Size == size;
+        }
     }
 
-
-        public class IsBrushColorParse : IParse
+    public class IsBrushSizeParse : IParse
     {
         public AstNode? Parse(Parser parser)
         {
-            System.Console.WriteLine("Parseando is Brush collor ");
             //actual brush 
             var brush = parser.Current;
 
@@ -73,8 +76,7 @@ namespace ArbolSintaxisAbstracta
 
             var exp = Converter.GetExpression(tokens);
 
-            return new IsBrushColorNode(brush, exp);
+            return new IsBrushSizeNode(brush, exp);
         }
-
     }
 }
