@@ -19,8 +19,19 @@ namespace NoIguales
             //verifica solo q sean del mismo tipo
             return base.CheckSemantic(tipo);
         }
+        
+        public override ExpressionTypes GetTipo()
+        {
+            var tipo = base.GetTipo();
+            if (tipo != ExpressionTypes.Invalid && tipo != ExpressionTypes.Null)
+            {
+                return ExpressionTypes.Bool;
+            }
+            else
+                return tipo;
+        }
 
-        public override object Evaluate(Evaluator? evaluator = null )
+        public override object Evaluate(Evaluator? evaluator = null)
         {
             var left = LeftExpression!.Evaluate();
             System.Console.WriteLine($"NotEquals Left {left}");

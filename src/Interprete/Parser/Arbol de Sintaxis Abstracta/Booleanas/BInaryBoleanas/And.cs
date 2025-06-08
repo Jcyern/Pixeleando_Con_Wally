@@ -15,7 +15,7 @@ namespace AndNodo
 
         public override bool CheckSemantic(ExpressionTypes tipo)
         {
-            //verifica si son de tipo bool 
+            //verifica si son de tipo bool  con lo que opera
 
             return base.CheckSemantic(ExpressionTypes.Bool);
         }
@@ -31,6 +31,23 @@ namespace AndNodo
 
 
             return left && right;
+        }
+
+        public override ExpressionTypes GetTipo()
+        {
+            //verifica si opera con tipo bool 
+            var tipo = base.GetTipo();
+
+            if (tipo == ExpressionTypes.Bool)
+            {
+                //devuelve bool 
+                return ExpressionTypes.Bool;
+            }
+            else
+            {
+                // no opera con bool , no puede ejecutarse 
+                return tipo;
+            }
         }
         
 

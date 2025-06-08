@@ -23,6 +23,21 @@ namespace MayorIgualQue
         {
             return Convert.ToInt32(LeftExpression!.Evaluate()) >= Convert.ToInt32(RightExpression!.Evaluate());
         }
+
+        public override ExpressionTypes GetTipo()
+        {
+            //si opera con numeros devuelve
+            var tipo = base.GetTipo();
+
+            if (tipo == ExpressionTypes.Number)
+            {
+                return ExpressionTypes.Bool;
+            }
+            else
+            {
+                return tipo;
+            }
+        }
     }
 
 

@@ -16,7 +16,7 @@ namespace Boolean
         public Bool(object value, (int, int) Location) : base(value, Location)
         {
         }
-    
+
         public override ExpressionTypes GetTipo()
         {
             if (value == null)
@@ -37,6 +37,14 @@ namespace Boolean
                 return Convert.ToBoolean(value);
 
             return false;
+        }
+
+
+        public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
+        {
+            System.Console.WriteLine("BoolCheckSemantic");
+            //siempre se define bien 
+            return true;
         }
     }
 

@@ -42,6 +42,11 @@ namespace Cadenas
 
             return null;
         }
+
+        public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
+        {
+            return true;
+        }
     }
 
 

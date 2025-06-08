@@ -22,9 +22,26 @@ namespace Menorque
         }
 
 
-        public override object Evaluate(Evaluator?  evaluator = null)
+        public override object Evaluate(Evaluator? evaluator = null)
         {
+            System.Console.WriteLine("Evaluate less");
             return Convert.ToInt32(LeftExpression!.Evaluate()) < Convert.ToInt32(RightExpression!.Evaluate());
+        }
+
+        public override ExpressionTypes GetTipo()
+        {
+            //analiza si son iguales y de ser iguales da el tipo y si no invalido 
+
+            var tipo = base.GetTipo();
+            if (tipo == ExpressionTypes.Number)
+            {
+                //esto returna bool 
+                return ExpressionTypes.Bool;
+            }
+            else
+            {
+                return ExpressionTypes.Invalid;
+            }
         }
     }
 

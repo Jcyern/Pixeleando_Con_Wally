@@ -23,8 +23,13 @@ namespace ArbolSintaxisAbstracta
 
         public override object? Evaluate(Evaluator? evaluator = null)
         {
-            
+
             return Operador;
+        }
+
+        public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
+        {
+            return true;
         }
     }
 

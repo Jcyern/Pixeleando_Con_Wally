@@ -22,6 +22,17 @@ namespace Iguales
             return base.CheckSemantic();
         }
 
+        public override ExpressionTypes GetTipo()
+        {
+            var tipo = base.GetTipo();
+            if (tipo != ExpressionTypes.Invalid && tipo != ExpressionTypes.Null)
+            {
+                return ExpressionTypes.Bool;
+            }
+            else
+                return tipo;
+        }
+
 
         #endregion
 

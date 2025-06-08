@@ -1,12 +1,14 @@
 
 Spawn(2,3)
+
 m<- 1
+manage
 m<- m+2
-canvas <- GetCanvasSize()
-i <- 5*(2+ GetActualX() + GetActualY()) + m
+condition <- m<12
+GoTo[manage](condition)
 
 
 brush <- false == IsBrushSize(-1) 
-color <- "Transparent"
+color <- "White"
 iscolor <- IsBrushColor("Blue")
 iscolor <- IsBrushColor(color)

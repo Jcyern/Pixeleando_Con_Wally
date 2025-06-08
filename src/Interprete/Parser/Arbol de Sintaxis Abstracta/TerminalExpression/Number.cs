@@ -41,6 +41,13 @@ namespace Numero
             System.Console.WriteLine("Numero Evaluate 0");
             return 0;
         }
+
+
+        public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
+        {
+            System.Console.WriteLine("Numero ChekSemantic");
+            return true;
+        }
     }
 
 

@@ -30,11 +30,12 @@ namespace Go
         public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
         {
             if (Condition != null)
-            {
+            {   
+                System.Console.WriteLine("Chequeo Sem de la Condition ");
                 //aqui se asume q las etiquetas existen por si se define lineas mas abajo del Goto 
 
                 //solo verificar si la condition devuelve un valor booleano 
-                    return Condition.CheckSemantic(ExpressionTypes.Bool);
+                return Condition.CheckSemantic(ExpressionTypes.Bool);
             }
             else
             {
@@ -64,9 +65,10 @@ namespace Go
                 if (Scope.Labels.ContainsKey(Label.value))
                 {
 
-                    
+                    var cond = Condition!.Evaluate();
+
                     //verifica si la condicion es verdadera
-                    if (Convert.ToBoolean(Condition!.Evaluate()))
+                    if (Convert.ToBoolean(cond))
                     {
                         System.Console.WriteLine("Codition verdadera");
                         //si es verdadera la condicion
@@ -137,6 +139,7 @@ namespace Go
             var Label = parser.Current;
             parser.ExpectedTokenType(TypeToken.CloseBraze);
             parser.ExpectedTokenType(TypeToken.OpenParenthesis);
+            parser.NextToken();
 
             //seguir hasta q se encuentre el close parentesis 
             var tokens = new List<Token>();

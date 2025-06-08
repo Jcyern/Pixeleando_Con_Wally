@@ -19,6 +19,21 @@ namespace MenorIgualque
             return base.CheckSemantic(ExpressionTypes.Number);
         }
 
+        public override ExpressionTypes GetTipo()
+        {
+            //si opera con numeros devuelve
+            var tipo = base.GetTipo();
+
+            if (tipo == ExpressionTypes.Number)
+            {
+                return ExpressionTypes.Bool;
+            }
+            else
+            {
+                return tipo;
+            }
+        }
+
 
         public override object Evaluate(Evaluator? evaluator = null)
         {

@@ -30,9 +30,26 @@ namespace AsignacionNodo
         {
             System.Console.WriteLine("Check Semantic Asignacion");
             //verifica q
-            //se asiga la variable en el chequeo semantico 
+            //se asiga la variable en el chequeo semantico  si la exp esta bien semanticamente
             if (Value != null)
-                return Scope.AsignarType(Identificador, Value);
+            {
+                System.Console.WriteLine("El valor de la asignacion no es null ");
+                //si la exp es valida sem verificar si no hay var de ese tipo y si la hay verificar q sea el mismo tipo pasado
+                if (Value.CheckSemantic())
+                {
+                    System.Console.WriteLine($"Asignar {Identificador.value}");
+                    return Scope.AsignarType(Identificador, Value);
+                }
+
+                //la exp no esta bien semanticamente 
+                else
+                {
+                    System.Console.WriteLine("Se chequea bien ");
+
+
+                    return false;
+                }
+            }
             else
             {
                 System.Console.WriteLine($"No se puede crea la variable {Identificador.value}   pq se le pasa un nulll ,o nada");

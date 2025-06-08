@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using Alcance;
 using ArbolSintaxisAbstracta;
+using Errores;
 using Evalua;
 using Expresion;
 using ExpressionesTipos;
@@ -23,7 +24,26 @@ namespace vars
         {
             System.Console.WriteLine("Chequeo Sem de Variable ");
             //verifica si la variable ya se le asigno un tipo 
-            return Scope.ContainType(Identificador.value);
+            //verifica si la varible esta asignaada y ademas es del tipo pasado 
+            if (Scope.ContainType(Identificador.value))
+            {
+                var type = GetTipo();
+
+                if (type == tipo)
+                    return true;
+
+                else
+                {
+                    compilingError.Add(new ExpectedType(Identificador.Pos, tipo.ToString(), type.ToString()));
+                    return false;
+                }
+            }
+            else
+            {
+                compilingError.Add(new ExpectedType(Identificador.Pos, tipo.ToString(), ExpressionTypes.Null.ToString()));
+                System.Console.WriteLine("La variable no esta definida");
+                return false;
+            }
         }
 
         public override object? Evaluate(Evaluator? evaluator = null)

@@ -20,6 +20,22 @@ namespace OrNodo
             //verifica q sean de tipo bool 
             return base.CheckSemantic(ExpressionTypes.Bool);
         }
+        public override ExpressionTypes GetTipo()
+        {
+            //verifica si opera con tipo bool 
+            var tipo = base.GetTipo();
+
+            if (tipo == ExpressionTypes.Bool)
+            {
+                //devuelve bool 
+                return ExpressionTypes.Bool;
+            }
+            else
+            {
+                // no opera con bool , no puede ejecutarse 
+                return tipo;
+            }
+        }
 
 
         public override object Evaluate(Evaluator? evaluator = null)

@@ -29,6 +29,13 @@ namespace Paleta_Colores
             System.Console.WriteLine($"Evaluate Color");
             return value;
         }
+
+        public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
+        {
+            System.Console.WriteLine("Color CheckSemantic");
+            //un color siempre se define bien 
+            return true;
+        }
     }
 
 

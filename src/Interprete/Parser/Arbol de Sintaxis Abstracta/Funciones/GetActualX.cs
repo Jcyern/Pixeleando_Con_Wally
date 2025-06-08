@@ -25,7 +25,8 @@ namespace ArbolSintaxisAbstracta
         }
 
         public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
-        {
+        {   
+            //siempre est bien nunca  se le pasa nada 
             return true;
         }
 

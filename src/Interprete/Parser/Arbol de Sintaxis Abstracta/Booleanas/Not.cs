@@ -40,7 +40,7 @@ namespace NotNode
 
 
 
-        public override object? Evaluate(Evaluator? evaluator =  null)
+        public override object? Evaluate(Evaluator? evaluator = null)
         {
             return !Convert.ToBoolean(expresion!.Evaluate());
         }
