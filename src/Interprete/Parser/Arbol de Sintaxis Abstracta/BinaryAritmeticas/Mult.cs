@@ -19,6 +19,19 @@ namespace Multiplicacion
             //son expresiones numericas 
             return base.CheckSemantic(ExpressionTypes.Number);
         }
+        public override ExpressionTypes GetTipo()
+        {
+            var tipo = base.GetTipo();
+
+            if (tipo == ExpressionTypes.Number)
+            {
+                return ExpressionTypes.Number;
+            }
+            else
+            {
+                return tipo;
+            }
+        }
 
         public override object Evaluate(Evaluator? evaluator = null)
         {

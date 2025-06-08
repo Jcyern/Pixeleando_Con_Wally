@@ -64,7 +64,7 @@ namespace Errores
             message = $"Fila:{fila} ParentesisError -you open a parant and dont close it- or -you close a parant but you never open it";
         }
     }
-        public class BrazesError : Error
+    public class BrazesError : Error
     {
         public BrazesError(int fila) : base(fila, 0)
         {
@@ -81,7 +81,7 @@ namespace Errores
         {
             message += $"The label {label} isnt define in your code ";
         }
-        
+
     }
     #endregion
 
@@ -198,9 +198,19 @@ namespace Errores
 
     public class GoToOverFlow : Error
     {
-        public GoToOverFlow((int fila, int columna)pos) : base(pos.fila, pos.columna)
+        public GoToOverFlow((int fila, int columna) pos) : base(pos.fila, pos.columna)
         {
             message += "Stack Overflow";
+        }
+    }
+
+
+
+    public class ZeroDivitionError : Error
+    {
+        public ZeroDivitionError((int fila, int columna)pos) : base(pos.fila, pos.columna)
+        {
+            message += "The Division by Zero is not define ";
         }
     }
 

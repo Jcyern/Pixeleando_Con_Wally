@@ -23,6 +23,20 @@ namespace Resto
             return Convert.ToInt32(LeftExpression!.value) % Convert.ToInt32(RightExpression!.value);
         }
 
+        public override ExpressionTypes GetTipo()
+        {
+            var tipo = base.GetTipo();
+
+            if (tipo == ExpressionTypes.Number)
+            {
+                return ExpressionTypes.Number;
+            }
+            else
+            {
+                return tipo;
+            }
+        }
+
     }
 
 

@@ -27,6 +27,20 @@ namespace Suma
 
         }
 
+        public override ExpressionTypes GetTipo()
+        {
+            var tipo = base.GetTipo();
+
+            if (tipo == ExpressionTypes.Number)
+            {
+                return ExpressionTypes.Number;
+            }
+            else
+            {
+                return tipo;
+            }
+        }
+
 
 
     }

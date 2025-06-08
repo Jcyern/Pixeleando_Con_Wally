@@ -3,6 +3,7 @@ using Expresion;
 using ExpressionesTipos;
 using INodeCreador;
 using Evalua;
+using Errores;
 
 
 namespace Division
@@ -18,10 +19,33 @@ namespace Division
         {
             return base.CheckSemantic(ExpressionTypes.Number);
         }
-
-        public override object Evaluate(Evaluator? evaluator= null)
+        public override ExpressionTypes GetTipo()
         {
-            return Convert.ToInt32(LeftExpression!.Evaluate()) / Convert.ToInt32(RightExpression!.Evaluate());
+            var tipo = base.GetTipo();
+
+            if (tipo == ExpressionTypes.Number)
+            {
+                return ExpressionTypes.Number;
+            }
+            else
+            {
+                return tipo;
+            }
+        }
+
+        public override object Evaluate(Evaluator? evaluator = null)
+        {
+            var right = Convert.ToInt32(RightExpression!.Evaluate());
+
+            if (right != 0)
+                return Convert.ToInt32(LeftExpression!.Evaluate()) / right;
+            else
+            {
+                //nuevo error de division por cero 
+                if (evaluator != null)
+                    evaluator.AddError(new ZeroDivitionError((Operator.fila, Operator.columna + 1)));
+                return 0;
+            }
 
         }
 

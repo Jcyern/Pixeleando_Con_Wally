@@ -24,6 +24,20 @@ namespace Pow
             return Math.Pow(Convert.ToDouble(LeftExpression!.Evaluate()), Convert.ToDouble(RightExpression!.Evaluate()));
         }
 
+        public override ExpressionTypes GetTipo()
+        {
+            var tipo = base.GetTipo();
+
+            if (tipo == ExpressionTypes.Number)
+            {
+                return ExpressionTypes.Number;
+            }
+            else
+            {
+                return tipo;
+            }
+        }
+
 
 
     }
