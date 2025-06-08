@@ -1,6 +1,7 @@
 using System.Data.Common;
 using System.Runtime.CompilerServices;
 using ArbolSintaxisAbstracta;
+using AsignacionNodo;
 using ColorFunc;
 using Convertidor_Pos_Inf;
 using Errores;
@@ -8,15 +9,16 @@ using Expresion;
 using ExpressionesTipos;
 using Go;
 using IParseo;
-using NodosParser;
+
 
 namespace Parseando
 {
     public class Parser
     {
-        public List<Error> errores_sintaxis;
+        public static List<Error> errores_sintaxis = new();
         public List<Token> tokens;
 
+        public Dictionary<TypeToken, List<IParse> >estructura;
         public int line;
 
         public int current = 0;
@@ -75,14 +77,20 @@ namespace Parseando
 
         }
 
-        public Parser(List<Token> tokens, Dictionary<TypeToken, List<IParse>>? structure = null)
+        public Parser(List<Token> tokens, Dictionary<TypeToken, List<IParse>>? stru = null)
         {
-            this.tokens = tokens;
-            this.errores_sintaxis = new();
 
-            if (structure != null)
+            this.tokens = tokens;
+            this.tokens.Add(new Token(TypeToken.Fin, "FIn", int.MaxValue, int.MaxValue));
+
+
+            if (stru != null)
             {
-                this.structure = structure;
+                this.estructura = stru;
+            }
+            else
+            {
+                this.estructura = structure;
             }
         }
 
@@ -113,42 +121,38 @@ namespace Parseando
 
 
         //aqui se guardaran el parseo de los nodos 
-        Dictionary<TypeToken, List<IParse>> structure = [];
-        public void RegisterParser()
+        Dictionary<TypeToken, List<IParse>> structure = new()
         {
-            System.Console.WriteLine("Registrando parseos");
-            structure[TypeToken.Identificador] = new List<IParse>() { new LabelParse(), new AsignacionParse() };
-            structure[TypeToken.Spawn] = new List<IParse>() { new SpawnParser() };
-            structure[TypeToken.Color] = new List<IParse>() { new ColorParse() };
-            structure[TypeToken.Size] = new List<IParse>() { new SizeParse() };
-            structure[TypeToken.DrawLine] = new List<IParse>() { new DrawLineParse() };
-            structure[TypeToken.GoTo] = new List<IParse>() { new GoToParse() };
-            structure[TypeToken.DrawCircle] = new List<IParse>() { new DrawCircleParse() };
-            structure[TypeToken.Fill] = new List<IParse>() { new FillParse() };
-            structure[TypeToken.DrawRectangle] = new List<IParse>() { new DrawRectangleParse() };
+            [TypeToken.Identificador] = new List<IParse>() { new LabelParse(), new AsignacionParse() },
+            [TypeToken.Spawn] = new List<IParse>() { new SpawnParser() },
+            [TypeToken.Color] = new List<IParse>() { new ColorParse() },
+            [TypeToken.Size] = new List<IParse>() { new SizeParse() },
+            [TypeToken.DrawLine] = new List<IParse>() { new DrawLineParse() },
+            [TypeToken.GoTo] = new List<IParse>() { new GoToParse() },
+            [TypeToken.DrawCircle] = new List<IParse>() { new DrawCircleParse() },
+            [TypeToken.Fill] = new List<IParse>() { new FillParse() },
+            [TypeToken.DrawRectangle] = new List<IParse>() { new DrawRectangleParse() },
 
             //funciones
-            structure[TypeToken.GetActualX] = new List<IParse>() { new GetActualXParse() };
-            structure[TypeToken.GetActualY] = new List<IParse>() { new GetActualYParse() };
-            structure[TypeToken.GetCanvasSize] = new List<IParse>() { new GetCanvasSizeParse() };
-        }
+
+        };
 
 
 
         //logica para parsear 
         public List<AstNode> Parseo()
         {
-            RegisterParser();
             var arbol = new List<AstNode>();
             //mientras que no se acabe los tokens 
             while (Current.type != TypeToken.Fin)
             {
 
 
-                if (structure.ContainsKey(Current.type))
+                if (estructura.ContainsKey(Current.type))
                 {
+                    System.Console.WriteLine(Current.type);
                     //si contiene la structura  parsealo
-                    var parseos = structure[Current.type];
+                    var parseos = estructura[Current.type];
                     AstNode? nodo = null;
                     foreach (var p in parseos)
                     {

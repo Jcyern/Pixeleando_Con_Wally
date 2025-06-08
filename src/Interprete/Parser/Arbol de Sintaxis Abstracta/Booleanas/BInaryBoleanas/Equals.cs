@@ -33,13 +33,19 @@ namespace Iguales
             var left = LeftExpression!.Evaluate();
             System.Console.WriteLine($"Equals Left {left}  type {left!.GetType()} ");
             var right = RightExpression!.Evaluate();
-            System.Console.WriteLine($"Equals Right {right}");
+            System.Console.WriteLine($"Equals Right {right} type {right!.GetType()}");
 
             //en ese punto se suponen q son del mismo tipo 
             //coger el tipo de uno convertirlos y luego apliar ==
             if (left!.GetType() == typeof(int))
             {
                 return Convert.ToInt32(left) == Convert.ToInt32(right);
+            }
+            //pq el true y el false lo q coge como  string el object  , y en caso de q la exp devuelv un bool en el evaluate son otrs 20 pesos 
+            else if (left!.GetType() == typeof(bool))
+            {
+
+                return Convert.ToBoolean(left) == Convert.ToBoolean(right);
             }
             else
             {

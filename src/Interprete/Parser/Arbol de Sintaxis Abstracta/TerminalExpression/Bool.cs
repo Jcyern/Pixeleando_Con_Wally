@@ -2,6 +2,9 @@ using ExpressionesUnarias;
 using ExpressionesTipos;
 using TerminalesNode;
 using Evalua;
+using IParseo;
+using ArbolSintaxisAbstracta;
+using Parseando;
 
 namespace Boolean
 {
@@ -31,7 +34,7 @@ namespace Boolean
         public override object Evaluate(Evaluator? evaluator = null)
         {
             if (value != null)
-                return value;
+                return Convert.ToBoolean(value);
 
             return false;
         }
@@ -39,6 +42,15 @@ namespace Boolean
 
     #endregion
 
+    public class BoolParse : IParse
+    {
+        public AstNode? Parse(Parser parser)
+        {
+            var  valor  = parser.Current;
+            //para seguir las evaluaciones
+            parser.NextToken();
 
-
+            return new Bool(valor.value, valor.Pos);
+        }
+    }
 }

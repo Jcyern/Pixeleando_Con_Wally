@@ -153,6 +153,7 @@ namespace ArbolSintaxisAbstracta
             }
             //exp de distancia X
             var distX = Converter.GetExpression(token_disx);
+            
 
             //verificar si es el close parentesis seria un error 
             if (parser.Current.type == TypeToken.Coma)
@@ -178,7 +179,7 @@ namespace ArbolSintaxisAbstracta
                     parser.NextToken();
                     System.Console.WriteLine("Hay dist y");
                     var tokens_distancia = new List<Token>();
-                    
+
 
                     while (parser.Current.type != TypeToken.CloseParenthesis)
                     {
@@ -190,7 +191,7 @@ namespace ArbolSintaxisAbstracta
 
                     var dist = Converter.GetExpression(tokens_distancia);
                     return new DrawLineNode(draw, distX, distY, dist);
-                    
+
                 }
                 else
                 {

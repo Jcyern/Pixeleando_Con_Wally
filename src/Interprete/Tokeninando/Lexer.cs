@@ -190,6 +190,43 @@ namespace lexer
                     #endregion
 
 
+                    #region  N U M E R O S
+                    //Numbers
+                    else if (char.IsDigit(current))
+                    {
+                        Debug.Print("Numero");
+                        string value = "";
+                        value += current;
+                        NextChar();
+
+                        //mientras halla siguiente elemento  y  el sig no sea espacio en blanco 
+                        while ( char.IsDigit(current) )
+                        {
+                            value += current;
+                            NextChar();
+                        }
+
+                        //cuando termine ,verificar si se puede convertir a un numero entero 
+                        if (int.TryParse(value, out int result))
+                        {
+                            Debug.Print(value);
+                            Debug.Print("es numero");
+                            //si es un numero crea un nuevo token 
+                            tokens.Add(new Token(TypeToken.Numero, value, line, CalcularColumna(line)));
+                        }
+                        else
+                        {
+                            Debug.Print("No es numero");
+                            var token = new Token(TypeToken.InvalidToken, value, line, CalcularColumna(line));
+                            tokens.Add(token);
+                            //Agregar error 
+                            errores.Add(new InvalidNumberError(token));
+                        }
+
+                    }
+
+                    #endregion
+
 
 
 
@@ -258,12 +295,12 @@ namespace lexer
                     {
                         NextChar();
 
-                        if (current == '*' && (char.IsWhiteSpace(GetNext()) || GetNext() == '?' || char.IsDigit(GetNext()))) //es potencia 
+                        if (current == '*' ) //es potencia 
                         {
                             tokens.Add(new Token(TypeToken.Operador, "**", line, CalcularColumna(line)));
                             NextChar();
                         }
-                        else if (char.IsWhiteSpace(current) || char.IsDigit(current))
+                        else 
                         {
                             tokens.Add(new Token(TypeToken.Operador, "*", line, CalcularColumna(line)));
                         }
@@ -346,42 +383,6 @@ namespace lexer
 
 
 
-
-                    #region  N U M E R O S
-                    //Numbers
-                    else if (char.IsDigit(current))
-                    {
-                        Debug.Print("Numero");
-                        string value = "";
-                        value += current;
-                        NextChar();
-
-                        //mientras halla siguiente elemento  y  el sig no sea espacio en blanco 
-                        while (current != '?' && !char.IsWhiteSpace(current) && char.IsDigit(current))
-                        {
-                            value += current;
-                            NextChar();
-                        }
-
-                        //cuando termine ,verificar si se puede convertir a un numero entero 
-                        if (int.TryParse(value, out int result))
-                        {
-                            Debug.Print("es numero");
-                            //si es un numero crea un nuevo token 
-                            tokens.Add(new Token(TypeToken.Numero, value, line, CalcularColumna(line)));
-                        }
-                        else
-                        {
-                            Debug.Print("No es numero");
-                            var token = new Token(TypeToken.InvalidToken, value, line, CalcularColumna(line));
-                            tokens.Add(token);
-                            //Agregar error 
-                            errores.Add(new InvalidNumberError(token));
-                        }
-
-                    }
-
-                    #endregion
 
 
 

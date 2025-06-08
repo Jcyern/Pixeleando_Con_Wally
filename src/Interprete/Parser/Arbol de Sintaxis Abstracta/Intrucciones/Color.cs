@@ -85,6 +85,7 @@ namespace ColorFunc
             parser.NextToken();
 
             var exp = Converter.GetExpression(tokens);
+            
 
             return new ColorNode(color, exp);
         }

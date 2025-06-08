@@ -4,6 +4,8 @@ using ArbolSintaxisAbstracta;
 using Evalua;
 using Expresion;
 using ExpressionesTipos;
+using IParseo;
+using Parseando;
 using TerminalesNode;
 
 namespace vars
@@ -24,17 +26,17 @@ namespace vars
             return Scope.ContainType(Identificador.value);
         }
 
-        public override object? Evaluate(Evaluator? evaluator= null)
+        public override object? Evaluate(Evaluator? evaluator = null)
         {
             //dame el valor de la variable 
-            var result =Scope.GetVariable(Identificador.value);
+            var result = Scope.GetVariable(Identificador.value);
             System.Console.WriteLine($"La Variable {Identificador.value} guarda {result}");
             return result;
         }
 
         public override ExpressionTypes GetTipo()
         {
-            
+
             if (Scope.ContainType(Identificador.value))
             {
                 return Scope.variable_tipo[Identificador.value];
@@ -45,4 +47,14 @@ namespace vars
         }
     }
 
+
+    public class VariableParse : IParse
+    {
+        public AstNode? Parse(Parser parser)
+        {
+            var v = parser.Current;
+            parser.NextToken();
+            return new VariableNode(v);
+        }
+    }
 }

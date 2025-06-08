@@ -5,6 +5,9 @@ using TerminalesNode;
 
 using Paleta_Colores;
 using Evalua;
+using IParseo;
+using ArbolSintaxisAbstracta;
+using Parseando;
 
 namespace Cadenas
 {
@@ -16,7 +19,7 @@ namespace Cadenas
         public String(object value, (int, int) Location) : base(value, Location)
         {
         }
-    
+
 
 
         public override ExpressionTypes GetTipo()
@@ -45,4 +48,16 @@ namespace Cadenas
     #endregion
 
 
+    public class StringParse : IParse
+    {
+        public AstNode? Parse(Parser parser)
+        {
+            var str = parser.Current;
+            //seguir avanzando 
+
+            parser.NextToken();
+
+            return new Cadenas.String(str.value, str.Pos);
+        }
+    }
 }

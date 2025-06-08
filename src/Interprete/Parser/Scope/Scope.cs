@@ -41,24 +41,24 @@ namespace Alcance
             return variable_expresion.ContainsKey(name);
         }
 
-        public static bool AsignarType(string name, Expression value)
+        public static bool AsignarType(Token name, Expression value)
         {
             //ver primero el tipo 
             if (value.type == ExpressionTypes.Null)
                 value.type = value.GetTipo();
 
             //de existir && es el mismo tipo  
-            if (ContainType(name))
+            if (ContainType(name.value))
             {
-                if (variable_tipo[name] == value.type)
+                if (variable_tipo[name.value] == value.type)
                 {
                     //si  es igual al tipo 
                     System.Console.WriteLine($"Es del mismo tipo  {value.type} se podra asignar ");
                     ///es valida la asignacion ,, no se guarda el valor aun hasta expression
                     return true;
                 }
-                System.Console.WriteLine($"No es del mismo tipo sera error de asignacion type {variable_tipo[name]}  type pas {value.type}");
-                AstNode.compilingError.Add(new AsignationTypeError(value.Location, name, variable_tipo[name], value.type));
+                System.Console.WriteLine($"No es del mismo tipo sera error de asignacion type {variable_tipo[name.value]}  type pas {value.type}");
+                AstNode.compilingError.Add(new AsignationTypeError(value.Location, name.value, variable_tipo[name.value], value.type));
                 return false;
             }
             else
@@ -69,19 +69,19 @@ namespace Alcance
                 if (value.type != ExpressionTypes.Invalid && value.type != ExpressionTypes.Null)
                 {
                     System.Console.WriteLine($"la variable {name} se asigno el tipo {value.type} ");
-                    variable_tipo[name] = value.type;
+                    variable_tipo[name.value] = value.type;
                     return true;
                 }
                 else if (value.type == ExpressionTypes.Invalid)
                 {
                     System.Console.WriteLine("No se creo pq se le asigna invalid expression");
-                    AstNode.compilingError.Add(new AsignationInavalidTypeError(value.Location, name));
+                    AstNode.compilingError.Add(new AsignationInavalidTypeError(name.Pos, name.value));
                     return false;
                 }
                 else if (value.type == ExpressionTypes.Null)
                 {
                     System.Console.WriteLine("No se creo pq se le asigna una null expression");
-                    AstNode.compilingError.Add(new NullAsignationError(value.Location, name));
+                    AstNode.compilingError.Add(new NullAsignationError(name.Pos, name.value));
                     return false;
                 }
 

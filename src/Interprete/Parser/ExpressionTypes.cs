@@ -22,7 +22,13 @@ namespace ExpressionesTipos
         TruplaNumber,
 
 
-        nothing
+        nothing,
+
+        Operator,
+
+        OpenParent,
+        
+        CloseParent,
 }
 
 

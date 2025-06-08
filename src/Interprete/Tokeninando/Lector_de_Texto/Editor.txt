@@ -1,12 +1,9 @@
-Spawn(0,0)
-Circulo
-DrawCircle(5,4,1)
-Fill()
-Rectangulo
-DrawRectangle(-1,1,2,3,4)
-i<-  2
+
+Spawn(2,3)
+m<- 1
+m<- m+2
+canvas <- GetCanvasSize()
+i <- 5*(2+ GetActualX() + GetActualY()) + m
 
 
-GetActualX()
-GetCanvasSize()
-GetActualY()
+brush <- false == IsBrushSize(-1) 

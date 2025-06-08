@@ -149,14 +149,15 @@ public class Program
     {
         System.Console.WriteLine("Parseando");
 
+        Parser.errores_sintaxis = new List<Errores.Error>();
         var parser = new Parser(tokens);
         var nodos = parser.Parseo();
 
 
-        if (parser.errores_sintaxis.Count > 0)
+        if (Parser.errores_sintaxis.Count > 0)
         {
             System.Console.WriteLine("Hay errores sintacticos ");
-            foreach (var e in parser.errores_sintaxis)
+            foreach (var e in Parser.errores_sintaxis)
             {
                 e.ShowError();
             }

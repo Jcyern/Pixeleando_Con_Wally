@@ -1,55 +1,52 @@
-using Errores;
+using Expresion;
 using Evalua;
 using ExpressionesTipos;
 using IParseo;
 using Parseando;
 using Utiles;
+using TerminalesNode;
 
 namespace ArbolSintaxisAbstracta
 {
-    public class GetAlctualYNode : AstNode
+    public class GetCanvasSizeNode : TerminalExpression
     {
         Token get;
 
-        public GetAlctualYNode(Token get)
+
+        public GetCanvasSizeNode(Token get) : base (get.value,get.Pos)
         {
             this.get = get;
         }
 
         public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
         {
+            //siempre hay un tamno fijo para  el canvas 
             return true;
+
         }
+
 
         public override object? Evaluate(Evaluator? evaluador = null)
         {
-
-            if (Wally.Pos.Columna != int.MaxValue)
+            System.Console.WriteLine($" Get Canvas {Wally.canvas.Item1} , {Wally.canvas.Item2}");
+            if (evaluador != null)
             {
-                if (evaluador != null)
-                    evaluador.Move();
-
-                System.Console.WriteLine($"Get Y -- {Wally.Pos.Columna}");
-                return Wally.Pos.Columna;
+                evaluador.Move();
             }
-            else
-            {
-                //erorr
-                if (evaluador != null)
-                {
+            return Wally.canvas;
+        }
 
-                    evaluador.AddError(new IsntSpawn(get.Pos));
-                    evaluador.Move();
-                }
-                return 0;
-            }
+
+        public override ExpressionTypes GetTipo()
+        {
+            return ExpressionTypes.TruplaNumber;
         }
     }
 
 
 
 
-    public class GetActualYParse : IParse
+    public class GetCanvasSizeParse : IParse
     {
         public AstNode? Parse(Parser parser)
         {
@@ -58,10 +55,10 @@ namespace ArbolSintaxisAbstracta
             parser.ExpectedTokenType(TypeToken.OpenParenthesis);
             parser.ExpectedTokenType(TypeToken.CloseParenthesis);
 
+            //para seguir la evaluacion
             parser.NextToken();
 
-            return new GetAlctualYNode(get);
+            return new GetCanvasSizeNode(get);
         }
-    } 
-
+    }
 }

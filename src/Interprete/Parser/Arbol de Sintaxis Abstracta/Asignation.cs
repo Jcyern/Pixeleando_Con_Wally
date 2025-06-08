@@ -1,10 +1,13 @@
 
 using Alcance;
 using ArbolSintaxisAbstracta;
+using Convertidor_Pos_Inf;
 using Errores;
 using Evalua;
 using Expresion;
 using ExpressionesTipos;
+using IParseo;
+using Parseando;
 
 namespace AsignacionNodo
 {
@@ -29,7 +32,7 @@ namespace AsignacionNodo
             //verifica q
             //se asiga la variable en el chequeo semantico 
             if (Value != null)
-                return Scope.AsignarType(Identificador.value, Value);
+                return Scope.AsignarType(Identificador, Value);
             else
             {
                 System.Console.WriteLine($"No se puede crea la variable {Identificador.value}   pq se le pasa un nulll ,o nada");
@@ -47,9 +50,58 @@ namespace AsignacionNodo
             var result = Scope.GetVariable(Identificador.value);
             System.Console.WriteLine($"Asignacion {Identificador.value} <- {result}");
             //mover pos en el evaluador 
-            if(evaluador!= null)
-            evaluador.Move();
+            if (evaluador != null)
+                evaluador.Move();
             return result;
         }
     }
+
+    
+        public class AsignacionParse : IParse
+    {
+        public AstNode? Parse(Parser parser)
+        {
+            //por si  hay q volver atras en el caso de q no sea una asignacion
+            var primarypos = parser.current;
+            System.Console.WriteLine("Parseando asignacion");
+            System.Console.WriteLine("Parsear Asignacion");
+            if (parser.Current.type == TypeToken.Identificador && parser.GetNextToken().type == TypeToken.Asignacion && parser.GetNextToken().fila == parser.Current.fila)
+            {
+                //crear nodo asignacion 
+                var name = parser.Current;
+                System.Console.WriteLine($"Var namme {name.value}  pos = {name.fila}, {name.columna}");
+
+                var operador = parser.NextToken();
+                
+
+                //lo que siguen q se mantenga en la misma linea lo crearemos como una expresion
+                //con el converter 
+                var lista = new List<Token>();
+                while (parser.Current.type != TypeToken.Fin && parser.GetNextToken().fila == operador.fila)
+                {
+                    lista.Add(parser.NextToken());
+                }
+                //y avanzamos en el parser para q no se quede con esa ultima pos q pertenece a la asignacion y no de error sintaxtico 
+                parser.NextToken();
+
+                if (lista.Count > 0)
+                {
+                    System.Console.WriteLine("Se creo nodo asignacion ");
+                    var expression = Converter.GetExpression(lista);
+                    //crear la asignacion con la expression creada 
+                    
+                    return new AsignationNode(name, operador, expression);
+                }
+                else
+                {
+                    System.Console.WriteLine("Se creo nodo asignacion con expression null");
+                    return new AsignationNode(name, operador, null);
+                }
+            }
+            else
+                return null;
+        }
+
+    }
+    
 }

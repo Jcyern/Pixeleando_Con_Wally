@@ -3,11 +3,15 @@ using Alcance;
 using AndNodo;
 using ArbolSintaxisAbstracta;
 using Boolean;
+using Cadenas;
 using Division;
+using Errores;
 using Expresion;
 using ExpressionesBinarias;
+using ExpressionesTipos;
 using Iguales;
 using INodeCreador;
+using IParseo;
 using MayorIgualQue;
 using MayorQue;
 using MenorIgualque;
@@ -17,6 +21,7 @@ using NoIguales;
 using Numero;
 using OrNodo;
 using Paleta_Colores;
+using Parseando;
 using Pow;
 using Resta;
 using Resto;
@@ -74,97 +79,113 @@ namespace Convertidor_Pos_Inf
             ["**"] = new PowNodeCreator(),
         };
 
+        #endregion
+
+
+
+        #region  Dic Expressiones
+        //diccinari0 de los postfix 
+        public static Dictionary<TypeToken, List<IParse>> parsea = new()
+        {
+            [TypeToken.GetActualX] = new List<IParse>() { new GetActualXParse() },
+            [TypeToken.GetActualX] = new List<IParse>() { new GetActualXParse() },
+            [TypeToken.GetActualY] = new List<IParse>() { new GetActualYParse() },
+            [TypeToken.GetCanvasSize] = new List<IParse>() { new GetCanvasSizeParse() },
+            [TypeToken.Boolean] = new List<IParse>() { new BoolParse() },
+            [TypeToken.Numero] = new List<IParse>() { new NumberParse() },
+            [TypeToken.String] = new List<IParse>() { new StringParse() },
+            [TypeToken.color] = new List<IParse>() { new ColorParse() },
+            [TypeToken.Operador] = new List<IParse>() { new OperadorParse() },
+            [TypeToken.OpenParenthesis] = new List<IParse>() { new ParentesisParse() },
+            [TypeToken.CloseParenthesis] = new List<IParse>() { new ParentesisParse() },
+            [TypeToken.Identificador] = new List<IParse>() { new VariableParse() },
+            [TypeToken.IsBrushSize] = new List<IParse>() { new IsBrushSizeParse()},
+        };
 
 
         #endregion
 
-        public static bool IsNegative(int pos, List<Token> tokens)
-        {
-            if (pos - 1 < 0)
-            {
-                //esta en la pos inicial es un negativo 
-                return true;
-            }
-            else
-            {
-                if (tokens[pos - 1].type == TypeToken.OpenParenthesis || tokens[pos - 1].type == TypeToken.Operador || tokens[pos-1].type == TypeToken.Asignacion)
-                {
-                    return true;
-                }
-            }
 
-            return false;
+
+        //parsea en expresione todo sin organizarlo en Postfix
+        private static List<AstNode> ParsearInfix(List<Token> tokens)
+        {
+            System.Console.WriteLine("Parsear el infix");
+            //parsear los  tokens en infix 
+            Parser parser = new Parser(tokens, parsea);
+
+            return parser.Parseo();
         }
+
+
+
+
+
+
+
+        // organiza las expresiones en postfix
+
         #region To --- Postfix 
-        public static List<Token> PostfixExpression(List<Token> infix, Dictionary<string, int> precedencia)
+        private static List<Expression> PostfixExpression(List<AstNode> infix, Dictionary<string, int> precedencia)
         {
             System.Console.WriteLine("converter to postfix ");
-            List<Token> postfix = new();
+            List<Expression> postfix = new();
             //crear un pila donde guardaremos los operadores por orden de precedencia  
-            Stack<Token> operadores = new Stack<Token>();
-
+            Stack<Expression> operadores = new();
             for (int i = 0; i < infix.Count; i++)
             {
-
-                //cuando es un identificador ..verificar q esa variable existe y es un numero 
-                //ojo
-                
-
-                //si es un numero agregarlo directamente a la salida
-                if (infix[i].type == TypeToken.Numero)
+                //logica para ordenar los operadores en orden de precedencia 
+                if (infix[i].GetTipo() == ExpressionTypes.Operator)
                 {
-                    System.Console.WriteLine($"Numero add {infix[i].value}");
-                    postfix.Add(infix[i]);
-                }
-                //posible numero negativo 
-                else if (infix[i].value == "-" && IsNegative(i, infix))
-                {
-                    System.Console.WriteLine("Posible negativo ");
-                    //agregar un numero negativo 
-                    if (i + 1 < infix.Count && infix[i + 1].type == TypeToken.Numero)
+                    System.Console.WriteLine("Operador");
+                    if (operadores.Count == 0)
                     {
-                        //sumar la pos 
-                        i += 1;
-                        postfix.Add(new Token(TypeToken.Numero, "-" + infix[i].value, infix[i].fila, infix[i].columna));
-                        continue;
+                        System.Console.WriteLine($"Operadores vacio meter {infix[i].Evaluate()}");
+                        //si no hay operadores metelo 
+                        operadores.Push((Expression)infix[i]);
                     }
+                    //ver si tiene mayor precedencia 
 
+                    else
+                    {
+                        var op = (Token)infix[i]!.Evaluate()!;
+                        var peek = (Token)operadores.Peek().Evaluate()!;
+
+                        if (precedencia[op.value] >= precedencia[peek.value])
+                        {
+                            //si es mayor su precedenci metelo 
+                            System.Console.WriteLine("Meter ");
+                            System.Console.WriteLine($" {op.value} > precedencia {peek.value}");
+                            operadores.Push((Expression)infix[i]);
+                        }
+                        //si tiene menor precedencia saca las cosas hasta q el quede de mayor precednecia 
+                        else if (precedencia[op.value] < precedencia[peek.value])
+                        {
+                            //mientras q tenga menor precedencia , saca los operadoresy agregalos a la infix list
+                            while (operadores.Count > 0 && precedencia[op.value] < precedencia[peek.value])
+                            {
+                                System.Console.WriteLine($"agregar a postfix {operadores.Peek()}");
+                                postfix.Add(operadores.Pop());
+                            }
+
+                            //cuando ya tenga mayor o iugal predencia o operadores se quede vacio , agregala
+                            operadores.Push((Expression)infix[i]);
+                        }
+                    }
                 }
 
-                //si es un bool meterlo en la pila 
-                else if (infix[i].type == TypeToken.Boolean)
-                {
-                    System.Console.WriteLine($"Bool add {infix[i].value}");
-                    postfix.Add(infix[i]);
-                }
-                else if (infix[i].type == TypeToken.String)
-                {
-                    System.Console.WriteLine($"String add {infix[i].value}");
-                    postfix.Add(infix[i]);
-                }
-                //tipo color 
-                else if (infix[i].type == TypeToken.color)
-                {
-                    System.Console.WriteLine($"Color add {infix[i].value}");
-                    postfix.Add(infix[i]);
-                }
-                else if (infix[i].type == TypeToken.Identificador)
-                {
-                    System.Console.WriteLine($"Identificador add {infix[i].value}");
-                    postfix.Add(infix[i]);
-                }
-                //si es ( // meterlo en la pila
-                else if (infix[i].type == TypeToken.OpenParenthesis)
+                //logica de asimilacion de parentesis 
+                else if (infix[i].GetTipo() == ExpressionTypes.OpenParent)
                 {
                     System.Console.WriteLine("Open ( meterlo");
-                    operadores.Push(infix[i]);
+                    operadores.Push((Expression)infix[i]);
                 }
                 //si es ) sacar todo lo de la pila hasta llegarg al open (
-                else if (infix[i].type == TypeToken.CloseParenthesis)
+                else if (infix[i].GetTipo() == ExpressionTypes.CloseParent)
                 {
 
                     //mientras que el ultimo no sea ( en la pila de operadores
-                    while (operadores.Peek().type != TypeToken.OpenParenthesis)
+                    while (operadores.Peek().GetTipo() != ExpressionTypes.OpenParent)
                     {
                         //agrega el operador a la pila
                         System.Console.WriteLine($"Add {operadores.Peek().value}");
@@ -173,42 +194,15 @@ namespace Convertidor_Pos_Inf
                     }
                     Debug.Print("Se encontro el open ");
                     var result = operadores.Pop();
-                    Debug.Print(result.value);
+                    Debug.Print(result.Evaluate()!.ToString());
 
 
                 }
-                //ir metiendo y sacando en la pila por precedencia , la pila siempre queda organizada como que elm ult elemento es el de mayor precedencia
-                else if (infix[i].type == TypeToken.Operador)
+                else
                 {
-                    System.Console.WriteLine("Operador");
-                    if (operadores.Count == 0)
-                    {
-                        System.Console.WriteLine($"Operadores vacio meter {infix[i].value}");
-                        //si no hay operadores metelo 
-                        operadores.Push(infix[i]);
-                    }
-                    //ver si tiene mayor precedencia 
-
-                    else if (precedencia[infix[i].value] >= precedencia[operadores.Peek().value])
-                    {
-                        //si es mayor su precedenci metelo 
-                        System.Console.WriteLine("Meter ");
-                        System.Console.WriteLine($" {infix[i].value} > precedencia {operadores.Peek().value}");
-                        operadores.Push(infix[i]);
-                    }
-                    //si tiene menor precedencia saca las cosas hasta q el quede de mayor precednecia 
-                    else if (precedencia[infix[i].value] < precedencia[operadores.Peek().value])
-                    {
-                        //mientras q tenga menor precedencia , saca los operadoresy agregalos a la infix list
-                        while (operadores.Count > 0 && precedencia[infix[i].value] < precedencia[operadores.Peek().value])
-                        {
-                            System.Console.WriteLine($"agregar a postfix {operadores.Peek()}");
-                            postfix.Add(operadores.Pop());
-                        }
-
-                        //cuando ya tenga mayor o iugal predencia o operadores se quede vacio , agregala
-                        operadores.Push(infix[i]);
-                    }
+                    //es cualquier cosa de las terminal expression meterlo a la pila 
+                    System.Console.WriteLine($"exp add {infix[i].Evaluate()}");
+                    postfix.Add((Expression)infix[i]);
                 }
             }
 
@@ -219,9 +213,6 @@ namespace Convertidor_Pos_Inf
                 postfix.Add(operadores.Pop());
             }
             System.Console.WriteLine("Dentro ");
-            foreach (var item in postfix)
-                System.Console.WriteLine(item.value);
-
             return postfix;
         }
 
@@ -233,62 +224,40 @@ namespace Convertidor_Pos_Inf
         //para hacerlo mas extensibles , es necesario definir las expresiones bases a las cuales ir creando algo asi como las terminales 
 
         #region  Creando Expression
-        public static Expression? Aritmetic_Bool_Expression(List<Token> postfix, Dictionary<string, INodeCreator> operadores)
+        private  static Expression? Aritmetic_Bool_Expression(List<Expression> postfix, Dictionary<string, INodeCreator> operadores)
         {
             Stack<Expression> pila = new();
             System.Console.WriteLine("postfix");
             foreach (var item in postfix)
-                System.Console.WriteLine(item.value);
+            System.Console.WriteLine(item.Evaluate());
 
 
             for (int i = 0; i < postfix.Count; i++)
             {
-                //numero 
-                if (postfix[i].type == TypeToken.Numero)
-                {
-                    pila.Push(new Number(postfix[i].value, postfix[i].Pos));
-                }
-                //booleano 
-                else if (postfix[i].type == TypeToken.Boolean)
-                {
-                    pila.Push(new Bool(postfix[i].value, postfix[i].Pos));
-                }
-                //string
-                else if (postfix[i].type == TypeToken.String)
-                {
-                    pila.Push(new Cadenas.String(postfix[i].value, postfix[i].Pos));
-                }
-                //color 
-                else if (postfix[i].type == TypeToken.color)
-                {
-                    System.Console.WriteLine("creando color ");
-                    pila.Push(new Color(postfix[i].value, postfix[i].Pos));
-                }
-                //variable
-                else if (postfix[i].type == TypeToken.Identificador)
-                {
-                    System.Console.WriteLine($"Identificador add {postfix[i].value}");
-                    pila.Push(new VariableNode(postfix[i]));
-                }
-
+                
                 //operadores 
-                else if (postfix[i].type == TypeToken.Operador) //es un operador
+                if (postfix[i].GetTipo() == ExpressionTypes.Operator) //es un operador
                 {
                     var Right = pila.Count > 0 ? pila.Pop() : null;
                     var Left = pila.Count > 0 ? pila.Pop() : null;
-
-                    if (operadores.ContainsKey(postfix[i].value))
+                    var tok = (Token)postfix[i]!.Evaluate()!;
+                    if (operadores.ContainsKey(tok.value))
                     {
+
                         pila.Push(
-                            operadores[postfix[i].value].CreateNode(Left, postfix[i], Right)
+                            operadores[tok.value].CreateNode(Left, tok, Right)
                             !);
                     }
                     else
                     {
-                        throw new Exception($"La operacion {postfix[i].value}no esta definida");
+                        throw new Exception($"La operacion {tok.value}no esta definida");
                     }
 
 
+                }//cualquier otra cosa es una expresion meterla a la pila 
+                else
+                {
+                    pila.Push(postfix[i]);
                 }
             }
 
@@ -313,8 +282,8 @@ namespace Convertidor_Pos_Inf
             var op = operadores == null ? op_definidas : operadores;
             var p = predencia == null ? precedence : predencia;
 
-
-            var post = PostfixExpression(tokens, p);
+            var expressiones = ParsearInfix(tokens);
+            var post = PostfixExpression(expressiones, p);
 
             return Aritmetic_Bool_Expression(post, op);
         }

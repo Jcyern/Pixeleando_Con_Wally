@@ -3,6 +3,9 @@ using ExpressionesTipos;
 using Expresion;
 using TerminalesNode;
 using Evalua;
+using IParseo;
+using ArbolSintaxisAbstracta;
+using Parseando;
 
 
 namespace Numero
@@ -18,7 +21,7 @@ namespace Numero
 
         public override ExpressionTypes GetTipo()
         {
-            if (value  != null)
+            if (value != null)
             {
                 return ExpressionTypes.Number;
             }
@@ -32,10 +35,28 @@ namespace Numero
         {
             if (value != null)
             {
+                System.Console.WriteLine($"Numero Evaluate {value}");
                 return value;
             }
-
+            System.Console.WriteLine("Numero Evaluate 0");
             return 0;
+        }
+    }
+
+
+    public class NumberParse : IParse
+    {
+        public AstNode? Parse(Parser parser)
+        {
+            System.Console.WriteLine("Parsear Num");
+            System.Console.WriteLine(parser.Current.value);
+            var num = parser.Current;
+
+            //seguir analizando 
+            parser.NextToken();
+            System.Console.WriteLine(parser.Current.value);
+
+            return new Number(num.value, num.Pos);
         }
     }
 
