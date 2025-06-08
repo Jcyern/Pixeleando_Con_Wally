@@ -4,10 +4,11 @@ using Errores;
 using Evalua;
 using Expresion;
 using ExpressionesTipos;
+using TerminalesNode;
 
 namespace Arbol_de_Sintaxis_Abstracta
 {
-    public class GetColorCountNode : AstNode
+    public class GetColorCountNode : TerminalExpression
     {
         Token get;
         Expression? Color;
@@ -17,7 +18,8 @@ namespace Arbol_de_Sintaxis_Abstracta
         Expression? Y1;
         Expression? Y2;
 
-        public GetColorCountNode(Token get, Expression? Color, Expression? X1, Expression? Y1, Expression? X2, Expression? Y2)
+        public GetColorCountNode(Token get, Expression? Color, Expression? X1, Expression? Y1, Expression? X2, Expression? Y2) : base (get.value,get.Pos
+        )
         {
             this.get = get;
             this.Color = Color;
