@@ -76,9 +76,27 @@ namespace Aparecer
         {
             var f = Convert.ToInt32(fila!.Evaluate());
             var c = Convert.ToInt32(columna!.Evaluate());
-            Wally.Pos.Fila = f; Wally.Pos.Columna = c;
 
-            System.Console.WriteLine($"se coloco al wally en la pos fila: {f}  columna: {c}");
+            //verifica que el Spawn esta dentro de las dimensines del tablero 
+            var isf = f < Wally.Pos.Fila && f >= 0;
+            var isc = c < Wally.Pos.Columna && c >= 0;
+
+
+            if (isf && isc)
+            {
+                System.Console.WriteLine($"se coloco al wally en la pos fila: {f}  columna: {c}");
+                Wally.Pos.Fila = f; Wally.Pos.Columna = c;
+            }
+
+            else
+            {
+                //dar error de fuera de rango del tablero 
+                if (evaluador != null)
+                {
+                    evaluador.AddError(new SpawnOutOfRange(spawn.Pos, f, c));
+                }
+            }
+
             //metodo para pos al wally en la parte visual 
 
             //mover pos en el evaluador 

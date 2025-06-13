@@ -266,7 +266,15 @@ namespace Convertidor_Pos_Inf
             //cuando se termine todo tiene q quedar una expresion  o no 
             if (pila.Count > 0)
             {System.Console.WriteLine("se retorno una exp");
-                return pila.Pop();
+                var exp = pila.Pop();
+
+                if (pila.Count > 0)
+                {
+                    //hay elementos aun en la pila es una null expresion 
+                    return null;
+                }
+                else
+                return exp; ;
             }
 
             //si no hay nada retona null expression 

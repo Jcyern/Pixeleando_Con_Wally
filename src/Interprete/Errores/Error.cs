@@ -1,6 +1,7 @@
 
 using System.Runtime.InteropServices;
 using ExpressionesTipos;
+using Utiles;
 
 namespace Errores
 {
@@ -208,9 +209,20 @@ namespace Errores
 
     public class ZeroDivitionError : Error
     {
-        public ZeroDivitionError((int fila, int columna)pos) : base(pos.fila, pos.columna)
+        public ZeroDivitionError((int fila, int columna) pos) : base(pos.fila, pos.columna)
         {
             message += "The Division by Zero is not define ";
+        }
+    }
+
+
+
+    //errores de Spawn de fuera de rango 
+    public class SpawnOutOfRange : Error
+    {
+        public SpawnOutOfRange((int fila, int columna) pos, int x, int y) : base(pos.fila, pos.columna)
+        {
+            message += $"The position {x},{y} is out of range ,   0 <= {x} < {Wally.canvas.Item1} && 0 <= {y} < {Wally.canvas.Item2}";
         }
     }
 
