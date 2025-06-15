@@ -36,7 +36,8 @@ namespace Utiles
 
         public static void CrearTablero()
         {
-            Wally.tablero = new string[canvas.Item1, canvas.Item2];
+            
+            tablero = new string[canvas.Item1, canvas.Item2];
 
             for (int i = 0; i < tablero.GetLength(0); i ++)
             {

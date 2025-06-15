@@ -12,4 +12,10 @@ public class Escenas : MonoBehaviour
     {
         SceneManager.LoadScene("Tilemap");
     }
+
+
+    public void ChangetoCode()
+    {
+        SceneManager.LoadScene("Editor_de_texto");
+    }
 }
