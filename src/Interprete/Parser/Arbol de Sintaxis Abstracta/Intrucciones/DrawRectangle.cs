@@ -112,13 +112,14 @@ namespace ArbolSintaxisAbstracta
 
             if (Wally.Pos.Fila != int.MaxValue)
             {
-                var range_x = Methots.InRange(x, -1, 1);
-                var range_y = Methots.InRange(y, -1, 1);
+                var range_x = Metodos.InRange(x, -1, 1);
+                var range_y = Metodos.InRange(y, -1, 1);
 
                 if (range_x && range_y)
                 {
                     System.Console.WriteLine($"Mover una Linea en la dir {x},{y} desde {Wally.Pos.Fila}, {Wally.Pos.Columna}  distancia {d}  crear rectangulo de ancho {anc} y altura {alt}");
-
+                    //llamar al metodo 
+                    Metodos.DrawRectangle(x, y, d, alt, anc);
                     //mover pos en el evaluador 
                     if (evaluador != null)
                         evaluador.Move();

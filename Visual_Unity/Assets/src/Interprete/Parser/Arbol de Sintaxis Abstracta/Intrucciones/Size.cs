@@ -1,0 +1,89 @@
+
+using System;
+using System.Collections.Generic;
+using Convertidor_Pos_Inf;
+using Errores;
+using Evalua;
+using Expresion;
+using ExpressionesTipos;
+using IParseo;
+using metodos;
+using Parseando;
+using PincelUnity_;
+using UnityEngine;
+
+namespace ArbolSintaxisAbstracta
+{
+    public class SizeNode : AstNode
+    {
+        public Token Size;
+        public Expression? exp;
+
+
+        public SizeNode(Token Size, Expression? exp)
+        {
+            this.Size = Size;
+            this.exp = exp;
+        }
+
+        public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
+        {
+            Debug.Log("Chequeo de SizeNode");
+            if (exp != null)
+                return exp.CheckSemantic(ExpressionTypes.Number);
+            else
+            {
+                //crear error
+                compilingError.Add(new ExpectedType(Size.Pos, ExpressionTypes.Number.ToString(), ExpressionTypes.Null.ToString()));
+                return false;
+            }
+        }
+
+        public override object? Evaluate(Evaluator? evaluador = null)
+        {
+            Debug.Log("Evaluando Size");
+            var size = Convert.ToInt32(exp!.Evaluate());
+
+            Pincel.ChangeSize(size);
+
+            //cambiar el Size del pince en unnity 
+            
+
+                        //mover pos en el evaluador 
+            if (evaluador != null)
+                evaluador.Move();
+
+            return 0;
+        }
+    }
+
+
+    public class SizeParse : IParse
+    {
+        public AstNode Parse(Parser parser)
+        {
+            //la primera debe ser el Token Size
+            var size = parser.Current;
+            parser.ExpectedTokenType(TypeToken.OpenParenthesis);
+            parser.NextToken();
+
+            var token = new List<Token>();
+
+            while (parser.Current.type != TypeToken.CloseParenthesis)
+            {
+                token.Add(parser.Current);
+                parser.NextToken();
+            }
+
+            //seguir avanazando en los tokens 
+            parser.NextToken();
+
+            //comvertir a exp la lista de tokens 
+
+            var exp = Converter.GetExpression(token);
+
+
+            return new SizeNode(size, exp);
+        }
+    }
+}

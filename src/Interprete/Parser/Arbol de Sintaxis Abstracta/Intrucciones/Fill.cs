@@ -2,6 +2,7 @@
 using Evalua;
 using ExpressionesTipos;
 using IParseo;
+using metodos;
 using Parseando;
 
 namespace ArbolSintaxisAbstracta
@@ -25,6 +26,8 @@ namespace ArbolSintaxisAbstracta
         public override object? Evaluate(Evaluator? evaluador = null)
         {
             System.Console.WriteLine("Ejecutar Evaluate  Fill ");
+            //metodo 
+            Metodos.Fill();
 
             if (evaluador != null)
             {

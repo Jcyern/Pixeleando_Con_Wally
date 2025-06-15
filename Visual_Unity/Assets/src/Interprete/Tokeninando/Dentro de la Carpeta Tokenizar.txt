@@ -1,0 +1,11 @@
+Dentro de la Carpeta Tokenizando trabajaremos la parte de dividir en tokens
+
+Tokenizacion : Las tokenizaciones es dividir la cadena de texto en elementos  significativos a los cuales llamaremos Tokens
+
+
+Token : Cada token almacenara 
+-un Valor :  q es el valor q tiene en formato string
+-Tipo : Que sera el tipo de token                  
+
+Ejemplo : "3"  Valor : "3"  Tipo : Numero
+

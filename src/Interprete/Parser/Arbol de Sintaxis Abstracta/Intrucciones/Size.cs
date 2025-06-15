@@ -5,6 +5,7 @@ using Evalua;
 using Expresion;
 using ExpressionesTipos;
 using IParseo;
+using metodos;
 using Parseando;
 using Pincel_;
 
@@ -38,7 +39,12 @@ namespace ArbolSintaxisAbstracta
         public override object? Evaluate(Evaluator? evaluador = null)
         {
             System.Console.WriteLine("Evaluando Size");
-            Pincel.ChangeSize(Convert.ToInt32(exp!.Evaluate()));
+            var size = Convert.ToInt32(exp!.Evaluate());
+
+            Pincel.ChangeSize(size);
+
+            //cambiar el Size del pince en unnity 
+            Metodos.Size(size);
 
                         //mover pos en el evaluador 
             if (evaluador != null)

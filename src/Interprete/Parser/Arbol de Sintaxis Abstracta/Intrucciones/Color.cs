@@ -6,6 +6,7 @@ using Evalua;
 using Expresion;
 using ExpressionesTipos;
 using IParseo;
+using metodos;
 using Parseando;
 using Pincel_;
 
@@ -45,10 +46,11 @@ namespace ColorFunc
         public override object? Evaluate(Evaluator? evaluador = null)
         {
             System.Console.WriteLine("Evaluate Color ");
-
+            var c = color!.Evaluate()!.ToString()!;
             //cambiar color del pincel 
-            Pincel.ChangeColor(color!.Evaluate()!.ToString()!);
-
+            Pincel.ChangeColor(c);
+            //metodo  para cmabiar color desde unity 
+            Metodos.Color(c);
                         //mover pos en el evaluador 
             if (evaluador != null)
                 evaluador.Move();

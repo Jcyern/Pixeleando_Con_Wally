@@ -7,7 +7,7 @@ namespace Evalua
     public class Evaluator
     {
         List<AstNode> nodos;
-        List<Error> error_evaluate;
+        public List<Error> error_evaluate;
         public int CurrentLinea= 0;
 
         int CantCall = 0;
@@ -84,11 +84,7 @@ namespace Evalua
             }
 
             if (error_evaluate.Count > 0)
-            {//Erorres 
-                foreach (var e in error_evaluate)
-                {
-                    e.ShowError();
-                }
+            {
                 return false;
             }
             else

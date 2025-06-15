@@ -84,13 +84,15 @@ namespace ArbolSintaxisAbstracta
                 var y = Convert.ToInt32(dirY!.Evaluate());
                 var rad = Convert.ToInt32(radius!.Evaluate());
 
-                bool rangex = Methots.InRange(x, -1, 1);
-                bool rangey = Methots.InRange(y, -1, 1);
+                bool rangex = Metodos.InRange(x, -1, 1);
+                bool rangey = Metodos.InRange(y, -1, 1);
 
                 if (rangex && rangey)
                 {
                     //retornar el valor correcto 
                     System.Console.WriteLine($"Dibujar circulo de {Wally.Pos.Fila},{Wally.Pos.Columna} en dir {x},{y}  en un radio  de {rad}");
+                    //llamar al metodo de unitu 
+                    Metodos.DrawCircle(x, y, rad);
 
                     if (evaluator != null)
                         evaluator.Move();
