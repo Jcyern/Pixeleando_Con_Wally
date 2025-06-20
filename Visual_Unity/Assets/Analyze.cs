@@ -11,11 +11,12 @@ using UnityEngine;
 using Utiles;
 
 public class Analyze : MonoBehaviour
-{   public GameObject BotonSave ;
+{
+    public GameObject BotonSave;
     public GameObject panel_errores;
     public GameObject panel_save;
-    public GameObject inputfield ;
-    public string[] lineas ;
+    public GameObject inputfield;
+    public string[] lineas;
 
     public IEnumerator Corutine()
     {
@@ -30,7 +31,7 @@ public class Analyze : MonoBehaviour
         //limpiando los diccionarios de la expresiones de Scope 
         Scope.ReiniciarScope();
         Methots.ReinicarMethots();
-        
+
 
         StartCoroutine(Corutine());
 
@@ -75,7 +76,7 @@ public class Analyze : MonoBehaviour
                 Escenas.ChangeSceneToDraw();
             }
             return;
-            
+
 
         }
     }
@@ -95,7 +96,7 @@ public class Analyze : MonoBehaviour
         //que salga un cartel para poner el nombre 
         var input_name = panel_save.GetComponent<TMP_InputField>();
 
-        if(string.IsNullOrWhiteSpace(input_name.text))
+        if (string.IsNullOrWhiteSpace(input_name.text))
         {
             //alertar al usuario de  que no se puede poner eso vacio
 
@@ -106,7 +107,7 @@ public class Analyze : MonoBehaviour
         {
             //// Ruta dentro del proyecto (Assets/GeneratedFiles/newtxt.txt)
             string folderPath = Path.Combine(Application.dataPath, "SavesCodes");
-            string filePath = Path.Combine(folderPath, input_name.text+".txt");
+            string filePath = Path.Combine(folderPath, input_name.text + ".txt");
 
             // Crear la carpeta si no existe
             if (!Directory.Exists(folderPath))
@@ -114,19 +115,17 @@ public class Analyze : MonoBehaviour
                 Directory.CreateDirectory(folderPath);
             }
 
-            // Actualizar la ventana del Editor para ver el archivo
-            #if UNITY_EDITOR
-            UnityEditor.AssetDatabase.Refresh();
-            #endif
-
-            // Abrir el archivo con el programa predeterminado (Ubuntu)
-            System.Diagnostics.Process.Start("xdg-open", filePath);
-
-
+            File.WriteAllText(filePath, inputfield.GetComponent<TMP_InputField>().text);
+            Debug.Log($"se guardo el codigo en la ruta {filePath}");
             panel_save.SetActive(false);
         }
     }
 
 
+
+
+    //cargar archivos existentes 
+
+    //crear las barras de
 
 }

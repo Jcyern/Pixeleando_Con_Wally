@@ -54,8 +54,10 @@ namespace Alcance
         {
             //ver primero el tipo 
             if (value.type == ExpressionTypes.Null)
+            {
+                Debug.Log("Tipo null");
                 value.type = value.GetTipo();
-
+            }
             //de existir && es el mismo tipo  
             if (ContainType(name.value))
             {
@@ -77,7 +79,7 @@ namespace Alcance
                 //antes de agregarlo verifica si no es invalida la expresion
                 if (value.type != ExpressionTypes.Invalid && value.type != ExpressionTypes.Null)
                 {
-                    Debug.Log($"la variable {name} se asigno el tipo {value.type} ");
+                    Debug.Log($"la variable {name.value} se asigno el tipo {value.type} ");
                     variable_tipo[name.value] = value.type;
                     return true;
                 }

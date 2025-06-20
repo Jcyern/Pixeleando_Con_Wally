@@ -61,6 +61,7 @@ namespace ExpressionesBinarias
                 }
 
 
+
                 Debug.Log($"Es una operacion {Operator.value}");
 
                 //Dar el tipo de la derecha
@@ -115,7 +116,8 @@ namespace ExpressionesBinarias
 
         public override bool CheckSemantic(ExpressionTypes tipo= ExpressionTypes.nothing)
         {
-            
+
+            Debug.Log("Chequeo Semantico BInary Expresion");
             //verifica q ambas expresiones son del mismo tipo y en casos especificos si coincide con el tipo pasado 
 
             //una expresiones binarias en genral casi siempre se puede proceder si son del mismo tipo que cada quien implemente sus casos particulares
@@ -124,7 +126,8 @@ namespace ExpressionesBinarias
             {
                 var r = RightExpression.GetTipo();
                 var l = LeftExpression.GetTipo();
-
+                Debug.Log(l);
+                Debug.Log(r);
                 //son iguale y ninguna invalida 
                 if (r == l && l != ExpressionTypes.Invalid)
                 {
@@ -137,7 +140,7 @@ namespace ExpressionesBinarias
 
                     else if (r == tipo)
                     {
-                        
+
                         return true;
                     }
 
@@ -160,7 +163,7 @@ namespace ExpressionesBinarias
                 {
                     compilingError.Add(new DifferentTypesError(Operator.Pos, l.ToString(), r.ToString()));
                 }
-                
+
                 //agregar errores 
 
                 return false;

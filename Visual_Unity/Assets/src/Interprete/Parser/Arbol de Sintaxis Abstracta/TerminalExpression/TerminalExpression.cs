@@ -6,6 +6,7 @@ using Cadenas;
 using vars;
 using Paleta_Colores;
 using UnityEngine;
+using ArbolSintaxisAbstracta;
 
 
 namespace TerminalesNode
@@ -50,11 +51,16 @@ namespace TerminalesNode
             }
 
 
+
             else
             {
                 Debug.Log("TYpe INalid");
                 return ExpressionTypes.Invalid;
             }
+
         }
+
+
+
     }
 }

@@ -5,6 +5,7 @@ using IParseo;
 using Numero;
 using Parseando;
 using TerminalesNode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ArbolSintaxisAbstracta
@@ -45,39 +46,41 @@ namespace ArbolSintaxisAbstracta
 
             if (operador.value == "-")
             {
-                Debug.Log("parseando negativo ");
+
                 //puede ser un numero negativo 
-                if (parser.current - 1 < 0 && parser.GetNextToken().type == TypeToken.Numero)
+                if (parser.current - 1 < 0 && (parser.GetNextToken().type == TypeToken.Numero || parser.GetNextToken().type == TypeToken.OpenParenthesis))
                 {
-                    var numero = parser.NextToken();
-                    //seguir avanzando 
-                    parser.NextToken();
-                    //esta en la pos inicial es un negativo 
-                    Debug.Log($"Devolver numero negativo {"-"+numero.value.ToString()}");
-                    return new Number("-"+numero.value, numero.Pos);
+                    Debug.Log(" no es operador");
+                    var negative = new NegativeParse();
+
+                    return negative.Parse(parser);
+
+                }
+                else if ((parser.tokens[parser.current - 1].type == TypeToken.OpenParenthesis || parser.tokens[parser.current - 1].type == TypeToken.Operador || parser.tokens[parser.current - 1].type == TypeToken.Asignacion) && (parser.GetNextToken().type == TypeToken.Numero && parser.GetNextToken().type == TypeToken.OpenParenthesis))
+                {
+                    //es negativo 
+
+                    Debug.Log("no es operador");
+                    var negative = new NegativeParse();
+
+                    return null;
                 }
                 else
                 {
-                    if ((parser.tokens[parser.current - 1].type == TypeToken.OpenParenthesis || parser.tokens[parser.current - 1].type == TypeToken.Operador || parser.tokens[parser.current - 1].type == TypeToken.Asignacion) && parser.GetNextToken().type == TypeToken.Numero)
-                    {
-                        var numero = parser.NextToken();
-                        //para seguir analizando
-                        parser.NextToken();
-                        Debug.Log($"Devolver numero negativo {"-"+numero.value.ToString()}");
-                        return new Number("-"+numero.value, numero.Pos);
-                    }
+                    Debug.Log("Operador");
 
-                    
                     parser.NextToken();
                     return new OperadorNode(operador);
-
+            
                 }
             }
+            else
+            {
+                Debug.Log("Operador");
 
-            
-            Debug.Log("Se acabo ");
-            parser.NextToken();
-            return new OperadorNode(operador);
+                parser.NextToken();
+                return new OperadorNode(operador);
+            }
         }
     }
 

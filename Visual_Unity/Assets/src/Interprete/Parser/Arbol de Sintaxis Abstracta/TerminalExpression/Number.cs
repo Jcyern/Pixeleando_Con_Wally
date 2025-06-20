@@ -61,7 +61,7 @@ namespace Numero
         public AstNode? Parse(Parser parser)
         {
             Debug.Log("Parsear Num");
-            Debug.Log(parser.Current.value);
+            
             var num = parser.Current;
 
             //seguir analizando 

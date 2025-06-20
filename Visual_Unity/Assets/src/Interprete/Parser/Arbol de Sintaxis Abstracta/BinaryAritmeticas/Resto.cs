@@ -21,7 +21,7 @@ namespace Arbol_de_Sintaxis_Abstracta
         }
         public override object Evaluate(Evaluator? evaluator = null)
         {
-            return Convert.ToInt32(LeftExpression!.value) % Convert.ToInt32(RightExpression!.value);
+            return Convert.ToInt32(LeftExpression!.Evaluate()) % Convert.ToInt32(RightExpression!.Evaluate());
         }
 
         public override ExpressionTypes GetTipo()

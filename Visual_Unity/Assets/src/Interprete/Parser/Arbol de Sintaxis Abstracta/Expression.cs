@@ -51,6 +51,7 @@ namespace Expresion
 
         public override bool CheckSemantic(ExpressionTypes tipo= ExpressionTypes.nothing )
         {
+            Debug.Log("Chequeo semantico de expression");
             // semanticas de las expresiones Generales 
 
             var type = this.GetTipo();

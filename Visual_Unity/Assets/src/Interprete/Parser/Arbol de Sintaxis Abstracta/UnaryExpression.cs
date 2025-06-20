@@ -5,6 +5,7 @@ using Cadenas;
 using Boolean;
 using ExpressionesBinarias;
 using TerminalesNode;
+using UnityEngine;
 
 namespace ExpressionesUnarias
 {
@@ -24,17 +25,22 @@ namespace ExpressionesUnarias
         }
 
 
-        public override bool CheckSemantic(ExpressionTypes tipo)
+        public override bool CheckSemantic(ExpressionTypes tipo = ExpressionTypes.nothing)
         {
-            return base.CheckSemantic(tipo);
+            if (tipo == ExpressionTypes.nothing)
+                return expresion.CheckSemantic();
+
+            return expresion.CheckSemantic(tipo);
         }
 
 
 
         public override ExpressionTypes GetTipo()
         {
+            Debug.Log("Unary Expression Tipo");
             if (expresion != null)
             {
+                Debug.Log("La unary no es null en su exp");
                 if (expresion is BinaryExpression be)
                 {
                     return be.GetTipo();
@@ -51,6 +57,8 @@ namespace ExpressionesUnarias
                 }
 
             }
+
+            Debug.Log(" la unary es null en su exp");
 
 
             return ExpressionTypes.Invalid;

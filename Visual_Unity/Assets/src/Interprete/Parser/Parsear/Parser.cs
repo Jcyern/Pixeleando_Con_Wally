@@ -83,6 +83,11 @@ namespace Parseando
         {
             errores_sintaxis.Clear();
             this.tokens = tokens;
+            Debug.Log("Tokens");
+            foreach (var item in tokens)
+            {
+                Debug.Log($" {item.value}   {item.fila}  {item.columna}");
+            }
             this.tokens.Add(new Token(TypeToken.Fin, "FIn", int.MaxValue, int.MaxValue));
 
 
@@ -153,9 +158,12 @@ namespace Parseando
 
                 if (estructura.ContainsKey(Current.type))
                 {
+                    
+                    Debug.Log(Current.value);
                     Debug.Log(Current.type);
                     //si contiene la structura  parsealo
                     var parseos = estructura[Current.type];
+                    Debug.Log($"estructura de {Current.type} + {estructura[Current.type].Count}");
                     AstNode? nodo = null;
                     foreach (var p in parseos)
                     {
@@ -164,6 +172,8 @@ namespace Parseando
                         {
                             break;
                         }
+                        Debug.Log("Nodo null");
+                        Debug.Log("Sig");
                     }
 
                     if (nodo == null)

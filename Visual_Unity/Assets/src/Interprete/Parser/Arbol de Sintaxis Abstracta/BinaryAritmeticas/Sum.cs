@@ -5,6 +5,7 @@ using INodeCreador;
 using Evalua;
 using System;
 
+using UnityEngine;
 
 namespace Arbol_de_Sintaxis_Abstracta
 {
@@ -16,6 +17,7 @@ namespace Arbol_de_Sintaxis_Abstracta
 
         public override bool CheckSemantic(ExpressionTypes tipo)
         {
+            Debug.Log("ChequeoSuma");
             // la suma de dos numeros 
             return base.CheckSemantic(ExpressionTypes.Number);
         }

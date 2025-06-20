@@ -34,21 +34,22 @@ namespace Convertidor_Pos_Inf
         #region  Dic Precedencia
         public static Dictionary<string, int> precedence = new()
         {
-            ["("] = -1,//en este caso la menor precedencia para q a la hora de q venga cualquier operador pueda entrar a la pila  y siga el trancurso de la con version sin  afectar el orden de las demas precedencias , ejemplo q tenga (5+4)   y a la hora de comparar + con (  no salga el (  y entre el mas a la pila ----- ya q en el lenguaje postfix no afecta el parentesis 
-            ["||"] = 0, //booleanos
-            ["&&"] = 1, //booleanos
-            ["=="] = 2,
-            ["!="] = 2,
-            [">"] = 3,
-            ["<"] = 3,
-            [">="] = 3,
-            ["<="] = 3,  //comparaciones 
-            ["+"] = 4,
-            ["-"] = 4,
-            ["*"] = 5,
-            ["/"] = 5,
-            ["%"] = 5,
-            ["**"] = 6,
+
+            ["("] = -1,
+            ["||"] = 1,  // OR lógico (↑ precedencia)
+            ["&&"] = 2,  // AND lógico (↑ precedencia)
+            ["=="] = 3,  // (↑ precedencia)
+            ["!="] = 3,
+            [">"] = 4,   // (↑ precedencia)
+            ["<"] = 4,
+            [">="] = 4,
+            ["<="] = 4,
+            ["+"] = 5,   // (igual)
+            ["-"] = 5,
+            ["*"] = 6,   // (↑ precedencia)
+            ["/"] = 6,
+            ["%"] = 6,
+            ["**"] = 7,  // (↑ precedencia)
 
         };
 
@@ -92,7 +93,7 @@ namespace Convertidor_Pos_Inf
             [TypeToken.Numero] = new List<IParse>() { new NumberParse() },
             [TypeToken.String] = new List<IParse>() { new StringParse() },
             [TypeToken.color] = new List<IParse>() { new ColorParse() },
-            [TypeToken.Operador] = new List<IParse>() { new OperadorParse() },
+            [TypeToken.Operador] = new List<IParse>() { new OperadorParse(), new NegativeParse() },
             [TypeToken.OpenParenthesis] = new List<IParse>() { new ParentesisParse() },
             [TypeToken.CloseParenthesis] = new List<IParse>() { new ParentesisParse() },
             [TypeToken.Identificador] = new List<IParse>() { new VariableParse() },
@@ -110,9 +111,16 @@ namespace Convertidor_Pos_Inf
         {
             Debug.Log("Parsear el infix");
             //parsear los  tokens en infix 
+
             Parser parser = new Parser(tokens, parsea);
 
-            return parser.Parseo();
+            var nodos = parser.Parseo();
+
+            Debug.Log("Nodos");
+            Debug.Log(nodos.Count);
+
+
+            return nodos;
         }
 
 
@@ -129,6 +137,7 @@ namespace Convertidor_Pos_Inf
             Debug.Log("converter to postfix ");
             List<Expression> postfix = new();
             //crear un pila donde guardaremos los operadores por orden de precedencia  
+
             Stack<Expression> operadores = new();
             for (int i = 0; i < infix.Count; i++)
             {
@@ -156,14 +165,17 @@ namespace Convertidor_Pos_Inf
                             Debug.Log($" {op.value} > precedencia {peek.value}");
                             operadores.Push((Expression)infix[i]);
                         }
-                        //si tiene menor precedencia saca las cosas hasta q el quede de mayor precednecia 
+                        //si tiene menor precedencia saca las cosas hasta q el quede de mayor precednecia  // siempre y cuando sea diferene del parentesis
                         else if (precedencia[op.value] < precedencia[peek.value])
                         {
-                            //mientras q tenga menor precedencia , saca los operadoresy agregalos a la infix list
-                            while (operadores.Count > 0 && precedencia[op.value] < precedencia[peek.value])
+                            //mientras q tenga menor precedencia , saca los operadoresy agregalos a la infix list && q no se esta comparando con el parenteis 
+                            while (operadores.Count >0   && precedencia[op.value] < precedencia[peek.value])
                             {
                                 Debug.Log($"agregar a postfix {operadores.Peek()}");
                                 postfix.Add(operadores.Pop());
+                                //actualizar el peek
+                                if(operadores.Count >0)
+                                peek =(Token) operadores.Peek().Evaluate();
                             }
 
                             //cuando ya tenga mayor o iugal predencia o operadores se quede vacio , agregala
@@ -181,19 +193,27 @@ namespace Convertidor_Pos_Inf
                 //si es ) sacar todo lo de la pila hasta llegarg al open (
                 else if (infix[i].GetTipo() == ExpressionTypes.CloseParent)
                 {
-
                     //mientras que el ultimo no sea ( en la pila de operadores
-                    while (operadores.Peek().GetTipo() != ExpressionTypes.OpenParent)
+                    Debug.Log("operadores");
+                    foreach (var item in operadores)
                     {
-                        //agrega el operador a la pila
-                        Debug.Log($"Add {operadores.Peek().value}");
-                        postfix.Add(operadores.Pop());
-
+                        var tok =(Token)item.Evaluate();
+                        Debug.Log(tok.value);
                     }
-                    Debug.Log("Se encontro el open ");
-                    var result = operadores.Pop();
-                   // Debug.Log(result.Evaluate()!.ToString());
 
+                        while (operadores.Count > 0 && operadores.Peek().GetTipo() != ExpressionTypes.OpenParent)
+                        {
+                            //agrega el operador a la pila
+                            Debug.Log($"Add  pila {operadores.Peek().value}");
+                            postfix.Add(operadores.Pop());
+
+
+                        }
+                        //Sacar el parentesis
+                        Debug.Log("Se encontro el open ");
+                        var result = operadores.Pop();
+                        // Debug.Log(result.Evaluate()!.ToString());
+                    
 
                 }
                 else
@@ -211,6 +231,12 @@ namespace Convertidor_Pos_Inf
                 postfix.Add(operadores.Pop());
             }
             Debug.Log("Dentro ");
+
+            foreach (var item in postfix)
+            {
+                Debug.Log(item);
+            }
+
             return postfix;
         }
 
@@ -227,7 +253,7 @@ namespace Convertidor_Pos_Inf
             Debug.Log("creando del postfix a una expressio");
             Stack<Expression> pila = new();
             
-            
+                
 
 
             for (int i = 0; i < postfix.Count; i++)
@@ -262,16 +288,21 @@ namespace Convertidor_Pos_Inf
 
             //cuando se termine todo tiene q quedar una expresion  o no 
             if (pila.Count > 0)
-            {Debug.Log("se retorno una exp");
+            {
                 var exp = pila.Pop();
+
 
                 if (pila.Count > 0)
                 {
+                    Debug.Log("Se retorno una exp nula ");
                     //hay elementos aun en la pila es una null expresion 
                     return null;
                 }
                 else
-                return exp; ;
+                {
+                    Debug.Log("se retorno una exp");
+                    return exp;
+                }
             }
 
             //si no hay nada retona null expression 

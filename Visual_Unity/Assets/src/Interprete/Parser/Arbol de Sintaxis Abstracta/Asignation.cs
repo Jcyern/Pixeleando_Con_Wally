@@ -90,29 +90,33 @@ namespace AsignacionNodo
             {
                 //crear nodo asignacion 
                 var name = parser.Current;
-                Debug.Log($"Var namme {name.value}  pos = {name.fila}, {name.columna}");
+                Debug.Log($"Var name {name.value}  pos = {name.fila}, {name.columna}");
 
                 var operador = parser.NextToken();
-                
+
+                Debug.Log(parser.Current.value);
+                parser.NextToken();
 
                 //lo que siguen q se mantenga en la misma linea lo crearemos como una expresion
                 //con el converter 
                 var lista = new List<Token>();
-                while (parser.Current.type != TypeToken.Fin && parser.GetNextToken().fila == operador.fila)
+                while (parser.Current.fila == operador.fila)
                 {
+                    Debug.Log($"Lista add {parser.Current.value} pos {parser.Current.fila}");
+                    lista.Add(parser.Current);
+                    parser.NextToken();
 
-                    lista.Add(parser.NextToken());
-                    Debug.Log($"Lista add {parser.Current.value}");
                 }
-                //y avanzamos en el parser para q no se quede con esa ultima pos q pertenece a la asignacion y no de error sintaxtico 
-                parser.NextToken();
+                Debug.Log($"{parser.Current.value}  {parser.Current.fila}");
+
+                //ya el ultm hay q analizarlo pq pertnece a otra cosa
 
                 if (lista.Count > 0)
                 {
                     Debug.Log("Se creo nodo asignacion ");
                     var expression = Converter.GetExpression(lista);
                     //crear la asignacion con la expression creada 
-                    
+
                     return new AsignationNode(name, operador, expression);
                 }
                 else

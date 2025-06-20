@@ -91,6 +91,7 @@
     <Compile Include="Assets/src/Interprete/Parser/Arbol de Sintaxis Abstracta/BinaryAritmeticas/Resta.cs" />
     <Compile Include="Assets/src/Interprete/Parser/Parsear/Parser.cs" />
     <Compile Include="Assets/src/Interprete/Parser/Arbol de Sintaxis Abstracta/Booleanas/BInaryBoleanas/LessThan.cs" />
+    <Compile Include="Assets/src/Interprete/Parser/Arbol de Sintaxis Abstracta/TerminalExpression/Negative.cs" />
     <Compile Include="Assets/src/Interprete/Parser/Arbol de Sintaxis Abstracta/Booleanas/BInaryBoleanas/And.cs" />
     <Compile Include="Assets/src/Interprete/Parser/Arbol de Sintaxis Abstracta/Evaluar/IEvaluate.cs" />
     <Compile Include="Assets/src/Interprete/Parser/Arbol de Sintaxis Abstracta/BinaryAritmeticas/Pow.cs" />
@@ -161,6 +162,7 @@
     <None Include="Assets/src/Interprete/Tokeninando/Lector_de_Texto/Editor.txt" />
     <None Include="Assets/src/Interprete/Tokeninando/Dentro de la Carpeta Tokenizar.txt" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF Overlay.shader" />
+    <None Include="Assets/SavesCodes/Mojon.txt" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_Bitmap-Mobile.shader" />
     <None Include="Assets/TextMesh Pro/Fonts/LiberationSans - OFL.txt" />
     <None Include="Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader" />
