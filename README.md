@@ -1,7 +1,7 @@
 
 # Pixeleando con Wally 
-![imagen espacial](photo/espacio.jpg)
-## Segundo Proyecto de Programacion Matcom
+![imagen espacial][def]
+## Segundo Proyecto de Programación Matcom
 
 
 
@@ -12,7 +12,7 @@ En este proyecto se interpreta un lenguaje creado y analizado por los profesores
 Usamos la herramienta tan poderosa que ofrece unity que es los Tilemap , para pintar casillas , las cuales representan píxeles. Además creamos  varios tiles de colores para poder tener una variadad , y permitir la creación de un arte visual. 
 
 
-### Logica basica del Proyecto :
+### Lógica básica del Proyecto :
 - **Lexer** : Divide  el codigo pasado el cual es una estructura de string , en varias palabras claves , las cuales llamaremos tokens. 
 
 - **Parser** : Analiza todos los tokens que me forma el Lexer , y los va uniendo en estructuras sintácticas definidas por el autor 
@@ -39,3 +39,6 @@ Usamos la herramienta tan poderosa que ofrece unity que es los Tilemap , para pi
 |**IsBrushSize(int size)**| Retorna 1 si el tamaño de la brocha actual es size, 0 en caso contrario|
 |**IsCanvasColor(string color, int vertical, int horizontal)**|Retorna 1 si la casilla señalada está pintada del parámetro color, 0 en caso contrario. La casilla en  cuestión se determina por la posición actual de Wall-E (X, Y) y se calcula como: (X + horizontal, Y + vertical). Note que si tanto horizontal como vertical son 0, se verifica entonces la casilla actual de Wall-E. Si la posición cae fuera del canvas debe retornar false|
 |**GoTo [label] (condition)**| Si la condición es verdadera va a la posición del label |
+
+
+[def]: photo/espacio.jpg
